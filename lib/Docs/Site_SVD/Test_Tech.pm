@@ -10,20 +10,20 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.01';
-$DATE = '2003/06/13';
+$VERSION = '0.02';
+$DATE = '2003/06/15';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.01 2003/06/13), 'revised 0.01'],
-    'MANIFEST' => [qw(0.01 2003/06/13), 'generated, replaces 0.01'],
-    'Makefile.PL' => [qw(0.01 2003/06/13), 'generated, replaces 0.01'],
-    'README' => [qw(0.01 2003/06/13), 'generated, replaces 0.01'],
-    'lib/Test/Tech.pm' => [qw(1.03 2003/06/13), 'revised 1.02'],
-    't/Test/Tech/tech.t' => [qw(0.02 2003/06/13), 'revised 0.01'],
-    't/Test/Tech/tech0.d' => [qw(0.02 2003/06/13), 'revised 0.01'],
-    't/Test/Tech/tech0.t' => [qw(0.02 2003/06/13), 'revised 0.01'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.02 2003/06/15), 'revised 0.01'],
+    'MANIFEST' => [qw(0.02 2003/06/15), 'generated, replaces 0.01'],
+    'Makefile.PL' => [qw(0.02 2003/06/15), 'generated, replaces 0.01'],
+    'README' => [qw(0.02 2003/06/15), 'generated, replaces 0.01'],
+    'lib/Test/Tech.pm' => [qw(1.04 2003/06/15), 'revised 1.03'],
+    't/Test/Tech/tech.t' => [qw(0.03 2003/06/15), 'revised 0.02'],
+    't/Test/Tech/tech0.d' => [qw(0.02 2003/06/13), 'unchanged'],
+    't/Test/Tech/tech0.t' => [qw(0.02 2003/06/13), 'unchanged'],
     't/Test/Tech/tech2.txt' => [qw(0.01 2003/06/12), 'unchanged'],
     't/Test/Tech/tech3.txt' => [qw(0.01 2003/06/12), 'unchanged'],
 
@@ -50,13 +50,13 @@ use vars qw(%INVENTORY);
 
  for
 
- Test::Tech - Extends the Test:: program module
+ Test::Tech - Extends the Test program module
 
- Revision: -
+ Revision: A
 
- Version: 0.01
+ Version: 0.02
 
- Date: 2003/06/13
+ Date: 2003/06/15
 
  Prepared for: General Public 
 
@@ -97,28 +97,32 @@ Plain Old Documentation (POD) that may be embedded in the language
 
 These features are established by the referenced documents.
 
-The Test::Tech module extends the capabilities of
-the Test module as follows:
+The L<Test::Tech|Test::Tech> module extends the capabilities of
+the L<Test|Test> module as follows:
 
 =over
 
 =item *
 
-Compare almost any data structure by passing variables
+Correctly compares almost any data structure by passing the variables
 through I<Data::Dumper> before making the comparision
 
 =item *
 
-Method to skip the rest of the tests upon a critical failure
+Adds a method to skip the rest of the tests upon a critical failure
 
 =item *
 
-Method to generate demos that appear as an interactive
+Adds a method to generate demos that appear as an interactive
 session using the methods under test
+
+=item *
+
+Inherits the methods from the L<Test::Util|Test::Util> module
 
 =back
 
-The Test::Tech module is an integral part of the US DOD SDT2167A bundle
+The L<Test::Tech|Test::Tech> module is an integral part of the US DOD SDT2167A bundle
 of modules.
 The dependency of the program modules in the US DOD STD2167A bundle is as follows:
 
@@ -129,7 +133,7 @@ The dependency of the program modules in the US DOD STD2167A bundle is as follow
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.01
+This document releases Test::Tech version 0.02
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -147,8 +151,8 @@ system file specification.
 This document releases the file found
 at the following repository:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.01
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.01
+   http://www.softwarediamonds/packages/Test-Tech-0.02
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.02
 
 
 =head2 3.1.2 Copyright.
@@ -209,22 +213,21 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.01    2003/06/13 revised 0.01
- MANIFEST                                                     0.01    2003/06/13 generated, replaces 0.01
- Makefile.PL                                                  0.01    2003/06/13 generated, replaces 0.01
- README                                                       0.01    2003/06/13 generated, replaces 0.01
- lib/Test/Tech.pm                                             1.03    2003/06/13 revised 1.02
- t/Test/Tech/tech.t                                           0.02    2003/06/13 revised 0.01
- t/Test/Tech/tech0.d                                          0.02    2003/06/13 revised 0.01
- t/Test/Tech/tech0.t                                          0.02    2003/06/13 revised 0.01
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.02    2003/06/15 revised 0.01
+ MANIFEST                                                     0.02    2003/06/15 generated, replaces 0.01
+ Makefile.PL                                                  0.02    2003/06/15 generated, replaces 0.01
+ README                                                       0.02    2003/06/15 generated, replaces 0.01
+ lib/Test/Tech.pm                                             1.04    2003/06/15 revised 1.03
+ t/Test/Tech/tech.t                                           0.03    2003/06/15 revised 0.02
+ t/Test/Tech/tech0.d                                          0.02    2003/06/13 unchanged
+ t/Test/Tech/tech0.t                                          0.02    2003/06/13 unchanged
  t/Test/Tech/tech2.txt                                        0.01    2003/06/12 unchanged
  t/Test/Tech/tech3.txt                                        0.01    2003/06/12 unchanged
 
 
 =head2 3.3 Changes
 
-Due to a non-registered namespace conflict with CPAN,
-changed the namespace from Test::Tester to Test::Tech
+Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
 
 =head2 3.4 Adaptation data.
 
@@ -259,8 +262,8 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.01
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.01
+   http://www.softwarediamonds/packages/Test-Tech-0.02
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.02
 
 
 =head2 3.6.1 Installation support.
@@ -319,9 +322,27 @@ Software Version Description
 
 =head1 2.0 SEE ALSO
 
- L<US DOD SVD|Docs::US_DOD::SVD>
- L<Test::TestUtil|Test::TestUtil>
- L<Test::Tech|Test::Tech>
+=over 4
+
+=item L<Test::TestUtil|Test::TestUtil>
+
+=item L<Test::Tech|Test::Tech>
+
+=item L<DataPort::FileType::FormDB|DataPort::FileType::FormDB>
+
+=item L<DataPort::DataFile|DataPort::DataFile>
+
+=item L<Test::STDmaker|Test::STDmaker>
+
+=item L<ExtUtils::SVDmake|ExtUtils::SVDmake>
+
+=item L<US DOD Software Version Description (SVD) DID|Docs::US_DOD::SVD>
+
+=item L<US DOD Software Test Description (STD) DID|Docs::US_DOD::STD>
+
+=item L<US DOD Software Development Standard|Docs::US_DOD::STD2167A>
+
+=back
 
 =for html
 <hr>
@@ -347,17 +368,24 @@ __DATA__
 
 
 
+
 DISTNAME: Test-Tech^
-VERSION : 0.01^
+VERSION : 0.02^
 REPOSITORY_DIR: packages^
 FREEZE: 1^
 
-PREVIOUS_DISTNAME: Test-Tester^
+PREVIOUS_DISTNAME:  ^
 PREVIOUS_RELEASE: 0.01^
+REVISION: A^
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
-ABSTRACT: Low level utilities originally developed to support Test::STDmaker^
-REVISION: -^
-TITLE   : Test::Tech - Extends the Test:: program module^
+
+ABSTRACT: 
+Objectify the Test module,
+adds the skip_test method to the Test module, and 
+adds the ability to compare complex data structures to the Test module.
+^
+
+TITLE   : Test::Tech - Extends the Test program module^
 END_USER: General Public^
 COPYRIGHT: copyright © 2003 Software Diamonds^
 CLASSIFICATION: NONE^
@@ -373,10 +401,7 @@ REPOSITORY:
 COMPRESS: gzip^
 COMPRESS_SUFFIX: gz^
 
-CHANGE2CURRENT:
-return if $file =~ s|lib/Test/Tester.pm|lib/Test/Tech.pm|;
-return if $file =~ s|Test/Tester/tester|Test/Tech/tech|;
-^
+CHANGE2CURRENT:  ^
 
 RESTRUCTURE:  ^
 
@@ -391,33 +416,37 @@ TESTS: t/Test/Tech/tech.t^
 EXE_FILES:  ^
 
 CHANGES: 
-Due to a non-registered namespace conflict with CPAN,
-changed the namespace from Test::Tester to Test::Tech
+Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
+
 ^
 
 CAPABILITIES:
-The Test::Tech module extends the capabilities of
-the Test module as follows:
+The L<Test::Tech|Test::Tech> module extends the capabilities of
+the L<Test|Test> module as follows:
 
 \=over
 
 \=item *
 
-Compare almost any data structure by passing variables
+Correctly compares almost any data structure by passing the variables
 through I<Data::Dumper> before making the comparision
 
 \=item *
 
-Method to skip the rest of the tests upon a critical failure
+Adds a method to skip the rest of the tests upon a critical failure
 
 \=item *
 
-Method to generate demos that appear as an interactive
+Adds a method to generate demos that appear as an interactive
 session using the methods under test
+
+\=item *
+
+Inherits the methods from the L<Test::Util|Test::Util> module
 
 \=back
 
-The Test::Tech module is an integral part of the US DOD SDT2167A bundle
+The L<Test::Tech|Test::Tech> module is an integral part of the US DOD SDT2167A bundle
 of modules.
 The dependency of the program modules in the US DOD STD2167A bundle is as follows:
 
@@ -533,9 +562,29 @@ Software Version Description
 ^
 
 SEE_ALSO:
- L<US DOD SVD|Docs::US_DOD::SVD>
- L<Test::TestUtil|Test::TestUtil>
- L<Test::Tech|Test::Tech>
+
+\=over 4
+
+\=item L<Test::TestUtil|Test::TestUtil>
+
+\=item L<Test::Tech|Test::Tech>
+
+\=item L<DataPort::FileType::FormDB|DataPort::FileType::FormDB>
+
+\=item L<DataPort::DataFile|DataPort::DataFile>
+
+\=item L<Test::STDmaker|Test::STDmaker>
+
+\=item L<ExtUtils::SVDmake|ExtUtils::SVDmake>
+
+\=item L<US DOD Software Version Description (SVD) DID|Docs::US_DOD::SVD>
+
+\=item L<US DOD Software Test Description (STD) DID|Docs::US_DOD::STD>
+
+\=item L<US DOD Software Development Standard|Docs::US_DOD::STD2167A>
+
+\=back
+
 ^
 
 HTML:

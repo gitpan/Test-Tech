@@ -3,13 +3,13 @@ Title Page
 
      for
 
-     Test::Tech - Extends the Test:: program module
+     Test::Tech - Extends the Test program module
 
-     Revision: -
+     Revision: A
 
-     Version: 0.01
+     Version: 0.02
 
-     Date: 2003/06/13
+     Date: 2003/06/15
 
      Prepared for: General Public 
 
@@ -43,13 +43,15 @@ Title Page
     The Test::Tech module extends the capabilities of the Test module as
     follows:
 
-    *   Compare almost any data structure by passing variables through
-        *Data::Dumper* before making the comparision
+    *   Correctly compares almost any data structure by passing the
+        variables through *Data::Dumper* before making the comparision
 
-    *   Method to skip the rest of the tests upon a critical failure
+    *   Adds a method to skip the rest of the tests upon a critical failure
 
-    *   Method to generate demos that appear as an interactive session using
-        the methods under test
+    *   Adds a method to generate demos that appear as an interactive
+        session using the methods under test
+
+    *   Inherits the methods from the Test::Util module
 
     The Test::Tech module is an integral part of the US DOD SDT2167A bundle
     of modules. The dependency of the program modules in the US DOD STD2167A
@@ -62,7 +64,7 @@ Title Page
 
   1.3 Document overview.
 
-    This document releases Test::Tech version 0.01 providing description of
+    This document releases Test::Tech version 0.02 providing description of
     the inventory, installation instructions and other information necessary
     to utilize and track this release.
 
@@ -76,8 +78,8 @@ Title Page
 
     This document releases the file found at the following repository:
 
-       http://www.softwarediamonds/packages/Test-Tech-0.01
-       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.01
+       http://www.softwarediamonds/packages/Test-Tech-0.02
+       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.02
 
   3.1.2 Copyright.
 
@@ -120,21 +122,20 @@ Title Page
 
      file                                                         version date       comment
      ------------------------------------------------------------ ------- ---------- ------------------------
-     lib/Docs/Site_SVD/Test_Tech.pm                               0.01    2003/06/13 revised 0.01
-     MANIFEST                                                     0.01    2003/06/13 generated, replaces 0.01
-     Makefile.PL                                                  0.01    2003/06/13 generated, replaces 0.01
-     README                                                       0.01    2003/06/13 generated, replaces 0.01
-     lib/Test/Tech.pm                                             1.03    2003/06/13 revised 1.02
-     t/Test/Tech/tech.t                                           0.02    2003/06/13 revised 0.01
-     t/Test/Tech/tech0.d                                          0.02    2003/06/13 revised 0.01
-     t/Test/Tech/tech0.t                                          0.02    2003/06/13 revised 0.01
+     lib/Docs/Site_SVD/Test_Tech.pm                               0.02    2003/06/15 revised 0.01
+     MANIFEST                                                     0.02    2003/06/15 generated, replaces 0.01
+     Makefile.PL                                                  0.02    2003/06/15 generated, replaces 0.01
+     README                                                       0.02    2003/06/15 generated, replaces 0.01
+     lib/Test/Tech.pm                                             1.04    2003/06/15 revised 1.03
+     t/Test/Tech/tech.t                                           0.03    2003/06/15 revised 0.02
+     t/Test/Tech/tech0.d                                          0.02    2003/06/13 unchanged
+     t/Test/Tech/tech0.t                                          0.02    2003/06/13 unchanged
      t/Test/Tech/tech2.txt                                        0.01    2003/06/12 unchanged
      t/Test/Tech/tech3.txt                                        0.01    2003/06/12 unchanged
 
   3.3 Changes
 
-    Due to a non-registered namespace conflict with CPAN, changed the
-    namespace from Test::Tester to Test::Tech
+    Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
 
   3.4 Adaptation data.
 
@@ -168,8 +169,8 @@ Title Page
 
     The distribution file is at the following respositories:
 
-       http://www.softwarediamonds/packages/Test-Tech-0.01
-       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.01
+       http://www.softwarediamonds/packages/Test-Tech-0.02
+       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.02
 
   3.6.1 Installation support.
 
@@ -207,7 +208,12 @@ Title Page
     SVD Software Version Description
 
 2.0 SEE ALSO
-     L<US DOD SVD|Docs::US_DOD::SVD>
-     L<Test::TestUtil|Test::TestUtil>
-     L<Test::Tech|Test::Tech>
-
+    Test::TestUtil
+    Test::Tech
+    DataPort::FileType::FormDB
+    DataPort::DataFile
+    Test::STDmaker
+    ExtUtils::SVDmake
+    US DOD Software Version Description (SVD) DID
+    US DOD Software Test Description (STD) DID
+    US DOD Software Development Standard

@@ -29,7 +29,7 @@ else {
 WriteMakefile(
     NAME => 'Test::Tech',
     DISTNAME => 'Test-Tech',
-    VERSION  => '0.01',
+    VERSION  => '0.02',
     dist     => {COMPRESS => 'gzip',
                 'gz' => 'gz'},
     test     => {TESTS => $tests},
@@ -38,7 +38,9 @@ WriteMakefile(
 
     ($] >= 5.005 ?     
         (AUTHOR    => 'SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>',
-        ABSTRACT  => 'Low level utilities originally developed to support Test::STDmaker', ) : ()),
+        ABSTRACT  => 'Objectify the Test module,
+adds the skip_test method to the Test module, and 
+adds the ability to compare complex data structures to the Test module.', ) : ()),
 );
 
 

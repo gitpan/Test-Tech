@@ -7,14 +7,15 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.02';
-$DATE = '2003/06/13';
+$VERSION = '0.03';
+$DATE = '2003/06/15';
 
 use Test::TestUtil;
 use Cwd;
 use File::Spec;
 use File::Glob ':glob';
 use Test;
+use Data::Dumper;
 
 ######
 #
@@ -80,8 +81,8 @@ END {
 #
 my $loaded;
 print "# UUT not loaded\n";
-verify( $loaded = Test::TestUtil->is_package_loaded('Test::Tech'), 
-    ''); #expected results
+test( [$loaded = Test::TestUtil->is_package_loaded('Test::Tech')], 
+    ['']); #expected results
 
 #######
 # 
@@ -89,18 +90,11 @@ verify( $loaded = Test::TestUtil->is_package_loaded('Test::Tech'),
 # 
 print "# Load UUT\n";
 my $errors = Test::TestUtil->load_package( 'Test::Tech' );
-my $test_results = skip_verify(
+skip_rest() unless verify(
     $loaded, # condition to skip test   
-    $errors, # actual results
-    '');  # expected results
+    [$errors], # actual results
+    ['']);  # expected results
 
-######
-# Unless results, skip rest of tests
-# 
-unless( $test_results ) {
-   for (my $i=2; $i < $__tests__; $i++) { skip(1,0,0) };
-   exit 1;
-}
 
 #######
 #
@@ -110,32 +104,25 @@ unless( $test_results ) {
 # 
 
 print  "No pod errors\n";
-$test_results =
-verify( Test::TestUtil->pod_errors( 'Test::Tech'), 
-          0); # expected results);
-
-unless($test_results ) {
-    $test_results =~ s/\n/\n# /g;
-    print '# ' . $test_results; 
-}
+test( [Test::TestUtil->pod_errors( 'Test::Tech')], 
+        [0]); # expected results);
 
 #####
 #  ok:  4
 # 
 # RUn demonstration script test case 
 #
-$test_results = `perl tech0.d`;
+my $test_results = `perl tech0.d`;
 Test::TestUtil->fout('tech1.txt', $test_results);
+my $test_results_hex = unpack('H*',$test_results );
+
+my $expected_results = Test::TestUtil->fin('tech2.txt');
+my $expected_results_hex = unpack('H*', $expected_results );
+
 print "# Demonstration script\n";
+test( [$test_results, $test_results_hex], 
+        [$expected_results, $expected_results_hex] ); # expected results
 
-$test_results = 
-verify( $test_results, 
-    Test::TestUtil->fin('tech2.txt')); # expected results
-
-unless( $test_results ) {
-    $test_results =~ s/\n/\n# /g;
-    print '# ' . $test_results; 
-}
 
 #####
 #  ok:  5
@@ -144,16 +131,15 @@ unless( $test_results ) {
 #
 $test_results = `perl tech0.t`;
 Test::TestUtil->fout('tech1.txt', $test_results);
+$test_results = Test::TestUtil->scrub_file_line($test_results);
+$test_results_hex = unpack('H*',$test_results );
+
+$expected_results = Test::TestUtil->scrub_file_line(Test::TestUtil->fin('tech3.txt'));
+$expected_results_hex = unpack('H*', $expected_results );
+
 print "# Run test script\n";
-
-$test_results = 
-verify( Test::TestUtil->scrub_file_line($test_results), # actual results
-    Test::TestUtil->scrub_file_line(Test::TestUtil->fin('tech3.txt')) ); # expected results
-
-unless( $test_results ) {
-    $test_results =~ s/\n/\n# /g;
-    print '# ' . $test_results; 
-}
+test( [$test_results, $test_results_hex], 
+        [$expected_results, $expected_results_hex] ); # expected results
 
 
 #######
@@ -164,20 +150,68 @@ unlink @outputs;
 
 
 ####
+# 
+# Support:
+#
 # The ok user caller to look up the stack. If nothing there,
 # ok produces a warining. Thus, burying it in a subroutine eliminates
 # these warning.
 #
+sub test { 
+   my ($actual_p, $expected_p, $name) = @_;
+   print "# $name\n" if $name;
+   
+   my ($actual, $expected);
+   if( ref($expected_p) eq 'ARRAY') {
+       $expected = Dumper(@$expected_p);
+   }
+   else {
+       $expected = Dumper($expected_p);
+   }
+
+   if( ref($actual_p) eq 'ARRAY') {
+       $actual = Dumper(@$actual_p);
+   }
+   else {
+       $actual = Dumper($actual_p);
+   }
+
+   ok($actual, $expected, '');
+};
+
 sub verify { 
-   my ($actual,$expected) = @_;
-   ok($actual,$expected) 
+   my ($mod, $actual_p, $expected_p, $name) = @_;
+
+   my ($actual, $expected);
+   if( ref($expected_p) eq 'ARRAY') {
+       $expected = Dumper(@$expected_p);
+   }
+   else {
+       $expected = Dumper($expected_p);
+   }
+
+   if( ref($actual_p) eq 'ARRAY') {
+       $actual = Dumper(@$actual_p);
+   }
+   else {
+       $actual = Dumper($actual_p);
+   }
+
+   my $test_ok = skip($mod, $actual, $expected, '');
+   $test_ok = 1 if $mod;  # make sure do not stop 
+   $test_ok
+
 };
 
-sub skip_verify { 
-   my ($flag, $actual,$expected) = @_;
-   skip($flag, $actual,$expected) 
-};
 
+sub skip_rest
+{
+    my ($test_results) = @_;
+    unless( $test_results ) {
+        for (my $i=2; $i < $__tests__; $i++) { skip(1,0,0) };
+        exit 1;
+    }
+}
 
 __END__
 

@@ -14,8 +14,8 @@ use Data::Dumper;
 use Test::TestUtil;
 
 use vars qw($VERSION $DATE);
-$VERSION = '1.03';
-$DATE = '2003/06/13';
+$VERSION = '1.04';
+$DATE = '2003/06/15';
 
 #####
 # Because Test::TestUtil uses SelfLoader, the @ISA
@@ -116,8 +116,24 @@ sub test
        skip( 1, 0, '');
        return 1; 
    }
-   my $actual = Dumper(@$actual_p);
-   my $expected = Dumper(@$expected_p);
+
+   my ($expected, $actual);
+   if( ref($expected_p) eq 'ARRAY') {
+       $expected = Dumper(@$expected_p);
+   }
+   else {
+       $expected = Dumper($expected_p);
+   }
+
+   if( ref($actual_p) eq 'ARRAY') {
+       $actual = Dumper(@$actual_p);
+   }
+   else {
+       $actual  = Dumper($actual_p);
+   }
+
+
+
    ok($actual, $expected, '');
 }
 
@@ -139,8 +155,21 @@ sub verify  # store expected array for later use
        return 1; 
    }
   
-   my $actual = Dumper(@$actual_p);
-   my $expected = Dumper(@$expected_p);
+   my ($expected, $actual);
+   if( ref($expected_p) eq 'ARRAY') {
+       $expected = Dumper(@$expected_p);
+   }
+   else {
+       $expected = Dumper($expected_p);
+   }
+
+   if( ref($actual) eq 'ARRAY') {
+       $actual = Dumper(@$actual_p);
+   }
+   else {
+       $actual = Dumper($actual_p);
+   }
+
    my $test_ok = skip($mod, $actual, $expected, '');
    $test_ok = 1 if $mod;  # make sure do not stop 
    $test_ok
