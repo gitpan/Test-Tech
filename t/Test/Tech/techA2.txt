@@ -1,12 +1,12 @@
 1..8 todo 4 8;
 # OS            : MSWin32
-# Perl          : 5.006001 Win32 Build 631
-# Local Time    : Fri Jun 20 05:49:10 2003
-# GMT Time      : Fri Jun 20 09:49:10 2003 GMT
+# Perl          : 5.008 Win32 Build 806
+# Local Time    : Wed Jul 30 19:08:11 2003
+# GMT Time      : Wed Jul 30 23:08:11 2003
 # Test          : 1.15
-# Number Storage: string
-# Test::Tech    : 1.06
-# Data::Dumper  : 2.102
+# Number Storage: number
+# Test::Tech    : 1.11
+# Data::Dumper  : 2.12
 # =cut 
 # Test version
 ok 1
@@ -16,12 +16,12 @@ ok 2
 ok 3 # skip
 # Todo Test that Fails
 not ok 4
-# Test 4 got: '12' (techA0.t at line 111 *TODO*)
-#   Expected: '6'
+# Test 4 got: '12' (techA0.t at line 147 *TODO*)
+#   Expected: '6' (Todo Test that Fails)
 # Failed test that skips the rest
 not ok 5
-# Test 5 got: '5' (techA0.t at line 120)
-#   Expected: '6'
+# Test 5 got: '5' (techA0.t at line 156)
+#   Expected: '6' (Failed test that skips the rest)
 # A test to skip
 # Test invalid because of previous failure.
 ok 6 # skip
@@ -29,4 +29,4 @@ ok 6 # skip
 # Test invalid because of previous failure.
 ok 7 # skip
 # Stop skipping tests. Todo Test that Passes
-ok 8 # (techA0.t at line 152 TODO?!)
+ok 8 # (techA0.t at line 188 TODO?!)

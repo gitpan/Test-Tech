@@ -10,32 +10,32 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.12';
-$DATE = '2003/07/27';
+$VERSION = '0.14';
+$DATE = '2003/09/15';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.12 2003/07/27), 'revised 0.11'],
-    'MANIFEST' => [qw(0.12 2003/07/27), 'generated, replaces 0.11'],
-    'Makefile.PL' => [qw(0.12 2003/07/27), 'generated, replaces 0.11'],
-    'README' => [qw(0.12 2003/07/27), 'generated, replaces 0.11'],
-    'lib/Test/Tech.pm' => [qw(1.11 2003/07/27), 'revised 1.1'],
-    't/Test/Tech/Tech.t' => [qw(0.11 2003/07/27), 'revised 0.1'],
-    't/Test/Tech/techA0.t' => [qw(0.07 2003/07/27), 'revised 0.06'],
-    't/Test/Tech/techA2.txt' => [qw(0.05 2003/06/19), 'unchanged'],
-    't/Test/Tech/techB0.t' => [qw(0.04 2003/07/27), 'revised 0.03'],
-    't/Test/Tech/techC0.t' => [qw(0.07 2003/07/27), 'revised 0.06'],
-    't/Test/Tech/techC2.txt' => [qw(0.06 2003/06/21), 'unchanged'],
-    't/Test/Tech/techC3.txt' => [qw(0.06 2003/06/21), 'unchanged'],
-    't/Test/Tech/techD0.d' => [qw(0.03 2003/07/27), 'revised 0.02'],
-    't/Test/Tech/techD2.txt' => [qw(0.06 2003/06/21), 'unchanged'],
-    't/Test/Tech/techD3.txt' => [qw(0.06 2003/06/21), 'unchanged'],
-    't/Test/Tech/V001024/Test.pm' => [qw(1.24 2003/06/19), 'unchanged'],
-    't/Test/Tech/V001015/Test.pm' => [qw(1.15 2003/06/19), 'unchanged'],
-    'tlib/File/Package.pm' => [qw(1.11 2003/07/27), 'new'],
-    'tlib/File/SmartNL.pm' => [qw(1.1 2003/07/27), 'new'],
-    'tlib/Text/Scrub.pm' => [qw(1.09 2003/07/27), 'new'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.14 2003/09/15), 'revised 0.13'],
+    'MANIFEST' => [qw(0.14 2003/09/15), 'generated, replaces 0.13'],
+    'Makefile.PL' => [qw(0.14 2003/09/15), 'generated, replaces 0.13'],
+    'README' => [qw(0.14 2003/09/15), 'generated, replaces 0.13'],
+    'lib/Test/Tech.pm' => [qw(1.13 2003/09/15), 'revised 1.12'],
+    't/Test/Tech/Tech.t' => [qw(0.12 2003/09/15), 'revised 0.11'],
+    't/Test/Tech/techA0.t' => [qw(0.08 2003/09/15), 'revised 0.07'],
+    't/Test/Tech/techA2.txt' => [qw(0.07 2003/09/15), 'revised 0.06'],
+    't/Test/Tech/techB0.t' => [qw(0.05 2003/09/15), 'revised 0.04'],
+    't/Test/Tech/techC0.t' => [qw(0.08 2003/09/15), 'revised 0.07'],
+    't/Test/Tech/techC2.txt' => [qw(0.07 2003/09/15), 'revised 0.06'],
+    't/Test/Tech/techC3.txt' => [qw(0.08 2003/09/15), 'revised 0.07'],
+    't/Test/Tech/techD0.d' => [qw(0.04 2003/09/15), 'revised 0.03'],
+    't/Test/Tech/techD2.txt' => [qw(0.07 2003/09/15), 'revised 0.06'],
+    't/Test/Tech/techD3.txt' => [qw(0.07 2003/09/15), 'revised 0.06'],
+    'tlib/File/Package.pm' => [qw(1.12 2003/09/15), 'revised 1.11'],
+    'tlib/File/SmartNL.pm' => [qw(1.12 2003/09/15), 'revised 1.1'],
+    'tlib/Text/Scrub.pm' => [qw(1.1 2003/09/15), 'revised 1.09'],
+    't/Test/Tech/V001024/Test.pm' => [qw(1.25 2003/09/15), 'revised 1.24'],
+    't/Test/Tech/V001015/Test.pm' => [qw(1.16 2003/09/15), 'revised 1.15'],
 
 );
 
@@ -62,11 +62,11 @@ use vars qw(%INVENTORY);
 
  Test::Tech - Extends the Test program module
 
- Revision: J
+ Revision: L
 
- Version: 0.12
+ Version: 0.14
 
- Date: 2003/07/27
+ Date: 2003/09/15
 
  Prepared for: General Public 
 
@@ -133,7 +133,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.12
+This document releases Test::Tech version 0.14
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -149,8 +149,8 @@ system file specification.
 This document releases the file found
 at the following repository(s):
 
-   http://www.softwarediamonds/packages/Test-Tech-0.12
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.12
+   http://www.softwarediamonds/packages/Test-Tech-0.14
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.14
 
 
 Restrictions regarding duplication and license provisions
@@ -218,26 +218,26 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.12    2003/07/27 revised 0.11
- MANIFEST                                                     0.12    2003/07/27 generated, replaces 0.11
- Makefile.PL                                                  0.12    2003/07/27 generated, replaces 0.11
- README                                                       0.12    2003/07/27 generated, replaces 0.11
- lib/Test/Tech.pm                                             1.11    2003/07/27 revised 1.1
- t/Test/Tech/Tech.t                                           0.11    2003/07/27 revised 0.1
- t/Test/Tech/techA0.t                                         0.07    2003/07/27 revised 0.06
- t/Test/Tech/techA2.txt                                       0.05    2003/06/19 unchanged
- t/Test/Tech/techB0.t                                         0.04    2003/07/27 revised 0.03
- t/Test/Tech/techC0.t                                         0.07    2003/07/27 revised 0.06
- t/Test/Tech/techC2.txt                                       0.06    2003/06/21 unchanged
- t/Test/Tech/techC3.txt                                       0.06    2003/06/21 unchanged
- t/Test/Tech/techD0.d                                         0.03    2003/07/27 revised 0.02
- t/Test/Tech/techD2.txt                                       0.06    2003/06/21 unchanged
- t/Test/Tech/techD3.txt                                       0.06    2003/06/21 unchanged
- t/Test/Tech/V001024/Test.pm                                  1.24    2003/06/19 unchanged
- t/Test/Tech/V001015/Test.pm                                  1.15    2003/06/19 unchanged
- tlib/File/Package.pm                                         1.11    2003/07/27 new
- tlib/File/SmartNL.pm                                         1.1     2003/07/27 new
- tlib/Text/Scrub.pm                                           1.09    2003/07/27 new
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.14    2003/09/15 revised 0.13
+ MANIFEST                                                     0.14    2003/09/15 generated, replaces 0.13
+ Makefile.PL                                                  0.14    2003/09/15 generated, replaces 0.13
+ README                                                       0.14    2003/09/15 generated, replaces 0.13
+ lib/Test/Tech.pm                                             1.13    2003/09/15 revised 1.12
+ t/Test/Tech/Tech.t                                           0.12    2003/09/15 revised 0.11
+ t/Test/Tech/techA0.t                                         0.08    2003/09/15 revised 0.07
+ t/Test/Tech/techA2.txt                                       0.07    2003/09/15 revised 0.06
+ t/Test/Tech/techB0.t                                         0.05    2003/09/15 revised 0.04
+ t/Test/Tech/techC0.t                                         0.08    2003/09/15 revised 0.07
+ t/Test/Tech/techC2.txt                                       0.07    2003/09/15 revised 0.06
+ t/Test/Tech/techC3.txt                                       0.08    2003/09/15 revised 0.07
+ t/Test/Tech/techD0.d                                         0.04    2003/09/15 revised 0.03
+ t/Test/Tech/techD2.txt                                       0.07    2003/09/15 revised 0.06
+ t/Test/Tech/techD3.txt                                       0.07    2003/09/15 revised 0.06
+ tlib/File/Package.pm                                         1.12    2003/09/15 revised 1.11
+ tlib/File/SmartNL.pm                                         1.12    2003/09/15 revised 1.1
+ tlib/Text/Scrub.pm                                           1.1     2003/09/15 revised 1.09
+ t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 revised 1.24
+ t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 revised 1.15
 
 
 =head2 3.3 Changes
@@ -411,6 +411,21 @@ The test of this module will precede immediately.
 The test support files in the tlib directory will vanish after
 the installtion.
 
+=item Test-Tech-0.13
+
+If there is no diagianotic message and there is a test name, 
+then use the test name also for the diagnostic message.
+Diagnostic message appears in brackets after the expected
+value.
+
+=item Test-Tech-0.14
+
+Broke out the 'stringify' subroutine into its own module: 'Data::Strify'
+
+Use Archive::TarGzip 0.02 that uses mode 777 for directories instead of 666. Started to get
+emails from Unix about untar not being able to change to
+a directory with mod of 666.
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -444,13 +459,13 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.12
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.12
+   http://www.softwarediamonds/packages/Test-Tech-0.14
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.14
 
 
 =item Prerequistes.
 
- None.
+ lib/Data/Strify.pm
 
 
 =item Security, privacy, or safety precautions.
@@ -568,11 +583,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.12^
+VERSION : 0.14^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.11^
-REVISION: J^
+PREVIOUS_RELEASE: 0.13^
+REVISION: L^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -603,14 +618,17 @@ RESTRUCTURE:  ^
 AUTO_REVISE: 
 lib/Test/Tech.pm
 t/Test/Tech/*
-t/Test/Tech/V001024/*
-t/Test/Tech/V001015/*
 lib/File/Package.pm => tlib/File/Package.pm
 lib/File/SmartNL.pm => tlib/File/SmartNL.pm
 lib/Text/Scrub.pm => tlib/Text/Scrub.pm
 ^
 
-PREREQ_PM:  ^
+REPLACE:
+t/Test/Tech/V001024/*
+t/Test/Tech/V001015/*
+^
+
+PREREQ_PM: lib/Data/Strify.pm^
 
 TESTS: t/Test/Tech/Tech.t^
 EXE_FILES:  ^
@@ -785,6 +803,21 @@ test of this module.
 The test of this module will precede immediately.
 The test support files in the tlib directory will vanish after
 the installtion.
+
+\=item Test-Tech-0.13
+
+If there is no diagianotic message and there is a test name, 
+then use the test name also for the diagnostic message.
+Diagnostic message appears in brackets after the expected
+value.
+
+\=item Test-Tech-0.14
+
+Broke out the 'stringify' subroutine into its own module: 'Data::Strify'
+
+Use Archive::TarGzip 0.02 that uses mode 777 for directories instead of 666. Started to get
+emails from Unix about untar not being able to change to
+a directory with mod of 666.
 
 \=back
 

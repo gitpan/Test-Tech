@@ -1,11 +1,28 @@
 1..2 todo 1;
+# OS            : MSWin32
+# Perl          : 5.008 Win32 Build 806
+# Local Time    : Mon Sep 15 10:37:19 2003
+# GMT Time      : Mon Sep 15 14:37:19 2003
+# Test          : 1.20
+# Number Storage: number
+# Test::Tech    : 1.13
+# Data::Dumper  : 2.12
+# =cut 
 # Todo test that passes
-ok 1 # (tech0.t at line 156 TODO?!)
+ok 1 # (techC0.t at line 168 TODO?!)
 # Test that fails
 not ok 2
-# Test 2 got: '5
-6
-' (tech0.t at line 172)
-#   Expected: '6
-5
-'
+# Test 2 got: '[
+          '',
+          'ARRAY',
+          5,
+          6
+        ]
+' (techC0.t at line 184)
+#   Expected: '[
+          '',
+          'ARRAY',
+          6,
+          5
+        ]
+' (Test that fails)

@@ -12,8 +12,8 @@ use warnings::register;
 use SelfLoader;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.09';
-$DATE = '2003/07/27';
+$VERSION = '1.1';
+$DATE = '2003/09/15';
 $FILE = __FILE__
 
 __DATA__

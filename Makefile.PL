@@ -23,11 +23,11 @@ my $tests = join ' ',unix2os('t/Test/Tech/Tech.t');
 WriteMakefile(
     NAME => 'Test::Tech',
     DISTNAME => 'Test-Tech',
-    VERSION  => '0.12',
+    VERSION  => '0.14',
     dist     => {COMPRESS => 'gzip',
                 'gz' => 'gz'},
     test     => {TESTS => $tests},
-    
+    PREREQ_PM => {lib/Data/Strify.pm},
     
 
     ($] >= 5.005 ?     

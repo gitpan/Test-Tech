@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.11';
-$DATE = '2003/07/27';
+$VERSION = '0.12';
+$DATE = '2003/09/15';
 
 use Cwd;
 use File::Spec;
