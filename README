@@ -5,11 +5,11 @@ Title Page
 
      Test::Tech - Extends the Test program module
 
-     Revision: C
+     Revision: D
 
-     Version: 0.04
+     Version: 0.05
 
-     Date: 2003/06/17
+     Date: 2003/06/19
 
      Prepared for: General Public 
 
@@ -43,31 +43,49 @@ Title Page
     The Test::Tech module extends the capabilities of the Test module as
     follows:
 
-    *   Correctly compares almost any data structure by passing the
-        variables through *Data::Dumper* before making the comparision
+    *   If the compared variables are references, stingifies the refenced
+        variable by passing the referenced through *Data::Dumper* before
+        making the comparison. Thus, Test::Tech can test almost any data
+        structure. If the compare variables are not refernces, uses the
+        &Test::ok and &Test::skip directly.
 
     *   Adds a method to skip the rest of the tests upon a critical failure
 
     *   Adds a method to generate demos that appear as an interactive
         session using the methods under test
 
-    *   Inherits the methods from the Test::Util module
+    The Test::Tech module was originally developed for the US DOD STD2167A
+    bundle and is an integral part of the US DOD STD2167A bundle of modules.
+    The Test::Tech module was broken out from the design modules because it
+    may have uses outside the US DOD STD2167A bundle.
 
-    The Test::Tech module is an integral part of the US DOD SDT2167A bundle
-    of modules. The dependency of the program modules in the US DOD STD2167A
-    bundle is as follows:
+    Two STD2167A bundle end user modules are as follows:
 
-     Test::TestUtil
+    Test::STDmaker
+        generates Test script, demo script and STD document POD from a text
+        database in the Data::Port::FileTYpe::FormDB format.
+
+    Test::SVDmaker
+        generates SVD document POD and distribution *.tar.gz file including
+        a generated Makefile.PL README and MANIFEST file from a text
+        database in the Data::Port::FileTYpe::FormDB format.
+
+    The dependency of the program modules in the US DOD STD2167A bundle is
+    as follows:
+
+     File::FileUtil 
+       Test::STD::Scrub
          Test::Tech
-            DataPort::FileType::FormDB DataPort::DataFile
+            DataPort::FileType::FormDB DataPort::DataFile Test::STD::STDutil
                 Test::STDmaker ExtUtils::SVDmaker
 
-    Note: Test::TestUtil will be split into File::FileUtil and
-    Test::STD::STDutil in the near future.
+    Note the File::FileUtil, Test::STD::STDutil Test::STD::Scrub program
+    modules breaks up the Test::TestUtil program module and Test::TestUtil
+    has disappeared.
 
   1.3 Document overview.
 
-    This document releases Test::Tech version 0.04 providing description of
+    This document releases Test::Tech version 0.05 providing description of
     the inventory, installation instructions and other information necessary
     to utilize and track this release.
 
@@ -81,8 +99,8 @@ Title Page
 
     This document releases the file found at the following repository:
 
-       http://www.softwarediamonds/packages/Test-Tech-0.04
-       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.04
+       http://www.softwarediamonds/packages/Test-Tech-0.05
+       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.05
 
   3.1.2 Copyright.
 
@@ -125,26 +143,35 @@ Title Page
 
      file                                                         version date       comment
      ------------------------------------------------------------ ------- ---------- ------------------------
-     lib/Docs/Site_SVD/Test_Tech.pm                               0.04    2003/06/17 revised 0.03
-     MANIFEST                                                     0.04    2003/06/17 generated, replaces 0.03
-     Makefile.PL                                                  0.04    2003/06/17 generated, replaces 0.03
-     README                                                       0.04    2003/06/17 generated, replaces 0.03
-     lib/Test/Tech.pm                                             1.06    2003/06/17 revised 1.05
-     t/Test/Tech/tech.t                                           0.05    2003/06/17 revised 0.04
-     t/Test/Tech/tech0.d                                          0.02    2003/06/13 unchanged
-     t/Test/Tech/tech0.t                                          0.04    2003/06/17 revised 0.03
-     t/Test/Tech/tech2.txt                                        0.01    2003/06/12 unchanged
-     t/Test/Tech/tech3.txt                                        0.03    2003/06/17 revised 0.02
-     t/Test/Tech/tech4.txt                                        0.03    2003/06/16 unchanged
-     t/Test/Tech/tech5.txt                                        0.04    2003/06/17 revised 0.03
-     t/Test/Tech/Test.pm                                          1.15    2003/06/17 new
+     lib/Docs/Site_SVD/Test_Tech.pm                               0.05    2003/06/19 revised 0.04
+     MANIFEST                                                     0.05    2003/06/19 generated, replaces 0.04
+     Makefile.PL                                                  0.05    2003/06/19 generated, replaces 0.04
+     README                                                       0.05    2003/06/19 generated, replaces 0.04
+     lib/Test/Tech.pm                                             1.07    2003/06/19 revised 1.06
+     t/Test/Tech/Tech.t                                           0.06    2003/06/19 revised 0.05
+     t/Test/Tech/techA0.t                                         0.04    2003/06/19 new
+     t/Test/Tech/techA2.txt                                       0.05    2003/06/19 new
+     t/Test/Tech/techB0.t                                         0.01    2003/06/19 new
+     t/Test/Tech/techC0.t                                         0.01    2003/06/19 new
+     t/Test/Tech/techD0.t                                         0.04    2003/06/19 new
+     t/Test/Tech/techD2.txt                                       0.05    2003/06/19 new
+     t/Test/Tech/techD3.txt                                       0.05    2003/06/19 new
+     t/Test/Tech/techE0.d                                         0.02    2003/06/19 new
+     t/Test/Tech/techE2.txt                                       0.05    2003/06/19 new
+     t/Test/Tech/techE3.txt                                       0.05    2003/06/19 new
+     t/Test/Tech/V001024/Test.pm                                  1.24    2003/06/19 new
+     t/Test/Tech/V001015/Test.pm                                  1.15    2003/06/19 new
 
   3.3 Changes
 
-    The Test program module for MsWin32 ActivePerl is 1.15. The one used on
-    Unix is 1.24. The 1.24 generates some extra comments that cause the Test
-    5 to fail. Added code to scrub any extra comments from Test program
-    modules before making the Test 5 comparison.
+    The changes to the last version are as follows:
+
+    *   Added functions with the same name as the "Test" functions. This
+        make it easier to upgrade from "Test" to "Test::Tech"
+
+    *   Added tests not only for Test 1.15 but also Test 1.24
+
+    *   Added tests for the new "Test" functions.
 
   3.4 Adaptation data.
 
@@ -178,8 +205,8 @@ Title Page
 
     The distribution file is at the following respositories:
 
-       http://www.softwarediamonds/packages/Test-Tech-0.04
-       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.04
+       http://www.softwarediamonds/packages/Test-Tech-0.05
+       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.05
 
   3.6.1 Installation support.
 
@@ -193,11 +220,12 @@ Title Page
     Most Perl installation software will run the following test script(s) as
     part of the installation:
 
-     t/Test/Tech/tech.t
+     t/Test/Tech/Tech.t
 
   3.7 Possible problems and known errors
 
-    There are no open issures.
+    The Test::Tech capabilites could be incorporated into the Test program
+    module and Test::Tech eliminated.
 
 4.0 NOTES
     The following are useful acronyms:
@@ -210,22 +238,70 @@ Title Page
 
     DID Data Item Description
 
+    DOD Department of Defense
+
     POD Plain Old Documentation
 
     STD Software Test Description
 
     SVD Software Version Description
 
+    US  United States
+
 2.0 SEE ALSO
-    Test::TestUtil
+    Modules with end-user functional interfaces relating to US DOD 2167A
+    automation are as follows:
+
+    Test::STDmaker
+    ExtUtils::SVDmaker
+    DataPort::FileType::FormDB
+    DataPort::DataFile
     Test::Tech
     Test
     Data::Dumper
-    DataPort::FileType::FormDB
-    DataPort::DataFile
-    Test::STDmaker
-    ExtUtils::SVDmake
-    US DOD Software Version Description (SVD) DID
-    US DOD Software Test Description (STD) DID
+    Test::STD::Scrub
+    Test::STD::STDutil
+    File::FileUtil
+    The design modules for Test::STDmaker have no other conceivable use then
+    to support the Test::STDmaker functional interface. The Test::STDmaker
+    design modules are as follows:
+
+    Test::STD::Check
+    Test::STD::FileGen
+    Test::STD::STD2167
+    Test::STD::STDgen
+    Test::STDtype::Demo
+    Test::STDtype::STD
+    Test::STDtype::Verify
+    Some US DOD 2167A Software Development Standard, DIDs and other related
+    documents that complement the US DOD 2167A automation are as follows:
+
     US DOD Software Development Standard
-    US DOD Specification Pratices
+    US DOD Specification Practices
+    Computer Operation Manual (COM) DID
+    Computer Programming Manual (CPM) DID)
+    Computer Resources Integrated Support Document (CRISD) DID
+    Computer System Operator's Manual (CSOM) DID
+    Database Design Description (DBDD) DID
+    Engineering Change Proposal (ECP) DID
+    Firmware support Manual (FSM) DID
+    Interface Design Document (IDD) DID
+    Interface Requirements Specification (IRS) DID
+    Operation Concept Description (OCD) DID
+    Specification Change Notice (SCN) DID
+    Software Design Specification (SDD) DID
+    Software Development Plan (SDP) DID
+    Software Input and Output Manual (SIOM) DID
+    Software Installation Plan (SIP) DID
+    Software Programmer's Manual (SPM) DID
+    Software Product Specification (SPS) DID
+    Software Requirements Specification (SRS) DID
+    System or Segment Design Document (SSDD) DID
+    System or Subsystem Specification (SSS) DID
+    Software Test Description (STD) DID
+    Software Test Plan (STP) DID
+    Software Test Report (STR) DID
+    Software Transition Plan (STrP) DID
+    Software User Manual (SUM) DID
+    Software Version Description (SVD) DID
+    Version Description Document (VDD) DID

@@ -8,13 +8,11 @@ use warnings::register;
 
 use vars qw($VERSION $DATE);
 $VERSION = '0.04';
-$DATE = '2003/06/17';
+$DATE = '2003/06/19';
 
-use Getopt::Long;
 use Cwd;
 use File::Spec;
-use Data::Dumper;
-use Config;
+use File::FileUtil;
 
 ######
 #
@@ -22,8 +20,14 @@ use Config;
 #
 # use a BEGIN block so we print our plan before Module Under Test is loaded
 #
+######
+#
+# T:
+#
+# use a BEGIN block so we print our plan before Module Under Test is loaded
+#
 BEGIN { 
-   use vars qw( $T $__restore_dir__ @__restore_inc__);
+   use vars qw($t $__restore_dir__ @__restore_inc__);
 
    ########
    # Working directory is that of the script file
@@ -34,45 +38,26 @@ BEGIN {
    chdir $dirs if $dirs;
 
    #######
-   # Add the library of the unit under test (UUT) to E:\User\SoftwareDiamonds\installation\lib E:\User\SoftwareDiamonds\installation\libSD E:\User\SoftwareDiamonds\installation\lib E:\User\SoftwareDiamonds\installation\libperl D:/Perl/lib D:/Perl/site/lib .
+   # Add the library of the unit under test (UUT) to @INC
    #
-   my $work_dir = cwd();
-   ($vol,$dirs) = File::Spec->splitpath( $work_dir, 'nofile');
-   my @dirs = File::Spec->splitdir( $dirs );
-   while( $dirs[-1] ne 't' ) { 
-       chdir File::Spec->updir();
-       pop @dirs;
-   };
-   chdir File::Spec->updir();
-   my $lib_dir = File::Spec->catdir( cwd(), 'lib' );
-   @__restore_inc__ = @INC;
-   unshift @INC, $lib_dir;
-   chdir $work_dir;
+   @__restore_inc__ = File::FileUtil->test_lib2inc;
 
-   unshift @INC, cwd(); 
-
-
-   ##########
-   # Pick up a output redirection file and tests to skip
-   # from the command line.
+   #######
+   # Add the directory with "Test.pm" version 1.15 to @INC
    #
-   my $test_log = '';
-   GetOptions('log=s' => \$test_log);
-
-   ########
-   # Start a test with a new Tech
+   # Thus, when load Test::Tech, it will find Test.pm 1.15
    #
-   require Test::Tech;
-   $T = new Test::Tech( $test_log );
+   unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
 
    ########
    # Create the test plan by supplying the number of tests
    # and the todo tests
    #
-   $T->work_breakdown(tests => 8, todo => [2,5]);
-
+   use Test::Tech qw(plan ok skip skip_tests done tech);
+   plan(tests => 2, todo => [1]);
 
 }
+
 
 END {
 
@@ -82,6 +67,7 @@ END {
    @INC = @__restore_inc__;
    chdir $__restore_dir__;
 }
+
 
 
 ######
@@ -123,108 +109,67 @@ END {
 #   be hunted down killed.
 #
 
-my $internal_storage = $T->{Number_Internal_Storage};
+
+######
+#
+# 1.24 error goes to the STDERR
+# while 1.15 goes to STDOUT
+#
+# redirect STDERR to the STDOUT
+# 
+$t = tech();
+${$t->{Test}->{TESTERR}} = *STDOUT;
+
+my $internal_storage = $t->{Number_Internal_Storage};
 
 my $x = 2;
 my $y = 3;
-
-#########
-#  ok:  1 - Do not skip rest
-#
-$T->skip_rest() unless $T->test(
-    $x + $y, # actual results
-    5, # expected results
-    'Pass test'); 
 
 ########
 #  xy feature
 #  Under development, i.e todo
 #
-#  ok:  2
+#  ok:  1
 #
 if( $internal_storage eq 'string') {
-    $T->test( [$x+$y,$y-$x], # actual results
+    ok( [$x+$y,$y-$x], # actual results
               ['5','1'], # expected results
-             'Todo test that passes');
+             '', 'Todo test that passes');
 }
 else {
-    $T->test( [$x+$y,$y-$x], # actual results
+    ok( [$x+$y,$y-$x], # actual results
               [5,1], # expected results
-             'Todo test that passes');
+             '', 'Todo test that passes');
 }
 
 
 ########
 #
-#  ok:  3
+#  ok:  2
 #
 if( $internal_storage eq 'string') {
-    $T->test( [$x+$y,$x*$y], # actual results
+    ok( [$x+$y,$x*$y], # actual results
           ['6','5'], # expected results
-          'Test that fails');
+          '', 'Test that fails');
 }
 else{
-    $T->test( [$x+$y,$x*$y], # actual results
+    ok( [$x+$y,$x*$y], # actual results
           [6,5], # expected results
-          'Test that fails');
+          '', 'Test that fails');
 }
 
-#########
-#
-#  ok:  4
-#
-$T->verify( 1, # condition to skip test   
-            ($x*$y*2), # actual results
-            6, # expected results
-            'Skipped tests');
 
-#######
-#  zyw feature
-#  Under development, i.e todo
-#
-#  ok:  5
-#
-$T->test( $x*$y*2, # actual results
-          6, # expected results
-          'Todo Test that Fails');
-
-
-####
-# 
-#  ok:  6
-#
-$T->skip_rest() unless $T->test(
-    $x + $y, # actual results
-    6, # expected results
-    'Failed test that skips the rest'); 
-
-####
-#
-#  ok:  7
-#
-$T->test( $x + $y + $x, # actual results
-          9, # expected results
-          'A test to skip');
-
-####
-# 
-#  ok:  8
-# 
-$T->test( $x + $y + $x + $y, # actual results
-          10, # expected results
-          'A not skip to skip');
-
-$T->finish();
+done();
 
 __END__
 
 =head1 NAME
 
-tgA1.t - test script for Test::Tech
+tgD0.t - test script for Test::Tech
 
 =head1 SYNOPSIS
 
- tgA1.t 
+ tgD0.t 
 
 =head1 COPYRIGHT
 

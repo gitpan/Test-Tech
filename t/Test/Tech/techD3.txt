@@ -1,0 +1,11 @@
+1..2 todo 1;
+# Todo test that passes
+ok 1 # (tech0.t at line 156 TODO?!)
+# Test that fails
+not ok 2
+# Test 2 got: '5
+6
+' (tech0.t at line 172)
+#   Expected: '6
+5
+'

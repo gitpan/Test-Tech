@@ -8,7 +8,7 @@ use warnings::register;
 
 use vars qw($VERSION $DATE);
 $VERSION = '0.02';   # automatically generated file
-$DATE = '2003/06/13';
+$DATE = '2003/06/19';
 
 
 ##### Demonstration Script ####

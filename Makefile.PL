@@ -1,23 +1,23 @@
 
 ####
 # 
-# The module Build::SVDgen generated this file from the contents of
+# The module ExtUtils::STDmaker generated this file from the contents of
 #
-# E:\User\SoftwareDiamonds\installation\lib/Docs/Site_SVD/Test_Tech.pm 
+# Docs::Site_SVD::Test_Tech 
 #
 # Don't edit this file, edit instead
 #
-# E:\User\SoftwareDiamonds\installation\lib/Docs/Site_SVD/Test_Tech.pm
+# Docs::Site_SVD::Test_Tech
 #
 #	ANY CHANGES MADE HERE WILL BE LOST
 #
-#       the next time Build::SVDgen generates it.
+#       the next time ExtUtils::STDmaker generates it.
 #
 #
 
 use ExtUtils::MakeMaker;
 
-my $tests = join ' ',unix2os('t/Test/Tech/tech.t');
+my $tests = join ' ',unix2os('t/Test/Tech/Tech.t');
 my $exe;
 if( $exe ) {
   $exe = [join ' ',unix2os($exe)];
@@ -29,11 +29,12 @@ else {
 WriteMakefile(
     NAME => 'Test::Tech',
     DISTNAME => 'Test-Tech',
-    VERSION  => '0.04',
+    VERSION  => '0.05',
     dist     => {COMPRESS => 'gzip',
                 'gz' => 'gz'},
     test     => {TESTS => $tests},
-    PREREQ_PM => {'Test::TestUtil' => 0},
+    PREREQ_PM => {'File::FileUtil' => 0,
+'Test::STD::Scrub' => 0,},
     EXE_FILES => $exe,
 
     ($] >= 5.005 ?     

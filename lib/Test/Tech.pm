@@ -11,50 +11,94 @@ use warnings::register;
 
 require Test;
 use Data::Dumper;
-use Test::TestUtil;
+use File::FileUtil;
 use Config;
-$Data::Dumper::Terse = 1; 
-$Test::TestLevel = 1;
+
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.06';
-$DATE = '2003/06/17';
+$VERSION = '1.07';
+$DATE = '2003/06/19';
 $FILE = __FILE__;
 
-use vars qw(@ISA @EXPORT);
+use vars qw(@ISA @EXPORT_OK);
 require Exporter;
 @ISA=('Exporter');
-@EXPORT=qw(&plan &ok &skip &tech &skip_all);
+@EXPORT_OK = qw(&tech &plan &ok &skip &skip_tests &done &stringify &example);
 
-use vars qw( $T );
-$T = new Test::Tech;
+use vars qw( $tech );
+$tech = new Test::Tech;
 
-sub plan
+######
+#
+#
+sub tech
 {
-   $T->work_breakdown( @_ );
+   if( @_ ) {
+       $tech = new Test::Tech( @_ ) ;
+   }
+   else {
+       $tech = new Test::Tech() unless $tech;
+   }
+   $tech  
 }
 
+
+######
+#
+#
+sub plan
+{
+   $tech->work_breakdown( @_ );
+   $Test::TestLevel = 2;
+}
+
+
+######
+#
+#
 sub ok
 {
    my ($result, $expected, $diagnostic, $name) = @_;
-   $T->test($result, $expected, $name, $diagnostic);
+   $tech->test($result, $expected, $name, $diagnostic);
 }
 
+
+######
+#
+#
 sub skip
 {
-   my ($result, $expected, $diagnostic, $name) = @_;
-   $T->verify($result, $expected, $name, $diagnostic );
+   my ($mod, $result, $expected, $diagnostic, $name) = @_;
+   $tech->verify($mod, $result, $expected, $name, $diagnostic );
 }
 
-sub tech
+
+######
+#
+#
+sub skip_tests
 {
-   $T = new Test::Tech( @_) if( @_ );
-   $T
+   $tech->skip_rest( @_ );
 }
 
-sub skip_all
+
+######
+#
+#
+sub done
 {
-   $T->skip_rest();
+   $tech->finish( @_ );
+
+}
+
+
+######
+#
+#
+sub example
+{
+   $tech->demo( @_ );
+
 }
 
 
@@ -76,25 +120,57 @@ sub skip_all
 #
 sub new
 {
-    my ($class, $test_log) = @_;
+    my ($class, $log) = @_;
     $class = ref($class) if ref($class);
-
-    my @self = ('','','','','');
     my $self = bless {}, $class;
 
-    $self->{LOG} = $test_log if $test_log;
+    ########
+    # Tend to Data::Dumper variables
+    #
+    $self->{Dumper}->{Terse} = \$Data::Dumper::Terse;
+    $self->{Dumper}->{Indent} = \$Data::Indent;
+    $self->{Dumper}->{Purity} = \$Data::Purity;
+    $self->{Dumper}->{Pad} = \$Data::Pad;
+    $self->{Dumper}->{Varname} = \$Data::Varname;
+    $self->{Dumper}->{Useqq} = \$Data::Useqq;
+    $self->{Dumper}->{Freezer} = \$Data::Freezer;
+    $self->{Dumper}->{Toaster} = \$Data::Toaster;
+    $self->{Dumper}->{Deepcopy} = \$Data::Deepcopy;
+    $self->{Dumper}->{Quotekeys} = \$Data::Quotekeys;
+    $self->{Dumper}->{Maxdepth} = \$Data::Maxdepth;
+
+
+    ######
+    # Tend to Test variables
+    #  
+    $self->{Test}->{ntest} = \$Test::ntest;
+    $self->{Test}->{TESTOUT} = \$Test::TESTOUT;
+    $self->{Test}->{TestLevel} = \$Test::TestLevel;
+    $self->{Test}->{ONFAIL} = \$Test::ONFAIL;
+    $self->{Test}->{todo} = \%Test::todo;
+    $self->{Test}->{history} = \%Test::history;
+    $self->{Test}->{planned} = \$Test::planned;
+    $self->{Test}->{FAILDETAIL} = \@Test::FAILDETAIL;
+
+    if( 1.24 <= $Test::VERSION ) {
+        $self->{Test}->{Program_Lines} = \%Test::Program_Lines;
+        $self->{Test}->{TESTERR} =   \$Test::TESTERR;
+    }
+
+    $self->{LOG} = $log if $log;
     if($self->{LOG}) {
-        $self->{TEST_OUT} = $Test::TESTOUT;
         unless ( open($Test::TESTOUT, ">>$self->{LOG}") ) {
             warn( "Cannot open $self->{LOG}\n" );
+            $Test::TESTOUT = ${$self->{TESTOUT}};
             $self->skip_rest();
-            return undef
+            return $self;
         }
         binmode $Test::TESTOUT; # make the test friendly for more platforms
     }
 
     $self
 }
+
 
 #####
 # Done with the test
@@ -107,7 +183,7 @@ sub finish # end a test
        unless (close( $Test::TESTOUT )) {
            warn( "Cannot close $self->{LOG}\n" );
        }
-       $Test::TESTOUT = $self->{TEST_OUT};
+       $Test::TESTOUT = ${$self->{TESTOUT}};
    }
    1
 }
@@ -120,8 +196,7 @@ sub skip_rest
 {
    my ($self,$value) =  @_;
    my $result = $self->{SKIP_ALL};
-   $value = 1 unless $value;
-   $self->{SKIP_ALL} = $value;
+   $self->{SKIP_ALL} = $value if defined $value;
    $result;   
 }
 
@@ -134,6 +209,16 @@ sub work_breakdown  # open a file
    my $self = shift @_;
 
    &Test::plan( @_ );
+
+   ###############
+   #  
+   # Establish default for Test and Data::Dumper
+   #
+   # Test 1.24 resets global variables in plan which
+   # never happens in 1.15
+   #
+   $Data::Dumper::Terse = 1; 
+   $Test::TestLevel = 1;
 
    my $loctime = localtime();
    my $gmtime = gmtime();
@@ -151,23 +236,63 @@ sub work_breakdown  # open a file
       $internal_storage = 'string';
    }
    $self->{Number_Internal_Storage} = $internal_storage;
+  
+   my $perl = "$]";
+   if(defined(&Win32::BuildNumber) and defined &Win32::BuildNumber()) {
+       $perl .= " Win32 Build " . &Win32::BuildNumber();
+   }
+   elsif(defined $MacPerl::Version) {
+       $perl .= " MacPerl version " . $MacPerl::Version;
+   }
 
-   my $test_version = $Test::VERSION;
-
-   print $Test::TESTOUT <<"EOF";
-# =report 
-# OS            : $Config{osname}
-# Perl          : $Config{PERL_REVISION}.$Config{PERL_VERSION}.$Config{PERL_SUBVERSION}
+   print $Test::TESTOUT <<"EOF" unless 1.24 <= $Test::VERSION;
+# OS            : $^O
+# Perl          : $perl
 # Local Time    : $loctime
 # GMT Time      : $gmtime GMT
+# Test          : $Test::VERSION
+EOF
+
+   print $Test::TESTOUT <<"EOF";
 # Number Storage: $internal_storage
 # Test::Tech    : $VERSION
-# Test          : $test_version
+# Data::Dumper  : $Data::Dumper::VERSION
 # =cut 
 EOF
 
    1
 
+}
+
+
+#####
+# Stringify the variable and compare the string.
+#
+sub stringify
+{
+   my ($var_p) = @_;
+   
+   my ($result, $ref);
+   if($ref = ref($var_p)) {
+       if( $ref eq 'ARRAY' ) { 
+           if( 1 < @$var_p ) {
+               $result = Dumper(@$var_p);
+           }
+           else {
+               $result = shift @$var_p;
+           }
+        }
+        elsif( $ref eq 'HASH' ) {
+           $result = Dumper(%$var_p);
+        } 
+        else {
+           $result = Dumper($var_p);
+        }
+   }
+   else {
+       $result  = $var_p;
+   }
+   $result;
 }
 
 
@@ -183,25 +308,12 @@ sub test
    print $Test::TESTOUT "# $name\n" if $name;
    if($self->{SKIP_ALL}) {  # skip rest of tests switch
        print $Test::TESTOUT "# Test invalid because of previous failure.\n";
-       skip( 1, 0, '');
+       &Test::skip( 1, 0, '');
        return 1; 
    }
 
-   my ($expected, $actual);
-   if( ref($expected_p)) {
-       $expected = Dumper(@$expected_p);
-   }
-   else {
-       $expected = $expected_p;
-   }
-
-   if(ref($actual_p)) {
-       $actual = Dumper(@$actual_p);
-   }
-   else {
-       $actual  = $actual_p;
-   }
-
+   my $expected = stringify($expected_p);
+   my $actual = stringify($actual_p); 
    &Test::ok($actual, $expected, $diagnostic);
 
 }
@@ -220,25 +332,12 @@ sub verify  # store expected array for later use
 
    if($self->{SKIP_ALL}) {  # skip rest of tests switch
        print $Test::TESTOUT "# Test invalid because of previous failure.\n";
-       skip( 1, 0, '');
+       &Test::skip( 1, 0, '');
        return 1; 
    }
   
-   my ($expected, $actual);
-   if( ref($expected_p)) {
-       $expected = Dumper(@$expected_p);
-   }
-   else {
-       $expected = $expected_p;
-   }
-
-   if( ref($actual_p) ) {
-       $actual = Dumper(@$actual_p);
-   }
-   else {
-       $actual = $actual_p;
-   }
-
+   my $expected = stringify($expected_p);
+   my $actual = stringify($actual_p); 
    my $test_ok = &Test::skip($mod, $actual, $expected, $diagnostic);
    $test_ok = 1 if $mod;  # make sure do not stop 
    $test_ok
@@ -289,34 +388,17 @@ sub demo
 }
 
 
-
-#######
-# Any other function use TestUtil
-#
-sub AUTOLOAD
-{
-    our $AUTOLOAD;
-
-    my $self_p = shift @_;
-
-    my $func_p = $AUTOLOAD; 
-    $func_p =~ s/.*:://g; # trim the autoload
-
-    return Test::TestUtil->$func_p( @_ );
-
-}
-
 1
 
 __END__
 
 =head1 NAME
   
-Test::Tester - extends the capabilites of the I<Test> module
+Test::Tech - extends the capabilites of the I<Test> module
 
 =head1 SYNOPSIS
 
-  use Test::Tester
+  use Test::Tech
 
   $T = new Test::Tester(@args);
 
@@ -328,11 +410,15 @@ Test::Tester - extends the capabilites of the I<Test> module
   $test_ok = $T->test($actual_results, $expected_results, $test_name, $diagnostic);
   $test_ok = $T->verify($skip_test, $actual_results,  $expected_results, $test_name, $diagnostic);
 
-  $success = $T->skip_rest();
+  $state = $T->skip_rest(on_off);
+  $state = $T->skip_rest();
+
   $success = $T->finish( );
 
   $success = $T->demo( $quoted_expression, @expression_results );
 
+
+  $tech_hash = tech( @args );
 
   $success = plan(@args);
 
@@ -342,9 +428,13 @@ Test::Tester - extends the capabilites of the I<Test> module
   $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name);
   $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name);
 
-  $success = skip_all();
+  $state = skip_tests( $on_off );
+  $state = skip_tests( );
 
-  $tech_obj = tech(@args);
+  $success = done( );
+
+  $success = example($quoted_expression, @expression_results );
+
 
 =head1 DESCRIPTION
 
@@ -369,20 +459,23 @@ session using the methods under test
 
 =back
 
-The Test::Tester module is an integral part of the US DOD SDT2167A bundle
+The Test::Tech module is an integral part of the US DOD SDT2167A bundle
 of modules.
 The dependency of the program modules in the US DOD STD2167A bundle is as follows:
-
- Test::TestUtil
-     Test::Tester
-        DataPort::FormDB
+ 
+ File::FileUtil 
+   Test::STD::Scrub
+     Test::Tech
+        DataPort::FileType::FormDB DataPort::DataFile Test::STD::STDutil
             Test::STDmaker ExtUtils::SVDmaker
+
+
 
 =head2 new method
 
- $T = new Test::Tester;
+ $T = new Test::Tech;
 
-The I<new> method creates a new I<Test::Tester> object.
+The I<new> method creates a new I<Test::Tech> object.
 
 =head2 work_breakdown method
 
@@ -444,7 +537,7 @@ directly to &Test::ok unchanged.
 
 =item *
 
-Response to a flag set by the L<skip_rest method|Test::Tester/skip_rest method>
+Responses to a flag set by the L<skip_rest method|Test::Tech/skip_rest method>
 and skips the test completely.
 
 =back
@@ -456,7 +549,7 @@ and skips the test completely.
 The I<test> method is a cover function for the &Test::skip subroutine
 that extends the &Test::skip the same as the I<test> method extends
 the I<&Test::ok> subroutine.
-See L<test method|Test::Tester/test method>
+See L<test method|Test::Tech/test method>
 
 =head2 skip_rest method
 
@@ -469,12 +562,62 @@ I<test> and the I<verify> methods to skip testing.
 
   $success = $T->finish( );
 
-The I<finish> method shuts down the I<$T Test::Tester> object.
+The I<finish> method shuts down the I<$T Test::Tech> object.
 
-head2 Test::TestUtil methods
+=head2 tech subroutine
 
-The I<Test::Tester> program module inherits all the methods
-from the L<Test::TestUtil|Test::TestUtil> module.
+  $tech_hash = tech( @args );
+
+This module creates a "Test::Tech" object to
+provide a bridge from the subroutines to the
+methods.
+
+The tech subroutine returns a reference to
+this internal static object.
+The object hash contains all the public
+variables for the "Test" module and
+the "Data::Dump" modules used by this module.
+
+=head2 plan subroutine
+
+  $success = plan(@args);
+
+Calls the L<work_breakdown method|Test::Tech/work_breakdown method>
+
+=head2 ok subroutine
+
+  $test_ok = ok(\@actual_results, \@expected_results, $diagnostic, $test_name);
+  $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name);
+
+Calls the L<test method|Test::Tech/test method>
+
+=head2 skip subroutine
+
+  $test_ok = skip($skip_test, \@actual_results,  \@expected_results, $diagnostic, $test_name);
+  $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name);
+
+Calls the L<verify method|Test::Tech/verify method>
+
+
+=head2 skip_tests subroutine
+
+  $state = skip_tests( $on_off );
+  $state = skip_tests( );
+
+Calls the L<skip_rest method|Test::Tech/skip_rest method>
+
+=head2 done subroutine
+
+  $success = done( );
+
+Calls the L<finish method|Test::Tech/finish method>
+
+=head2 example subroutine
+
+  $success = example($quoted_expression, @expression_results );
+
+Calls the L<demo method|Test::Tech/demo method>
+
 
 =head1 NOTES
 
