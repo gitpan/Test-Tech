@@ -10,20 +10,20 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.25';
-$DATE = '2004/05/18';
+$VERSION = '0.26';
+$DATE = '2004/05/20';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.25 2004/05/18), 'revised 0.24'],
-    'MANIFEST' => [qw(0.25 2004/05/18), 'generated, replaces 0.24'],
-    'Makefile.PL' => [qw(0.25 2004/05/18), 'generated, replaces 0.24'],
-    'README' => [qw(0.25 2004/05/18), 'generated, replaces 0.24'],
-    'lib/Test/Tech.pm' => [qw(1.25 2004/05/11), 'unchanged'],
-    't/Test/Tech/Tech.d' => [qw(0.07 2004/05/11), 'unchanged'],
-    't/Test/Tech/Tech.pm' => [qw(0.06 2004/05/11), 'unchanged'],
-    't/Test/Tech/Tech.t' => [qw(0.2 2004/05/11), 'unchanged'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.26 2004/05/20), 'revised 0.25'],
+    'MANIFEST' => [qw(0.26 2004/05/20), 'generated, replaces 0.25'],
+    'Makefile.PL' => [qw(0.26 2004/05/20), 'generated, replaces 0.25'],
+    'README' => [qw(0.26 2004/05/20), 'generated, replaces 0.25'],
+    'lib/Test/Tech.pm' => [qw(1.26 2004/05/20), 'revised 1.24'],
+    't/Test/Tech/Tech.d' => [qw(0.08 2004/05/20), 'revised 0.07'],
+    't/Test/Tech/Tech.pm' => [qw(0.07 2004/05/20), 'revised 0.06'],
+    't/Test/Tech/Tech.t' => [qw(0.21 2004/05/20), 'revised 0.2'],
     't/Test/Tech/techA0.t' => [qw(0.13 2004/04/15), 'unchanged'],
     't/Test/Tech/techA2.txt' => [qw(0.09 2004/04/15), 'unchanged'],
     't/Test/Tech/techB0.t' => [qw(0.09 2004/04/13), 'unchanged'],
@@ -36,12 +36,12 @@ use vars qw(%INVENTORY);
     't/Test/Tech/techE2.txt' => [qw(0.2 2004/05/11), 'unchanged'],
     't/Test/Tech/techF0.t' => [qw(0.08 2004/05/11), 'unchanged'],
     't/Test/Tech/techF2.txt' => [qw(0.23 2004/05/11), 'unchanged'],
-    't/Test/Tech/File/Package.pm' => [qw(1.17 2004/05/18), 'unchanged'],
-    't/Test/Tech/File/SmartNL.pm' => [qw(1.16 2004/05/18), 'revised 1.15'],
-    't/Test/Tech/Text/Scrub.pm' => [qw(1.13 2004/05/18), 'unchanged'],
-    't/Test/Tech/Data/Secs2.pm' => [qw(1.23 2004/05/18), 'unchanged'],
-    't/Test/Tech/Data/SecsPack.pm' => [qw(0.08 2004/05/18), 'unchanged'],
-    't/Test/Tech/Data/Startup.pm' => [qw(0.06 2004/05/18), 'unchanged'],
+    't/Test/Tech/File/Package.pm' => [qw(1.17 2004/05/20), 'unchanged'],
+    't/Test/Tech/File/SmartNL.pm' => [qw(1.16 2004/05/20), 'unchanged'],
+    't/Test/Tech/Text/Scrub.pm' => [qw(1.14 2004/05/20), 'revised 1.13'],
+    't/Test/Tech/Data/Secs2.pm' => [qw(1.26 2004/05/20), 'revised 1.23'],
+    't/Test/Tech/Data/Str2Num.pm' => [qw(0.07 2004/05/20), 'new'],
+    't/Test/Tech/Data/Startup.pm' => [qw(0.07 2004/05/20), 'revised 0.06'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.25 2003/09/15), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.16 2003/09/15), 'unchanged'],
 
@@ -74,11 +74,11 @@ Docs::Site_SVD::Test_Tech - Extends the Test program module
 
  Docs::Site_SVD::Test_Tech - Extends the Test program module
 
- Revision: AA
+ Revision: AB
 
- Version: 0.25
+ Version: 0.26
 
- Date: 2004/05/18
+ Date: 2004/05/20
 
  Prepared for: General Public 
 
@@ -145,7 +145,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.25
+This document releases Test::Tech version 0.26
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -160,7 +160,7 @@ system file specification.
 
 This document releases the file 
 
- Test-Tech-0.25.tar.gz
+ Test-Tech-0.26.tar.gz
 
 found at the following repository(s):
 
@@ -247,14 +247,14 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.25    2004/05/18 revised 0.24
- MANIFEST                                                     0.25    2004/05/18 generated, replaces 0.24
- Makefile.PL                                                  0.25    2004/05/18 generated, replaces 0.24
- README                                                       0.25    2004/05/18 generated, replaces 0.24
- lib/Test/Tech.pm                                             1.25    2004/05/11 unchanged
- t/Test/Tech/Tech.d                                           0.07    2004/05/11 unchanged
- t/Test/Tech/Tech.pm                                          0.06    2004/05/11 unchanged
- t/Test/Tech/Tech.t                                           0.2     2004/05/11 unchanged
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.26    2004/05/20 revised 0.25
+ MANIFEST                                                     0.26    2004/05/20 generated, replaces 0.25
+ Makefile.PL                                                  0.26    2004/05/20 generated, replaces 0.25
+ README                                                       0.26    2004/05/20 generated, replaces 0.25
+ lib/Test/Tech.pm                                             1.26    2004/05/20 revised 1.24
+ t/Test/Tech/Tech.d                                           0.08    2004/05/20 revised 0.07
+ t/Test/Tech/Tech.pm                                          0.07    2004/05/20 revised 0.06
+ t/Test/Tech/Tech.t                                           0.21    2004/05/20 revised 0.2
  t/Test/Tech/techA0.t                                         0.13    2004/04/15 unchanged
  t/Test/Tech/techA2.txt                                       0.09    2004/04/15 unchanged
  t/Test/Tech/techB0.t                                         0.09    2004/04/13 unchanged
@@ -267,12 +267,12 @@ consists of the following files:
  t/Test/Tech/techE2.txt                                       0.2     2004/05/11 unchanged
  t/Test/Tech/techF0.t                                         0.08    2004/05/11 unchanged
  t/Test/Tech/techF2.txt                                       0.23    2004/05/11 unchanged
- t/Test/Tech/File/Package.pm                                  1.17    2004/05/18 unchanged
- t/Test/Tech/File/SmartNL.pm                                  1.16    2004/05/18 revised 1.15
- t/Test/Tech/Text/Scrub.pm                                    1.13    2004/05/18 unchanged
- t/Test/Tech/Data/Secs2.pm                                    1.23    2004/05/18 unchanged
- t/Test/Tech/Data/SecsPack.pm                                 0.08    2004/05/18 unchanged
- t/Test/Tech/Data/Startup.pm                                  0.06    2004/05/18 unchanged
+ t/Test/Tech/File/Package.pm                                  1.17    2004/05/20 unchanged
+ t/Test/Tech/File/SmartNL.pm                                  1.16    2004/05/20 unchanged
+ t/Test/Tech/Text/Scrub.pm                                    1.14    2004/05/20 revised 1.13
+ t/Test/Tech/Data/Secs2.pm                                    1.26    2004/05/20 revised 1.23
+ t/Test/Tech/Data/Str2Num.pm                                  0.07    2004/05/20 new
+ t/Test/Tech/Data/Startup.pm                                  0.07    2004/05/20 revised 0.06
  t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
 
@@ -677,6 +677,37 @@ Compilation failed in require at /usr/local/perl-5.8.4/lib/5.8.4/FindBin.pm line
 
 Since cannot get a response from the tester, bump the version to force a retest.
 
+=item Test-Tech-0.26
+
+Changed C<Data::Secs2> so no longer loads C<Data::SecsPack> unless needed.
+C<Test::Tech> no longer loads C<Data::SecsPack> via C<Data::secs2> so 
+no longer print out its version. Instead print out the version of C<Data::Str2Num>
+which is needed for the C<str2float> and C<str2integer> subroutines that
+the C<Data::SecsPack> package supplied.
+
+Test Failure:
+
+Subject: FAIL Test-Tech-0.25 sparc-linux 2.4.21-pre7 
+From: alian@cpan.org (alian) 
+
+PERL_DL_NONLAZY=1 /usr/local/perl-5.8.4/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/Test/Tech/Tech.t
+t/Test/Tech/Tech....Perl lib version (v5.8.4) doesn't match executable version (v5.6.1) at /usr/local/perl-5.8.4/lib/5.8.4/sparc-linux/Config.pm line 32.
+Compilation failed in require at /usr/local/perl-5.8.4/lib/5.8.4/FindBin.pm line 97.
+BEGIN failed--compilation aborted at /usr/local/perl-5.8.4/lib/5.8.4/FindBin.pm line 97.
+Compilation failed in require at techA0.t line 13.
+
+Analysis:
+
+Everything  was going well until a C<`perl $command`>. 
+From same failure on other test scripts, the test harness perl executable is 
+different than the command line perl executable. 
+
+Corrective Action:
+
+Introduced the C<perl_command> subroutine that uses C<$^X> to return the current executable Perl
+into the test script.
+Use the results of this subroutine instead of 'perl' in backticks.
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -715,13 +746,13 @@ Enter one of the following repositories in a web browser:
   http://www.softwarediamonds/packages/
   http://www.perl.com/CPAN/authors/id/S/SO/SOFTDIA/
 
-Right click on 'Test-Tech-0.25.tar.gz' and download to a temporary
+Right click on 'Test-Tech-0.26.tar.gz' and download to a temporary
 installation directory.
 Enter the following where $make is 'nmake' for microsoft
 windows; otherwise 'make'.
 
- gunzip Test-Tech-0.25.tar.gz
- tar -xf Test-Tech-0.25.tar
+ gunzip Test-Tech-0.26.tar.gz
+ tar -xf Test-Tech-0.26.tar
  perl Makefile.PL
  $make test
  $make install
@@ -735,7 +766,7 @@ not install, download and install unxutils from
 =item Prerequistes.
 
  'Data::Secs2' => '1.22',
- 'Data::SecsPack' => '0.06',
+ 'Data::Str2Num' => '0.05',
  'Data::Startup' => '0.03',
  'Test' => '1.20',
 
@@ -826,11 +857,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.25^
+VERSION : 0.26^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.24^
-REVISION: AA^
+PREVIOUS_RELEASE: 0.25^
+REVISION: AB^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -866,7 +897,7 @@ lib/File/Package.pm => t/Test/Tech/File/Package.pm
 lib/File/SmartNL.pm => t/Test/Tech/File/SmartNL.pm
 lib/Text/Scrub.pm => t/Test/Tech/Text/Scrub.pm
 lib/Data/Secs2.pm => t/Test/Tech/Data/Secs2.pm
-lib/Data/SecsPack.pm => t/Test/Tech/Data/SecsPack.pm
+lib/Data/Str2Num.pm => t/Test/Tech/Data/Str2Num.pm
 lib/Data/Startup.pm => t/Test/Tech/Data/Startup.pm
 ^
 
@@ -877,7 +908,7 @@ t/Test/Tech/V001015/*
 
 PREREQ_PM: 
 'Data::Secs2' => '1.22',
-'Data::SecsPack' => '0.06',
+'Data::Str2Num' => '0.05',
 'Data::Startup' => '0.03',
 'Test' => '1.20',
 ^
@@ -1286,6 +1317,37 @@ Compilation failed in require at /usr/local/perl-5.8.4/lib/5.8.4/FindBin.pm line
 
 Since cannot get a response from the tester, bump the version to force a retest.
 
+\=item Test-Tech-0.26
+
+Changed C<Data::Secs2> so no longer loads C<Data::SecsPack> unless needed.
+C<Test::Tech> no longer loads C<Data::SecsPack> via C<Data::secs2> so 
+no longer print out its version. Instead print out the version of C<Data::Str2Num>
+which is needed for the C<str2float> and C<str2integer> subroutines that
+the C<Data::SecsPack> package supplied.
+
+Test Failure:
+
+Subject: FAIL Test-Tech-0.25 sparc-linux 2.4.21-pre7 
+From: alian@cpan.org (alian) 
+
+PERL_DL_NONLAZY=1 /usr/local/perl-5.8.4/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/Test/Tech/Tech.t
+t/Test/Tech/Tech....Perl lib version (v5.8.4) doesn't match executable version (v5.6.1) at /usr/local/perl-5.8.4/lib/5.8.4/sparc-linux/Config.pm line 32.
+Compilation failed in require at /usr/local/perl-5.8.4/lib/5.8.4/FindBin.pm line 97.
+BEGIN failed--compilation aborted at /usr/local/perl-5.8.4/lib/5.8.4/FindBin.pm line 97.
+Compilation failed in require at techA0.t line 13.
+
+Analysis:
+
+Everything  was going well until a C<`perl $command`>. 
+From same failure on other test scripts, the test harness perl executable is 
+different than the command line perl executable. 
+
+Corrective Action:
+
+Introduced the C<perl_command> subroutine that uses C<$^^X> to return the current executable Perl
+into the test script.
+Use the results of this subroutine instead of 'perl' in backticks.
+
 \=back
 
 ^
@@ -1491,6 +1553,10 @@ SEE_ALSO:
 HTML:
 ^
 ~-~
+
+
+
+
 
 
 

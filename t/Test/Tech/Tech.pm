@@ -10,8 +10,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.06';
-$DATE = '2004/05/11';
+$VERSION = '0.07';
+$DATE = '2004/05/20';
 $FILE = __FILE__;
 
 ########
@@ -28,6 +28,10 @@ $FILE = __FILE__;
 #
 
 
+=head1 NAME
+
+ - Software Test Description for Test::Tech
+
 =head1 TITLE PAGE
 
  Detailed Software Test Description (STD)
@@ -40,7 +44,7 @@ $FILE = __FILE__;
 
  Version: 
 
- Date: 2004/05/11
+ Date: 2004/05/20
 
  Prepared for: General Public 
 
@@ -48,35 +52,40 @@ $FILE = __FILE__;
 
  Classification: None
 
+#######
+#  
+#  1. SCOPE
+#
+#
 =head1 SCOPE
 
 This detail STD and the 
 L<General Perl Program Module (PM) STD|Test::STD::PerlSTD>
 establishes the tests to verify the
 requirements of Perl Program Module (PM) L<Test::Tech|Test::Tech>
-
 The format of this STD is a tailored L<2167A STD DID|Docs::US_DOD::STD>.
-in accordance with 
-L<Detail STD Format|Test::STDmaker/Detail STD Format>.
+
+#######
+#  
+#  3. TEST PREPARATIONS
+#
+#
+=head1 TEST PREPARATIONS
+
+Test preparations are establishes by the L<General STD|Test::STD::PerlSTD>.
+
 
 #######
 #  
 #  4. TEST DESCRIPTIONS
 #
-#  4.1 Test 001
 #
-#  ..
-#
-#  4.x Test x
-#
-#
-
 =head1 TEST DESCRIPTIONS
 
 The test descriptions uses a legend to
 identify different aspects of a test description
 in accordance with
-L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description Fields>.
+L<STD PM Form Database Test Description Fields|Test::STDmaker/STD PM Form Database Test Description Fields>.
 
 =head2 Test Plan
 
@@ -108,7 +117,8 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
   N: Run test script techA0.t using Test 1.15^
 
   C:
-     my $actual_results = `perl techA0.t`;
+     my $perl_command = perl_command();
+     my $actual_results = `$perl_command techA0.t`;
      $snl->fout('tech1.txt', $actual_results);
  ^
   N: Run test script techA0.t using Test 1.15^
@@ -122,7 +132,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
   N: Run test script techB0.t using Test 1.24^
 
   C:
-     $actual_results = `perl techB0.t`;
+     $actual_results = `$perl_command techB0.t`;
      $snl->fout('tech1.txt', $actual_results);
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
@@ -136,7 +146,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
   N: Run test script techC0.t using Test 1.24^
 
   C:
-     $actual_results = `perl techC0.t`;
+     $actual_results = `$perl_command techC0.t`;
      $snl->fout('tech1.txt', $actual_results);
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
@@ -159,7 +169,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
      elsif ( $actual_results eq Dumper(['3']) ) {
          $internal_storage = 'string';
      }
-     $actual_results = `perl techD0.d`;
+     $actual_results = `$perl_command techD0.d`;
      $snl->fout('tech1.txt', $actual_results);
      #######
      # expected results depend upon the internal storage from numbers 
@@ -177,7 +187,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
   N: Run test script techE0.t using Test 1.24^
 
   C:
-     $actual_results = `perl techE0.t`;
+     $actual_results = `$perl_command techE0.t`;
      $snl->fout('tech1.txt', $actual_results);
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
@@ -191,7 +201,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
   N: Run test script techF0.t using Test 1.24^
 
   C:
-     $actual_results = `perl techF0.t`;
+     $actual_results = `$perl_command techF0.t`;
      $snl->fout('tech1.txt', $actual_results);
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
@@ -344,16 +354,17 @@ L<Test::Tech>
 
 __DATA__
 
-File_Spec: Unix^
-UUT: Test::Tech^
-Revision: -^
-End_User: General Public^
 Author: http://www.SoftwareDiamonds.com support@SoftwareDiamonds.com^
-Detail_Template: ^
-STD2167_Template: ^
-Version: ^
 Classification: None^
+Detail_Template: ^
+End_User: General Public^
+File_Spec: Unix^
+Name: ^
+Revision: -^
+STD2167_Template: ^
 Temp: temp.pl^
+UUT: Test::Tech^
+Version: ^
 Demo: Tech.d^
 Verify: Tech.t^
 
@@ -387,7 +398,8 @@ DO: ^
  N: Run test script techA0.t using Test 1.15^
 
  C:
-    my $actual_results = `perl techA0.t`;
+    my $perl_command = perl_command();
+    my $actual_results = `$perl_command techA0.t`;
     $snl->fout('tech1.txt', $actual_results);
 ^
 
@@ -400,7 +412,7 @@ VO: ^
  N: Run test script techB0.t using Test 1.24^
 
  C:
-    $actual_results = `perl techB0.t`;
+    $actual_results = `$perl_command techB0.t`;
     $snl->fout('tech1.txt', $actual_results);
 ^
 
@@ -413,7 +425,7 @@ DO: ^
  N: Run test script techC0.t using Test 1.24^
 
  C:
-    $actual_results = `perl techC0.t`;
+    $actual_results = `$perl_command techC0.t`;
     $snl->fout('tech1.txt', $actual_results);
 ^
 
@@ -436,7 +448,7 @@ VO: ^
         $internal_storage = 'string';
     }
 
-    $actual_results = `perl techD0.d`;
+    $actual_results = `$perl_command techD0.d`;
     $snl->fout('tech1.txt', $actual_results);
 
     #######
@@ -456,7 +468,7 @@ DO: ^
  N: Run test script techE0.t using Test 1.24^
 
  C:
-    $actual_results = `perl techE0.t`;
+    $actual_results = `$perl_command techE0.t`;
     $snl->fout('tech1.txt', $actual_results);
 ^
 
@@ -469,7 +481,7 @@ DO: ^
  N: Run test script techF0.t using Test 1.24^
 
  C:
-    $actual_results = `perl techF0.t`;
+    $actual_results = `$perl_command techF0.t`;
     $snl->fout('tech1.txt', $actual_results);
 ^
 
@@ -510,8 +522,32 @@ ok: 10^
  E: undef^
 ok: 11^
 
- C: unlink 'tech1.txt'^
- C: unlink 'tech1.txt'^
+
+ C:
+#######
+# When running under some new improved CPAN on some tester setups,
+# the `perl $command` crashes and burns with the following
+# 
+# Perl lib version (v5.8.4) doesn't match executable version (v5.6.1)
+# at /usr/local/perl-5.8.4/lib/5.8.4/sparc-linux/Config.pm line 32.
+#
+# To prevent this, use the return from the below instead of perl
+#
+sub perl_command 
+{
+    my $OS = $^^O; 
+    unless ($OS) {   # on some perls $^^O is not defined
+	require Config;
+	$OS = $Config::Config{'osname'};
+    }
+    return "MCR $^^X"                    if $OS eq 'VMS';
+    return Win32::GetShortPathName($^^X) if $OS =~ /^^(MS)?Win32$/;
+    $^^X;
+}
+
+unlink 'tech1.txt'
+^
+
 
 See_Also: L<Test::Tech>^
 

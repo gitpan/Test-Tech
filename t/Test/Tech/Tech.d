@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.07';   # automatically generated file
-$DATE = '2004/05/11';
+$VERSION = '0.08';   # automatically generated file
+$DATE = '2004/05/20';
 
 
 ##### Demonstration Script ####
@@ -41,7 +41,6 @@ BEGIN {
     use Cwd;
     use File::Spec;
     use FindBin;
-    use Test::Tech qw(demo is_skip plan skip_tests tech_config );
 
     ########
     # The working directory for this script file is the directory where
@@ -65,7 +64,20 @@ BEGIN {
     #
     use lib $FindBin::Bin;
 
-    unshift @INC, File::Spec->catdir( cwd(), 'lib' ); 
+    ########
+    # Using Test::Tech, a very light layer over the module "Test" to
+    # conduct the tests.  The big feature of the "Test::Tech: module
+    # is that it takes expected and actual references and stringify
+    # them by using "Data::Secs2" before passing them to the "&Test::ok"
+    # Thus, almost any time of Perl data structures may be
+    # compared by passing a reference to them to Test::Tech::ok
+    #
+    # Create the test plan by supplying the number of tests
+    # and the todo tests
+    #
+    require Test::Tech;
+    Test::Tech->import( qw(demo finish is_skip ok ok_sub plan skip 
+                          skip_sub skip_tests tech_config) );
 
 }
 
@@ -130,9 +142,11 @@ print << "EOF";
  
 EOF
 
-demo( "\ \ \ \ my\ \$actual_results\ \=\ \`perl\ techA0\.t\`\;\
+demo( "\ \ \ \ my\ \$perl_command\ \=\ perl_command\(\)\;\
+\ \ \ \ my\ \$actual_results\ \=\ \`\$perl_command\ techA0\.t\`\;\
 \ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
-          my $actual_results = `perl techA0.t`;
+          my $perl_command = perl_command();
+    my $actual_results = `$perl_command techA0.t`;
     $snl->fout('tech1.txt', $actual_results);; # execution
 
 print << "EOF";
@@ -159,9 +173,9 @@ print << "EOF";
  
 EOF
 
-demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techC0\.t\`\;\
+demo( "\ \ \ \ \$actual_results\ \=\ \`\$perl_command\ techC0\.t\`\;\
 \ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
-          $actual_results = `perl techC0.t`;
+          $actual_results = `$perl_command techC0.t`;
     $snl->fout('tech1.txt', $actual_results);; # execution
 
 demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # typed in command           
@@ -180,9 +194,9 @@ print << "EOF";
  
 EOF
 
-demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techE0\.t\`\;\
+demo( "\ \ \ \ \$actual_results\ \=\ \`\$perl_command\ techE0\.t\`\;\
 \ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
-          $actual_results = `perl techE0.t`;
+          $actual_results = `$perl_command techE0.t`;
     $snl->fout('tech1.txt', $actual_results);; # execution
 
 demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # typed in command           
@@ -201,9 +215,9 @@ print << "EOF";
  
 EOF
 
-demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techF0\.t\`\;\
+demo( "\ \ \ \ \$actual_results\ \=\ \`\$perl_command\ techF0\.t\`\;\
 \ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
-          $actual_results = `perl techF0.t`;
+          $actual_results = `$perl_command techF0.t`;
     $snl->fout('tech1.txt', $actual_results);; # execution
 
 demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # typed in command           
@@ -286,11 +300,50 @@ demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command
       $tech->tech_config('Test.ONFAIL')); # execution
 
 
-demo( "unlink\ \'tech1\.txt\'"); # typed in command           
-      unlink 'tech1.txt'; # execution
+demo( "\#\#\#\#\#\#\#\
+\#\ When\ running\ under\ some\ new\ improved\ CPAN\ on\ some\ tester\ setups\,\
+\#\ the\ \`perl\ \$command\`\ crashes\ and\ burns\ with\ the\ following\
+\#\ \
+\#\ Perl\ lib\ version\ \(v5\.8\.4\)\ doesn\'t\ match\ executable\ version\ \(v5\.6\.1\)\
+\#\ at\ \/usr\/local\/perl\-5\.8\.4\/lib\/5\.8\.4\/sparc\-linux\/Config\.pm\ line\ 32\.\
+\#\
+\#\ To\ prevent\ this\,\ use\ the\ return\ from\ the\ below\ instead\ of\ perl\
+\#\
+sub\ perl_command\ \
+\{\
+\ \ \ \ my\ \$OS\ \=\ \$\^O\;\ \
+\ \ \ \ unless\ \(\$OS\)\ \{\ \ \ \#\ on\ some\ perls\ \$\^O\ is\ not\ defined\
+\	require\ Config\;\
+\	\$OS\ \=\ \$Config\:\:Config\{\'osname\'\}\;\
+\ \ \ \ \}\
+\ \ \ \ return\ \"MCR\ \$\^X\"\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ \$OS\ eq\ \'VMS\'\;\
+\ \ \ \ return\ Win32\:\:GetShortPathName\(\$\^X\)\ if\ \$OS\ \=\~\ \/\^\(MS\)\?Win32\$\/\;\
+\ \ \ \ \$\^X\;\
+\}\
+\
+unlink\ \'tech1\.txt\'"); # typed in command           
+      #######
+# When running under some new improved CPAN on some tester setups,
+# the `perl $command` crashes and burns with the following
+# 
+# Perl lib version (v5.8.4) doesn't match executable version (v5.6.1)
+# at /usr/local/perl-5.8.4/lib/5.8.4/sparc-linux/Config.pm line 32.
+#
+# To prevent this, use the return from the below instead of perl
+#
+sub perl_command 
+{
+    my $OS = $^O; 
+    unless ($OS) {   # on some perls $^O is not defined
+	require Config;
+	$OS = $Config::Config{'osname'};
+    }
+    return "MCR $^X"                    if $OS eq 'VMS';
+    return Win32::GetShortPathName($^X) if $OS =~ /^(MS)?Win32$/;
+    $^X;
+}
 
-demo( "unlink\ \'tech1\.txt\'"); # typed in command           
-      unlink 'tech1.txt'; # execution
+unlink 'tech1.txt'; # execution
 
 
 =head1 NAME

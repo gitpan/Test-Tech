@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '0.2';   # automatically generated file
-$DATE = '2004/05/11';
+$VERSION = '0.21';   # automatically generated file
+$DATE = '2004/05/20';
 $FILE = __FILE__;
 
 
@@ -78,7 +78,8 @@ BEGIN {
    # and the todo tests
    #
    require Test::Tech;
-   Test::Tech->import( qw(finish is_skip ok plan skip skip_tests tech_config) );
+   Test::Tech->import( qw(finish is_skip ok ok_sub plan skip 
+                          skip_sub skip_tests tech_config) );
    plan(tests => 11);
 
 }
@@ -94,42 +95,6 @@ END {
 }
 
 
-=head1 comment_out
-
-###
-# Have been problems with debugger with trapping CARP
-#
-
-####
-# Poor man's eval where the test script traps off the Carp::croak 
-# Carp::confess functions.
-#
-# The Perl authorities have Core::die locked down tight so
-# it is next to impossible to trap off of Core::die. Lucky 
-# must everyone uses Carp to die instead of just dieing.
-#
-use Carp;
-use vars qw($restore_croak $croak_die_error $restore_confess $confess_die_error);
-$restore_croak = \&Carp::croak;
-$croak_die_error = '';
-$restore_confess = \&Carp::confess;
-$confess_die_error = '';
-no warnings;
-*Carp::croak = sub {
-   $croak_die_error = '# Test Script Croak. ' . (join '', @_);
-   $croak_die_error .= Carp::longmess (join '', @_);
-   $croak_die_error =~ s/\n/\n#/g;
-       goto CARP_DIE; # once croak can not continue
-};
-*Carp::confess = sub {
-   $confess_die_error = '# Test Script Confess. ' . (join '', @_);
-   $confess_die_error .= Carp::longmess (join '', @_);
-   $confess_die_error =~ s/\n/\n#/g;
-       goto CARP_DIE; # once confess can not continue
-
-};
-use warnings;
-=cut
 
 
    # Perl code from C:
@@ -146,16 +111,17 @@ use warnings;
 
     my $uut = 'Test::Tech';
 
-skip_tests( 1 ) unless ok(
-      $fp->is_package_loaded($uut), # actual results
-      '1', # expected results
-      "",
-      "UUT loaded"); 
+skip_tests( 1 ) unless
+  ok(  $fp->is_package_loaded($uut), # actual results
+     '1', # expected results
+     "",
+     "UUT loaded");
 
 #  ok:  1
 
    # Perl code from C:
-    my $actual_results = `perl techA0.t`;
+    my $perl_command = perl_command();
+    my $actual_results = `$perl_command techA0.t`;
     $snl->fout('tech1.txt', $actual_results);
 
 ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
@@ -166,7 +132,7 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
 #  ok:  2
 
    # Perl code from C:
-    $actual_results = `perl techB0.t`;
+    $actual_results = `$perl_command techB0.t`;
     $snl->fout('tech1.txt', $actual_results);
 
 ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
@@ -177,7 +143,7 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
 #  ok:  3
 
    # Perl code from C:
-    $actual_results = `perl techC0.t`;
+    $actual_results = `$perl_command techC0.t`;
     $snl->fout('tech1.txt', $actual_results);
 
 ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
@@ -199,7 +165,7 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
         $internal_storage = 'string';
     }
 
-    $actual_results = `perl techD0.d`;
+    $actual_results = `$perl_command techD0.d`;
     $snl->fout('tech1.txt', $actual_results);
 
     #######
@@ -214,7 +180,7 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
     };
 
    # Perl code from C:
-    $actual_results = `perl techE0.t`;
+    $actual_results = `$perl_command techE0.t`;
     $snl->fout('tech1.txt', $actual_results);
 
 ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
@@ -225,7 +191,7 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
 #  ok:  5
 
    # Perl code from C:
-    $actual_results = `perl techF0.t`;
+    $actual_results = `$perl_command techF0.t`;
     $snl->fout('tech1.txt', $actual_results);
 
 ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
@@ -278,29 +244,29 @@ ok(  $tech->tech_config('Test.ONFAIL'), # actual results
 #  ok:  11
 
    # Perl code from C:
-unlink 'tech1.txt';
-
-   # Perl code from C:
-unlink 'tech1.txt';
-
-
-=head1 comment out
-
-# does not work with debugger
-CARP_DIE:
-    if ($croak_die_error || $confess_die_error) {
-        print $Test::TESTOUT = "not ok $Test::ntest\n";
-        $Test::ntest++;
-        print $Test::TESTERR $croak_die_error . $confess_die_error;
-        $croak_die_error = '';
-        $confess_die_error = '';
-        skip_tests(1, 'Test invalid because of Carp die.');
+#######
+# When running under some new improved CPAN on some tester setups,
+# the `perl $command` crashes and burns with the following
+# 
+# Perl lib version (v5.8.4) doesn't match executable version (v5.6.1)
+# at /usr/local/perl-5.8.4/lib/5.8.4/sparc-linux/Config.pm line 32.
+#
+# To prevent this, use the return from the below instead of perl
+#
+sub perl_command 
+{
+    my $OS = $^O; 
+    unless ($OS) {   # on some perls $^O is not defined
+	require Config;
+	$OS = $Config::Config{'osname'};
     }
-    no warnings;
-    *Carp::croak = $restore_croak;    
-    *Carp::confess = $restore_confess;
-    use warnings;
-=cut
+    return "MCR $^X"                    if $OS eq 'VMS';
+    return Win32::GetShortPathName($^X) if $OS =~ /^(MS)?Win32$/;
+    $^X;
+}
+
+unlink 'tech1.txt';
+
 
     finish();
 

@@ -10,8 +10,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.13';
-$DATE = '2004/05/11';
+$VERSION = '1.14';
+$DATE = '2004/05/20';
 $FILE = __FILE__;
 
 use vars qw(@ISA @EXPORT_OK);
@@ -20,9 +20,9 @@ require Exporter;
 @EXPORT_OK = qw(scrub_architect scrub_date scrub_date_ticket scrub_date_version 
                 scrub_file_line scrub_probe scrub_test_file);
 
-# use SelfLoader;
-# 1
-# __DATA__
+use SelfLoader;
+1
+__DATA__
 
 #######
 # Blank out the Verion, Date for comparision

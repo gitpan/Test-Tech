@@ -22,7 +22,7 @@ t/Test/Tech/File/Package.pm
 t/Test/Tech/File/SmartNL.pm
 t/Test/Tech/Text/Scrub.pm
 t/Test/Tech/Data/Secs2.pm
-t/Test/Tech/Data/SecsPack.pm
+t/Test/Tech/Data/Str2Num.pm
 t/Test/Tech/Data/Startup.pm
 t/Test/Tech/V001024/Test.pm
 t/Test/Tech/V001015/Test.pm
