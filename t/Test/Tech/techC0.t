@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.09';
-$DATE = '2003/09/18';
+$VERSION = '0.1';
+$DATE = '2003/09/20';
 
 use Cwd;
 use File::Spec;
@@ -98,50 +98,9 @@ END {
    chdir $__restore_dir__;
 }
 
-
-
-######
-# This is perl, v5.6.1 built for MSWin32-x86-multi-thread
-# (with 1 registered patch, see perl -V for more detail)
-#
-# Copyright 1987-2001, Larry Wall
-#
-# Binary build 631 provided by ActiveState Tool Corp. http://www.ActiveState.com
-# Built 17:16:22 Jan  2 2002
-#
-#
-# Perl may be copied only under the terms of either the Artistic License or the
-# GNU General Public License, which may be found in the Perl 5 source kit.
-#
-# Complete documentation for Perl, including FAQ lists, should be found on
-# this system using `man perl' or `perldoc perl'.  If you have access to the
-# Internet, point your browser at http://www.perl.com/, the Perl Home Page.
-#
-# ~~~~~~~
-#
-# Wall, Christiansen and Orwant on Perl internal storage
-#
-# Page 351 of Programming Perl, Third Addition, Overloadable Operators
-# quote:
-# 
-# Conversion operators: "", 0+, bool
-#   These three keys let you provide behaviors for Perl's automatic conversions
-#   to strings, numbers, and Boolean values, respectively.
-# 
-# ~~~~~~~
-#
-# Internal Storage of Perls that are in the wild
-#
-#   string - Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary
-#   number - Perl version 5.008 for solaris  
-#
-#   Perls in the wild with internal storage of string may be mutants that need to 
-#   be hunted down killed.
-#
-
 ######
 #
-# 1.24 error goes to the STDERR
+# Test 1.24 error goes to the STDERR
 # while 1.15 goes to STDOUT
 #
 # redirect STDERR to the STDOUT
@@ -174,11 +133,11 @@ __END__
 
 =head1 NAME
 
-tgC0.t - test script for Test::Tech
+techC0.t - test script for Test::Tech
 
 =head1 SYNOPSIS
 
- tgC0.t 
+ techC0.t 
 
 =head1 COPYRIGHT
 

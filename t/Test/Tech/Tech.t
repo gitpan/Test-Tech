@@ -6,13 +6,34 @@ use strict;
 use warnings;
 use warnings::register;
 
-use vars qw($VERSION $DATE);
-$VERSION = '0.13';
-$DATE = '2003/09/18';
+use vars qw($VERSION $DATE $FILE);
+$VERSION = '0.14';   # automatically generated file
+$DATE = '2003/09/20';
+$FILE = __FILE__;
 
+use Getopt::Long;
 use Cwd;
 use File::Spec;
-use Test;
+
+##### Test Script ####
+#
+# Name: Tech.t
+#
+# UUT: Test::Tech
+#
+# The module Test::STDmaker generated this test script from the contents of
+#
+# t::Test::Tech::Tech;
+#
+# Don't edit this test script file, edit instead
+#
+# t::Test::Tech::Tech;
+#
+#	ANY CHANGES MADE HERE TO THIS SCRIPT FILE WILL BE LOST
+#
+#       the next time Test::STDmaker generates this script file.
+#
+#
 
 ######
 #
@@ -21,20 +42,13 @@ use Test;
 # use a BEGIN block so we print our plan before Module Under Test is loaded
 #
 BEGIN { 
-   use vars qw( $T $__restore_dir__ @__restore_inc__ $__tests__);
- 
-   ########
-   # Create the test plan by supplying the number of tests
-   # and the todo tests
-   #
-   $__tests__ = 6;
-   &Test::plan(tests => $__tests__);
+   use vars qw( $__restore_dir__ @__restore_inc__);
 
    ########
    # Working directory is that of the script file
    #
    $__restore_dir__ = cwd();
-   my ($vol, $dirs, undef) = File::Spec->splitpath( __FILE__ );
+   my ($vol, $dirs) = File::Spec->splitpath(__FILE__);
    chdir $vol if $vol;
    chdir $dirs if $dirs;
    ($vol, $dirs) = File::Spec->splitpath(cwd(), 'nofile'); # absolutify
@@ -58,22 +72,61 @@ BEGIN {
    my $lib_dir = cwd();
 
    #####
+   # Add this to the include path. Thus modules that start with t::
+   # will be found.
+   # 
+   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
+   unshift @INC, $lib_dir;  # include the current test directory
+
+   #####
    # Add lib to the include path so that modules under lib at the
    # same level as t, will be found
    #
-   my $inc_dir = File::Spec->catdir( $lib_dir, 'lib' );
-   $inc_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $inc_dir;
+   $lib_dir = File::Spec->catdir( cwd(), 'lib' );
+   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
+   unshift @INC, $lib_dir;
 
    #####
    # Add tlib to the include path so that modules under tlib at the
    # same level as t, will be found
    #
-   $inc_dir = File::Spec->catdir( $lib_dir, 'tlib' );
-   $inc_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $inc_dir;
+   $lib_dir = File::Spec->catdir( cwd(), 'tlib' );
+   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
+   unshift @INC, $lib_dir;
    chdir $dirs if $dirs;
+ 
+   #####
+   # Add lib under the directory where the test script resides.
+   # This may be used to place version sensitive modules.
+   #
+   $lib_dir = File::Spec->catdir( cwd(), 'lib' );
+   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
+   unshift @INC, $lib_dir;
+
+   ##########
+   # Pick up a output redirection file and tests to skip
+   # from the command line.
+   #
+   my $test_log = '';
+   GetOptions('log=s' => \$test_log);
+
+   ########
+   # Using Test::Tech, a very light layer over the module "Test" to
+   # conduct the tests.  The big feature of the "Test::Tech: module
+   # is that it takes a expected and actual reference and stringify
+   # them by using "Data::Dumper" before passing them to the "ok"
+   # in test.
+   #
+   # Create the test plan by supplying the number of tests
+   # and the todo tests
+   #
+   require Test::Tech;
+   Test::Tech->import( qw(plan ok skip skip_tests tech_config) );
+   plan(tests => 10);
+
 }
+
+
 
 END {
 
@@ -84,196 +137,161 @@ END {
    chdir $__restore_dir__;
 }
 
+   # Perl code from C:
+    use File::Spec;
 
-    #### 
-    # File Legend
-    # 
-    #  0 - series is used to generate an test case test script
-    #
-    #  1 - this is the actual value test case
-    #      thus, TestGen1 is used to produce actual test results
-    #
-    #  2 and above - these series are the expected test results
-    # 
-    #
+    use File::Package;
+    my $fp = 'File::Package';
 
-#####
-# Clean up directory
-#
-unlink 'tech1.txt';
+    use Text::Scrub;
+    my $s = 'Text::Scrub';
 
-########
-# Probe Perl for internal storage method
-#
-use Data::Dumper;
-my $probe = 3;
-my $actual = Dumper([0+$probe]);
-my $internal_storage = 'undetermine';
-if( $actual eq Dumper([3]) ) {
-    $internal_storage = 'number';
-}
-elsif ( $actual eq Dumper(['3']) ) {
-    $internal_storage = 'string';
-}
+    use File::SmartNL;
+    my $snl = 'File::SmartNL';
 
-#####
-# New $fu object
-#
-use File::Package;
-use File::SmartNL;
-my $fp  = 'File::Package';
-my $snl = 'File::SmartNL';
+    my $uut = 'Test::Tech';
 
-#######
-#
-# ok: 1 
-#
-# R:
-#
-my $loaded;
-print "# is_package_loaded\n";
-ok ($loaded = $fp->is_package_loaded('Test::Tech'), ''); 
+skip_tests( 1 ) unless ok(
+      $fp->is_package_loaded($uut), # actual results
+      '1', # expected results
+      "",
+      "UUT loaded"); 
 
-#######
-# 
-# ok:  2
-#
-# R:
-# 
-print "# load_package\n";
-my $errors = $fp->load_package( 'Test::Tech' );
-skip($loaded, $errors, '');
-skip_rest( $errors, 2 );
+#  ok:  1
 
-#####
-# New $scrub object
-#
-use Text::Scrub;
-my $s = 'Text::Scrub';
+   # Perl code from C:
+    my $actual_results = `perl techA0.t`;
+    $snl->fout('tech1.txt', $actual_results);
 
+ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
+     $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt'))), # expected results
+     "",
+     " Run test script techA0.t using Test 1.15");
 
-#####
+#  ok:  2
+
+   # Perl code from C:
+    $actual_results = `perl techB0.t`;
+    $snl->fout('tech1.txt', $actual_results);
+
+ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
+     $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt'))), # expected results
+     "",
+     " Run test script techB0.t using Test 1.24");
+
 #  ok:  3
-# 
-# R:
-#
-# Run test script test techA0.t
-#
-print "# Run test script techA0.t - Uses Test 1.15\n";
 
-my $actual_results = `perl techA0.t`;
-$snl->fout('tech1.txt', $actual_results);
-$actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
+   # Perl code from C:
+    $actual_results = `perl techC0.t`;
+    $snl->fout('tech1.txt', $actual_results);
 
-my $expected_results = $snl->fin('techA2.txt');
-$expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
+ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
+     $s->scrub_probe($s->scrub_file_line($snl->fin('techC2.txt'))), # expected results
+     "",
+     " Run test script techC0.t using Test 1.24");
 
-ok($actual_results, $expected_results); 
-
-#####
 #  ok:  4
-# 
-# R:
-#
-# Run test script test techB0.t
-#
-print "# Run test script techB0.t - Uses Test 1.24\n";
 
-$actual_results = `perl techB0.t`;
-$snl->fout('tech1.txt', $actual_results);
-$actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
-
-$expected_results = $snl->fin('techA2.txt');
-$expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
-
-ok( $actual_results, $expected_results); 
-
-
-
-#####
-#  ok:  5
-# 
-# Run test script test techC0.t
-#
-# R:
-#
-print "# Run test script techC0.t - Uses Test 1.24\n";
-
-$actual_results = `perl techC0.t`;
-$snl->fout('tech1.txt', $actual_results);
-$actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
-$expected_results = $snl->fin('techC2.txt');
-$expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
-ok( $actual_results, $expected_results); 
-
-#####
-#  ok:  6
-# 
-# Run demo script techD0.d
-#
-# R:
-#
-print "# Run demo script techD0.d\n";
-
-$actual_results = `perl techD0.d`;
-$snl->fout('tech1.txt', $actual_results);
-$actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
-
-#######
-# expected results depend upon the internal storage from numbers 
-#
-if( $internal_storage eq 'string') {
-    $expected_results = $snl->fin('techD2.txt');
-}
-else {
-    $expected_results = $snl->fin('techD3.txt');
-}
-
-$expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
-ok( $actual_results, $expected_results); 
-
-
-#####
-# Clean up directory
-#
-unlink 'tech1.txt';
-
-
-
-####
-# 
-# Support:
-#
-#
-
-sub skip_rest
-{
-    my ($results, $test_num) = @_;
-    if( $results ) {
-        for (my $i=$test_num; $i < $__tests__; $i++) { skip(1,0,0) };
-        exit 1;
+   # Perl code from C:
+    use Data::Dumper;
+    my $probe = 3;
+    $actual_results = Dumper([0+$probe]);
+    my $internal_storage = 'undetermine';
+    if( $actual_results eq Dumper([3]) ) {
+        $internal_storage = 'number';
     }
-}
+    elsif ( $actual_results eq Dumper(['3']) ) {
+        $internal_storage = 'string';
+    }
 
+    $actual_results = `perl techD0.d`;
+    $snl->fout('tech1.txt', $actual_results);
 
-__END__
+    #######
+    # expected results depend upon the internal storage from numbers 
+    #
+    my $expected_results;
+    if( $internal_storage eq 'string') {
+        $expected_results = $snl->fin('techD2.txt');
+    }
+    else {
+        $expected_results = $snl->fin('techD3.txt');
+    };
+
+ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
+     $s->scrub_probe($s->scrub_file_line($expected_results)), # expected results
+     "",
+     " Run demo script techD0.d");
+
+#  ok:  5
+
+   # Perl code from C:
+my $tech = new Test::Tech;
+
+ok(  $tech->tech_config('Test.TestLevel'), # actual results
+     1, # expected results
+     "",
+     "config Test.TestLevel, read 1");
+
+#  ok:  6
+
+ok(  $tech->tech_config('Test.TestLevel', 2), # actual results
+     1, # expected results
+     "",
+     "config Test.TestLevel, read 1, write 2");
+
+#  ok:  7
+
+ok(  $tech->tech_config('Test.TestLevel'), # actual results
+     2, # expected results
+     "",
+     "config Test.TestLevel, read 2");
+
+#  ok:  8
+
+ok(  $Test::TestLevel, # actual results
+     2, # expected results
+     "",
+     "Test::TestLevel read 2");
+
+#  ok:  9
+
+   # Perl code from C:
+$tech->finish( );
+
+ok(  $Test::TestLevel, # actual results
+     1, # expected results
+     "",
+     "retore Test::TestLevel on finish");
+
+#  ok:  10
 
 
 =head1 NAME
 
-tech.t - test script for Test::tech
+Tech.t - test script for Test::Tech
 
 =head1 SYNOPSIS
 
- tech.t 
+ Tech.t -log=I<string>
 
-=head1 NOTES
+=head1 OPTIONS
 
-=head2 Copyright
+All options may be abbreviated with enough leading characters
+to distinguish it from the other options.
+
+=over 4
+
+=item C<-log>
+
+Tech.t uses this option to redirect the test results 
+from the standard output to a log file.
+
+=back
+
+=head1 COPYRIGHT
 
 copyright © 2003 Software Diamonds.
-
-head2 License
 
 Software Diamonds permits the redistribution
 and use in source and binary forms, with or

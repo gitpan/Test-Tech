@@ -3,6 +3,8 @@ MANIFEST
 Makefile.PL
 README
 lib/Test/Tech.pm
+t/Test/Tech/Tech.d
+t/Test/Tech/Tech.pm
 t/Test/Tech/Tech.t
 t/Test/Tech/techA0.t
 t/Test/Tech/techA2.txt

@@ -10,29 +10,31 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.15';
-$DATE = '2003/09/18';
+$VERSION = '0.16';
+$DATE = '2003/09/20';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.15 2003/09/18), 'revised 0.14'],
-    'MANIFEST' => [qw(0.15 2003/09/18), 'generated, replaces 0.14'],
-    'Makefile.PL' => [qw(0.15 2003/09/18), 'generated, replaces 0.14'],
-    'README' => [qw(0.15 2003/09/18), 'generated, replaces 0.14'],
-    'lib/Test/Tech.pm' => [qw(1.14 2003/09/18), 'revised 1.13'],
-    't/Test/Tech/Tech.t' => [qw(0.13 2003/09/18), 'revised 0.12'],
-    't/Test/Tech/techA0.t' => [qw(0.08 2003/09/15), 'unchanged'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.16 2003/09/20), 'revised 0.15'],
+    'MANIFEST' => [qw(0.16 2003/09/20), 'generated, replaces 0.15'],
+    'Makefile.PL' => [qw(0.16 2003/09/20), 'generated, replaces 0.15'],
+    'README' => [qw(0.16 2003/09/20), 'generated, replaces 0.15'],
+    'lib/Test/Tech.pm' => [qw(1.15 2003/09/20), 'revised 1.14'],
+    't/Test/Tech/Tech.d' => [qw(0.01 2003/09/20), 'new'],
+    't/Test/Tech/Tech.pm' => [qw(0.01 2003/09/20), 'new'],
+    't/Test/Tech/Tech.t' => [qw(0.14 2003/09/20), 'revised 0.13'],
+    't/Test/Tech/techA0.t' => [qw(0.09 2003/09/20), 'revised 0.08'],
     't/Test/Tech/techA2.txt' => [qw(0.07 2003/09/15), 'unchanged'],
-    't/Test/Tech/techB0.t' => [qw(0.05 2003/09/15), 'unchanged'],
-    't/Test/Tech/techC0.t' => [qw(0.09 2003/09/18), 'revised 0.08'],
-    't/Test/Tech/techC2.txt' => [qw(0.08 2003/09/18), 'revised 0.07'],
+    't/Test/Tech/techB0.t' => [qw(0.06 2003/09/20), 'revised 0.05'],
+    't/Test/Tech/techC0.t' => [qw(0.1 2003/09/20), 'revised 0.09'],
+    't/Test/Tech/techC2.txt' => [qw(0.08 2003/09/18), 'unchanged'],
     't/Test/Tech/techD0.d' => [qw(0.04 2003/09/15), 'unchanged'],
     't/Test/Tech/techD2.txt' => [qw(0.07 2003/09/15), 'unchanged'],
     't/Test/Tech/techD3.txt' => [qw(0.07 2003/09/15), 'unchanged'],
-    'tlib/File/Package.pm' => [qw(1.12 2003/09/18), 'unchanged'],
-    'tlib/File/SmartNL.pm' => [qw(1.12 2003/09/18), 'unchanged'],
-    'tlib/Text/Scrub.pm' => [qw(1.11 2003/09/18), 'revised 1.1'],
+    'tlib/File/Package.pm' => [qw(1.12 2003/09/20), 'unchanged'],
+    'tlib/File/SmartNL.pm' => [qw(1.12 2003/09/20), 'unchanged'],
+    'tlib/Text/Scrub.pm' => [qw(1.11 2003/09/20), 'unchanged'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.25 2003/09/15), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.16 2003/09/15), 'unchanged'],
 
@@ -63,9 +65,9 @@ use vars qw(%INVENTORY);
 
  Revision: M
 
- Version: 0.15
+ Version: 0.16
 
- Date: 2003/09/18
+ Date: 2003/09/20
 
  Prepared for: General Public 
 
@@ -132,7 +134,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.15
+This document releases Test::Tech version 0.16
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -148,8 +150,8 @@ system file specification.
 This document releases the file found
 at the following repository(s):
 
-   http://www.softwarediamonds/packages/Test-Tech-0.15
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.15
+   http://www.softwarediamonds/packages/Test-Tech-0.16
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.16
 
 
 Restrictions regarding duplication and license provisions
@@ -217,23 +219,25 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.15    2003/09/18 revised 0.14
- MANIFEST                                                     0.15    2003/09/18 generated, replaces 0.14
- Makefile.PL                                                  0.15    2003/09/18 generated, replaces 0.14
- README                                                       0.15    2003/09/18 generated, replaces 0.14
- lib/Test/Tech.pm                                             1.14    2003/09/18 revised 1.13
- t/Test/Tech/Tech.t                                           0.13    2003/09/18 revised 0.12
- t/Test/Tech/techA0.t                                         0.08    2003/09/15 unchanged
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.16    2003/09/20 revised 0.15
+ MANIFEST                                                     0.16    2003/09/20 generated, replaces 0.15
+ Makefile.PL                                                  0.16    2003/09/20 generated, replaces 0.15
+ README                                                       0.16    2003/09/20 generated, replaces 0.15
+ lib/Test/Tech.pm                                             1.15    2003/09/20 revised 1.14
+ t/Test/Tech/Tech.d                                           0.01    2003/09/20 new
+ t/Test/Tech/Tech.pm                                          0.01    2003/09/20 new
+ t/Test/Tech/Tech.t                                           0.14    2003/09/20 revised 0.13
+ t/Test/Tech/techA0.t                                         0.09    2003/09/20 revised 0.08
  t/Test/Tech/techA2.txt                                       0.07    2003/09/15 unchanged
- t/Test/Tech/techB0.t                                         0.05    2003/09/15 unchanged
- t/Test/Tech/techC0.t                                         0.09    2003/09/18 revised 0.08
- t/Test/Tech/techC2.txt                                       0.08    2003/09/18 revised 0.07
+ t/Test/Tech/techB0.t                                         0.06    2003/09/20 revised 0.05
+ t/Test/Tech/techC0.t                                         0.1     2003/09/20 revised 0.09
+ t/Test/Tech/techC2.txt                                       0.08    2003/09/18 unchanged
  t/Test/Tech/techD0.d                                         0.04    2003/09/15 unchanged
  t/Test/Tech/techD2.txt                                       0.07    2003/09/15 unchanged
  t/Test/Tech/techD3.txt                                       0.07    2003/09/15 unchanged
- tlib/File/Package.pm                                         1.12    2003/09/18 unchanged
- tlib/File/SmartNL.pm                                         1.12    2003/09/18 unchanged
- tlib/Text/Scrub.pm                                           1.11    2003/09/18 revised 1.1
+ tlib/File/Package.pm                                         1.12    2003/09/20 unchanged
+ tlib/File/SmartNL.pm                                         1.12    2003/09/20 unchanged
+ tlib/Text/Scrub.pm                                           1.11    2003/09/20 unchanged
  t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
 
@@ -437,6 +441,40 @@ which errorneous used by 'Data/Strify.pm' instead of 'Data::Strify'.
 This should clear complain by Mike Castle <dalgoda@ix.netcom.com> that
 the MakeFile.PL for Test-Tech-0.14 crashes with a divide by zero.
 
+=item Test-Tech-0.16
+
+Strange failure from cpan-testers
+
+ Cc: SOFTDIA@cpan.org
+ Subject: FAIL Test-Tech-0.15 sun4-solaris 2.8
+ To: cpan-testers@perl.org 
+
+Additional comments:
+
+Hello, Samson Monaco Tutankhamen! Thanks for uploading your works to CPAN.
+
+I noticed that the test suite seem to fail without these modules:
+Data::Secs2
+
+As such, adding the prerequisite module(s) to 'PREREQ_PM' in your
+Makefile.PL should solve this problem.  For example:
+
+WriteMakefile(
+    AUTHOR      => 'Samson Monaco Tutankhamen (support@SoftwareDiamonds.com)',
+    ... # other information
+    PREREQ_PM   => {
+        'Data::Secs2'   => '0', # or a minimum workable version
+    }
+);
+
+The PREREQ_PM in the Test-Tech-0.15 MakeFile.PL is as follows:
+
+ PREREQ_PM => {Data::Secs2 => 0.01},
+
+Changed to
+
+ PREREQ_PM => {'Data::Secs2' => '0.01'},
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -470,13 +508,13 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.15
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.15
+   http://www.softwarediamonds/packages/Test-Tech-0.16
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.16
 
 
 =item Prerequistes.
 
- Data::Secs2 => 0.01
+ 'Data::Secs2' => '0.01'
 
 
 =item Security, privacy, or safety precautions.
@@ -594,10 +632,10 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.15^
+VERSION : 0.16^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.14^
+PREVIOUS_RELEASE: 0.15^
 REVISION: M^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
@@ -639,7 +677,7 @@ t/Test/Tech/V001024/*
 t/Test/Tech/V001015/*
 ^
 
-PREREQ_PM: Data::Secs2 => 0.01^
+PREREQ_PM: 'Data::Secs2' => '0.01'^
 
 TESTS: t/Test/Tech/Tech.t^
 EXE_FILES:  ^
@@ -842,6 +880,40 @@ fixes Test-Tech-0.14 error in the PREREQ_PM
 which errorneous used by 'Data/Strify.pm' instead of 'Data::Strify'.
 This should clear complain by Mike Castle <dalgoda@ix.netcom.com> that
 the MakeFile.PL for Test-Tech-0.14 crashes with a divide by zero.
+
+\=item Test-Tech-0.16
+
+Strange failure from cpan-testers
+
+ Cc: SOFTDIA@cpan.org
+ Subject: FAIL Test-Tech-0.15 sun4-solaris 2.8
+ To: cpan-testers@perl.org 
+
+Additional comments:
+
+Hello, Samson Monaco Tutankhamen! Thanks for uploading your works to CPAN.
+
+I noticed that the test suite seem to fail without these modules:
+Data::Secs2
+
+As such, adding the prerequisite module(s) to 'PREREQ_PM' in your
+Makefile.PL should solve this problem.  For example:
+
+WriteMakefile(
+    AUTHOR      => 'Samson Monaco Tutankhamen (support@SoftwareDiamonds.com)',
+    ... # other information
+    PREREQ_PM   => {
+        'Data::Secs2'   => '0', # or a minimum workable version
+    }
+);
+
+The PREREQ_PM in the Test-Tech-0.15 MakeFile.PL is as follows:
+
+ PREREQ_PM => {Data::Secs2 => 0.01},
+
+Changed to
+
+ PREREQ_PM => {'Data::Secs2' => '0.01'},
 
 \=back
 

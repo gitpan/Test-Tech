@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.08';
-$DATE = '2003/09/15';
+$VERSION = '0.09';
+$DATE = '2003/09/20';
 
 use Cwd;
 use File::Spec;
@@ -193,11 +193,11 @@ __END__
 
 =head1 NAME
 
-tgA1.t - test script for Test::Tech
+techA1.t - test script for Test::Tech
 
 =head1 SYNOPSIS
 
- tgA1.t 
+ techA1.t 
 
 =head1 COPYRIGHT
 
