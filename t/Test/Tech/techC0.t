@@ -7,12 +7,12 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.05';
-$DATE = '2003/06/24';
+$VERSION = '0.06';
+$DATE = '2003/07/05';
 
 use Cwd;
 use File::Spec;
-use File::FileUtil;
+use File::TestPath;
 
 ######
 #
@@ -40,7 +40,7 @@ BEGIN {
    #######
    # Add the library of the unit under test (UUT) to @INC
    #
-   @__restore_inc__ = File::FileUtil->test_lib2inc;
+   @__restore_inc__ = File::TestPath->test_lib2inc;
 
    #######
    # Add the directory with "Test.pm" version 1.24 to @INC

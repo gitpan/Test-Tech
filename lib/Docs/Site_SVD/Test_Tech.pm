@@ -10,22 +10,22 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.08';
-$DATE = '2003/06/24';
+$VERSION = '0.09';
+$DATE = '2003/07/05';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.08 2003/06/24), 'revised 0.07'],
-    'MANIFEST' => [qw(0.08 2003/06/24), 'generated, replaces 0.07'],
-    'Makefile.PL' => [qw(0.08 2003/06/24), 'generated, replaces 0.07'],
-    'README' => [qw(0.08 2003/06/24), 'generated, replaces 0.07'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.09 2003/07/05), 'revised 0.08'],
+    'MANIFEST' => [qw(0.09 2003/07/05), 'generated, replaces 0.08'],
+    'Makefile.PL' => [qw(0.09 2003/07/05), 'generated, replaces 0.08'],
+    'README' => [qw(0.09 2003/07/05), 'generated, replaces 0.08'],
     'lib/Test/Tech.pm' => [qw(1.09 2003/06/24), 'unchanged'],
-    't/Test/Tech/Tech.t' => [qw(0.09 2003/06/24), 'revised 0.08'],
-    't/Test/Tech/techA0.t' => [qw(0.05 2003/06/21), 'unchanged'],
+    't/Test/Tech/Tech.t' => [qw(0.1 2003/07/05), 'revised 0.09'],
+    't/Test/Tech/techA0.t' => [qw(0.06 2003/07/05), 'revised 0.05'],
     't/Test/Tech/techA2.txt' => [qw(0.05 2003/06/19), 'unchanged'],
-    't/Test/Tech/techB0.t' => [qw(0.02 2003/06/21), 'unchanged'],
-    't/Test/Tech/techC0.t' => [qw(0.05 2003/06/24), 'unchanged'],
+    't/Test/Tech/techB0.t' => [qw(0.03 2003/07/05), 'revised 0.02'],
+    't/Test/Tech/techC0.t' => [qw(0.06 2003/07/05), 'revised 0.05'],
     't/Test/Tech/techC2.txt' => [qw(0.06 2003/06/21), 'unchanged'],
     't/Test/Tech/techC3.txt' => [qw(0.06 2003/06/21), 'unchanged'],
     't/Test/Tech/techD0.d' => [qw(0.02 2003/06/21), 'unchanged'],
@@ -59,11 +59,11 @@ use vars qw(%INVENTORY);
 
  Test::Tech - Extends the Test program module
 
- Revision: G
+ Revision: H
 
- Version: 0.08
+ Version: 0.09
 
- Date: 2003/06/24
+ Date: 2003/07/05
 
  Prepared for: General Public 
 
@@ -172,7 +172,7 @@ and Test::TestUtil has disappeared.
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.08
+This document releases Test::Tech version 0.09
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -188,8 +188,8 @@ system file specification.
 This document releases the file found
 at the following repository(s):
 
-   http://www.softwarediamonds/packages/Test-Tech-0.08
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.08
+   http://www.softwarediamonds/packages/Test-Tech-0.09
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.09
 
 
 Restrictions regarding duplication and license provisions
@@ -257,16 +257,16 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.08    2003/06/24 revised 0.07
- MANIFEST                                                     0.08    2003/06/24 generated, replaces 0.07
- Makefile.PL                                                  0.08    2003/06/24 generated, replaces 0.07
- README                                                       0.08    2003/06/24 generated, replaces 0.07
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.09    2003/07/05 revised 0.08
+ MANIFEST                                                     0.09    2003/07/05 generated, replaces 0.08
+ Makefile.PL                                                  0.09    2003/07/05 generated, replaces 0.08
+ README                                                       0.09    2003/07/05 generated, replaces 0.08
  lib/Test/Tech.pm                                             1.09    2003/06/24 unchanged
- t/Test/Tech/Tech.t                                           0.09    2003/06/24 revised 0.08
- t/Test/Tech/techA0.t                                         0.05    2003/06/21 unchanged
+ t/Test/Tech/Tech.t                                           0.1     2003/07/05 revised 0.09
+ t/Test/Tech/techA0.t                                         0.06    2003/07/05 revised 0.05
  t/Test/Tech/techA2.txt                                       0.05    2003/06/19 unchanged
- t/Test/Tech/techB0.t                                         0.02    2003/06/21 unchanged
- t/Test/Tech/techC0.t                                         0.05    2003/06/24 unchanged
+ t/Test/Tech/techB0.t                                         0.03    2003/07/05 revised 0.02
+ t/Test/Tech/techC0.t                                         0.06    2003/07/05 revised 0.05
  t/Test/Tech/techC2.txt                                       0.06    2003/06/21 unchanged
  t/Test/Tech/techC3.txt                                       0.06    2003/06/21 unchanged
  t/Test/Tech/techD0.d                                         0.02    2003/06/21 unchanged
@@ -280,8 +280,7 @@ consists of the following files:
 
 Changes to the previous version are as follows:
 
-Replace code in the 't/Tech/Tech.t' with
-the test_lib2inc method in the "File::TestPath" module.
+
 
 Previous changes are as follows:
 
@@ -408,7 +407,29 @@ In other words, all new objects are mostly same.
 
 =item Test::Tech 0.07
 
+=over 4
 
+=item t/Test/Tech/Tech.t t/Test/Tech/techCO.t
+
+Corrected typos in comments. More info in comments 
+
+=item Tech::Tech
+
+Changed the test for TESTERR and Program_lines for setting
+in the tech_p hash from version number to if they are defined. 
+
+=item File::Util
+
+Broke "File::FileUtil" apart into modules with more descriptive names.
+Switch to using the new modules "File::Package" and "File::SmartNL"
+instead of "file::FileUtil". 
+
+=back
+
+=item Test::Tech 0.09
+
+Left over usage of File::FileUtil in the test script files.
+Removed them. Switch from "Test::STD::Scrub" to "Text::Scrub"
 
 =back
 
@@ -452,16 +473,17 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.08
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.08
+   http://www.softwarediamonds/packages/Test-Tech-0.09
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.09
 
 
 =item Prerequistes.
 
-'File::SmartNL' => 0,
-'File::Package' => 0,
-'File::TestPath' => 0,
-'Test::STD::Scrub' => 0,
+ 'File::SmartNL' => 0,
+ 'File::Package' => 0,
+ 'File::TestPath' => 0,
+ 'Text::Scrub' => 0,
+
 
 =item Security, privacy, or safety precautions.
 
@@ -541,152 +563,11 @@ extension for a Perl Library Module
 
 extension for a Perl test script file
 
-=item DID
-
-Data Item Description
-
-=item DOD
-
-Department of Defense
-
-=item POD
-
-Plain Old Documentation
-
-=item STD
-
-Software Test Description
-
-=item SVD
-
-Software Version Description
-
-=item US
-
-United States
-
 =back
 
 =head1 2.0 SEE ALSO
 
-Modules with end-user functional interfaces 
-relating to US DOD 2167A automation are
-as follows:
-
-=over 4
-
-=item L<Test::STDmaker|Test::STDmaker>
-
-=item L<ExtUtils::SVDmaker|ExtUtils::SVDmaker>
-
-=item L<DataPort::FileType::FormDB|DataPort::FileType::FormDB>
-
-=item L<DataPort::DataFile|DataPort::DataFile>
-
-=item L<Test::Tech|Test::Tech>
-
-=item L<Test|Test>
-
-=item L<Data::Dumper|Data::Dumper>
-
-=item L<Test::STD::Scrub|Test::STD::Scrub>
-
-=item L<Test::STD::STDutil|Test::STD::STDutil>
-
-=item L<File::FileUtil|File::FileUtil>
-
-=back
-
-The design modules for L<Test::STDmaker|Test::STDmaker>
-have no other conceivable use then to support the
-L<Test::STDmaker|Test::STDmaker> functional interface. 
-The  L<Test::STDmaker|Test::STDmaker>
-design modules are as follows:
-
-=over 4
-
-=item L<Test::STD::Check|Test::STD::Check>
-
-=item L<Test::STD::FileGen|Test::STD::FileGen>
-
-=item L<Test::STD::STD2167|Test::STD::STD2167>
-
-=item L<Test::STD::STDgen|Test::STD::STDgen>
-
-=item L<Test::STDtype::Demo|Test::STDtype::Demo>
-
-=item L<Test::STDtype::STD|Test::STDtype::STD>
-
-=item L<Test::STDtype::Verify|Test::STDtype::Verify>
-
-=back
-
-
-Some US DOD 2167A Software Development Standard, DIDs and
-other related documents that complement the 
-US DOD 2167A automation are as follows:
-
-=over 4
-
-=item L<US DOD Software Development Standard|Docs::US_DOD::STD2167A>
-
-=item L<US DOD Specification Practices|Docs::US_DOD::STD490A>
-
-=item L<Computer Operation Manual (COM) DID|Docs::US_DOD::COM>
-
-=item L<Computer Programming Manual (CPM) DID)|Docs::US_DOD::CPM>
-
-=item L<Computer Resources Integrated Support Document (CRISD) DID|Docs::US_DOD::CRISD>
-
-=item L<Computer System Operator's Manual (CSOM) DID|Docs::US_DOD::CSOM>
-
-=item L<Database Design Description (DBDD) DID|Docs::US_DOD::DBDD>
-
-=item L<Engineering Change Proposal (ECP) DID|Docs::US_DOD::ECP>
-
-=item L<Firmware support Manual (FSM) DID|Docs::US_DOD::FSM>
-
-=item L<Interface Design Document (IDD) DID|Docs::US_DOD::IDD>
-
-=item L<Interface Requirements Specification (IRS) DID|Docs::US_DOD::IRS>
-
-=item L<Operation Concept Description (OCD) DID|Docs::US_DOD::OCD>
-
-=item L<Specification Change Notice (SCN) DID|Docs::US_DOD::SCN>
-
-=item L<Software Design Specification (SDD) DID|Docs::US_DOD::SDD>
-
-=item L<Software Development Plan (SDP) DID|Docs::US_DOD::SDP> 
-
-=item L<Software Input and Output Manual (SIOM) DID|Docs::US_DOD::SIOM>
-
-=item L<Software Installation Plan (SIP) DID|Docs::US_DOD::SIP>
-
-=item L<Software Programmer's Manual (SPM) DID|Docs::US_DOD::SPM>
-
-=item L<Software Product Specification (SPS) DID|Docs::US_DOD::SPS>
-
-=item L<Software Requirements Specification (SRS) DID|Docs::US_DOD::SRS>
-
-=item L<System or Segment Design Document (SSDD) DID|Docs::US_DOD::SSDD>
-
-=item L<System or Subsystem Specification (SSS) DID|Docs::US_DOD::SSS>
-
-=item L<Software Test Description (STD) DID|Docs::US_DOD::STD>
-
-=item L<Software Test Plan (STP) DID|Docs::US_DOD::STP>
-
-=item L<Software Test Report (STR) DID|Docs::US_DOD::STR>
-
-=item L<Software Transition Plan (STrP) DID|Docs::US_DOD::STrP>
-
-=item L<Software User Manual (SUM) DID|Docs::US_DOD::SUM>
-
-=item L<Software Version Description (SVD) DID|Docs::US_DOD::SVD>
-
-=item L<Version Description Document (VDD) DID|Docs::US_DOD::VDD>
-
-=back
+L<Test::Tech|Test::Tech>
 
 =for html
 <hr>
@@ -713,11 +594,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.08^
+VERSION : 0.09^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.07^
-REVISION: G^
+PREVIOUS_RELEASE: 0.08^
+REVISION: H^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -757,7 +638,7 @@ PREREQ_PM:
 'File::SmartNL' => 0,
 'File::Package' => 0,
 'File::TestPath' => 0,
-'Test::STD::Scrub' => 0,
+'Text::Scrub' => 0,
 ^
 
 TESTS: t/Test/Tech/Tech.t^
@@ -767,8 +648,7 @@ CHANGES:
 
 Changes to the previous version are as follows:
 
-Replace code in the 't/Tech/Tech.t' with
-the test_lib2inc method in the "File::TestPath" module.
+
 
 Previous changes are as follows:
 
@@ -895,7 +775,29 @@ In other words, all new objects are mostly same.
 
 \=item Test::Tech 0.07
 
+\=over 4
 
+=item t/Test/Tech/Tech.t t/Test/Tech/techCO.t
+
+Corrected typos in comments. More info in comments 
+
+\=item Tech::Tech
+
+Changed the test for TESTERR and Program_lines for setting
+in the tech_p hash from version number to if they are defined. 
+
+\=item File::Util
+
+Broke "File::FileUtil" apart into modules with more descriptive names.
+Switch to using the new modules "File::Package" and "File::SmartNL"
+instead of "file::FileUtil". 
+
+\=back
+
+\=item Test::Tech 0.09
+
+Left over usage of File::FileUtil in the test script files.
+Removed them. Switch from "Test::STD::Scrub" to "Text::Scrub"
 
 \=back
 
@@ -1108,152 +1010,11 @@ extension for a Perl Library Module
 
 extension for a Perl test script file
 
-\=item DID
-
-Data Item Description
-
-\=item DOD
-
-Department of Defense
-
-\=item POD
-
-Plain Old Documentation
-
-\=item STD
-
-Software Test Description
-
-\=item SVD
-
-Software Version Description
-
-\=item US
-
-United States
-
 \=back
 ^
 
 SEE_ALSO:
-Modules with end-user functional interfaces 
-relating to US DOD 2167A automation are
-as follows:
-
-\=over 4
-
-\=item L<Test::STDmaker|Test::STDmaker>
-
-\=item L<ExtUtils::SVDmaker|ExtUtils::SVDmaker>
-
-\=item L<DataPort::FileType::FormDB|DataPort::FileType::FormDB>
-
-\=item L<DataPort::DataFile|DataPort::DataFile>
-
-\=item L<Test::Tech|Test::Tech>
-
-\=item L<Test|Test>
-
-\=item L<Data::Dumper|Data::Dumper>
-
-\=item L<Test::STD::Scrub|Test::STD::Scrub>
-
-\=item L<Test::STD::STDutil|Test::STD::STDutil>
-
-\=item L<File::FileUtil|File::FileUtil>
-
-\=back
-
-The design modules for L<Test::STDmaker|Test::STDmaker>
-have no other conceivable use then to support the
-L<Test::STDmaker|Test::STDmaker> functional interface. 
-The  L<Test::STDmaker|Test::STDmaker>
-design modules are as follows:
-
-\=over 4
-
-\=item L<Test::STD::Check|Test::STD::Check>
-
-\=item L<Test::STD::FileGen|Test::STD::FileGen>
-
-\=item L<Test::STD::STD2167|Test::STD::STD2167>
-
-\=item L<Test::STD::STDgen|Test::STD::STDgen>
-
-\=item L<Test::STDtype::Demo|Test::STDtype::Demo>
-
-\=item L<Test::STDtype::STD|Test::STDtype::STD>
-
-\=item L<Test::STDtype::Verify|Test::STDtype::Verify>
-
-\=back
-
-
-Some US DOD 2167A Software Development Standard, DIDs and
-other related documents that complement the 
-US DOD 2167A automation are as follows:
-
-\=over 4
-
-\=item L<US DOD Software Development Standard|Docs::US_DOD::STD2167A>
-
-\=item L<US DOD Specification Practices|Docs::US_DOD::STD490A>
-
-\=item L<Computer Operation Manual (COM) DID|Docs::US_DOD::COM>
-
-\=item L<Computer Programming Manual (CPM) DID)|Docs::US_DOD::CPM>
-
-\=item L<Computer Resources Integrated Support Document (CRISD) DID|Docs::US_DOD::CRISD>
-
-\=item L<Computer System Operator's Manual (CSOM) DID|Docs::US_DOD::CSOM>
-
-\=item L<Database Design Description (DBDD) DID|Docs::US_DOD::DBDD>
-
-\=item L<Engineering Change Proposal (ECP) DID|Docs::US_DOD::ECP>
-
-\=item L<Firmware support Manual (FSM) DID|Docs::US_DOD::FSM>
-
-\=item L<Interface Design Document (IDD) DID|Docs::US_DOD::IDD>
-
-\=item L<Interface Requirements Specification (IRS) DID|Docs::US_DOD::IRS>
-
-\=item L<Operation Concept Description (OCD) DID|Docs::US_DOD::OCD>
-
-\=item L<Specification Change Notice (SCN) DID|Docs::US_DOD::SCN>
-
-\=item L<Software Design Specification (SDD) DID|Docs::US_DOD::SDD>
-
-\=item L<Software Development Plan (SDP) DID|Docs::US_DOD::SDP> 
-
-\=item L<Software Input and Output Manual (SIOM) DID|Docs::US_DOD::SIOM>
-
-\=item L<Software Installation Plan (SIP) DID|Docs::US_DOD::SIP>
-
-\=item L<Software Programmer's Manual (SPM) DID|Docs::US_DOD::SPM>
-
-\=item L<Software Product Specification (SPS) DID|Docs::US_DOD::SPS>
-
-\=item L<Software Requirements Specification (SRS) DID|Docs::US_DOD::SRS>
-
-\=item L<System or Segment Design Document (SSDD) DID|Docs::US_DOD::SSDD>
-
-\=item L<System or Subsystem Specification (SSS) DID|Docs::US_DOD::SSS>
-
-\=item L<Software Test Description (STD) DID|Docs::US_DOD::STD>
-
-\=item L<Software Test Plan (STP) DID|Docs::US_DOD::STP>
-
-\=item L<Software Test Report (STR) DID|Docs::US_DOD::STR>
-
-\=item L<Software Transition Plan (STrP) DID|Docs::US_DOD::STrP>
-
-\=item L<Software User Manual (SUM) DID|Docs::US_DOD::SUM>
-
-\=item L<Software Version Description (SVD) DID|Docs::US_DOD::SVD>
-
-\=item L<Version Description Document (VDD) DID|Docs::US_DOD::VDD>
-
-\=back
+L<Test::Tech|Test::Tech>
 
 ^
 

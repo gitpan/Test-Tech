@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.09';
-$DATE = '2003/06/24';
+$VERSION = '0.1';
+$DATE = '2003/07/05';
 
 use Cwd;
 use File::Spec;
@@ -126,8 +126,8 @@ skip_rest( $errors, 2 );
 #####
 # New $scrub object
 #
-use Test::STD::Scrub;
-my $s = 'Test::STD::Scrub';
+use Text::Scrub;
+my $s = 'Text::Scrub';
 
 #####
 #  ok:  3

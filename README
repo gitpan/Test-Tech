@@ -5,11 +5,11 @@ Title Page
 
      Test::Tech - Extends the Test program module
 
-     Revision: G
+     Revision: H
 
-     Version: 0.08
+     Version: 0.09
 
-     Date: 2003/06/24
+     Date: 2003/07/05
 
      Prepared for: General Public 
 
@@ -92,7 +92,7 @@ Title Page
 
   1.3 Document overview.
 
-    This document releases Test::Tech version 0.08 providing description of
+    This document releases Test::Tech version 0.09 providing description of
     the inventory, installation instructions and other information necessary
     to utilize and track this release.
 
@@ -104,8 +104,8 @@ Title Page
 
     This document releases the file found at the following repository(s):
 
-       http://www.softwarediamonds/packages/Test-Tech-0.08
-       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.08
+       http://www.softwarediamonds/packages/Test-Tech-0.09
+       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.09
 
     Restrictions regarding duplication and license provisions are as
     follows:
@@ -150,16 +150,16 @@ Title Page
 
      file                                                         version date       comment
      ------------------------------------------------------------ ------- ---------- ------------------------
-     lib/Docs/Site_SVD/Test_Tech.pm                               0.08    2003/06/24 revised 0.07
-     MANIFEST                                                     0.08    2003/06/24 generated, replaces 0.07
-     Makefile.PL                                                  0.08    2003/06/24 generated, replaces 0.07
-     README                                                       0.08    2003/06/24 generated, replaces 0.07
+     lib/Docs/Site_SVD/Test_Tech.pm                               0.09    2003/07/05 revised 0.08
+     MANIFEST                                                     0.09    2003/07/05 generated, replaces 0.08
+     Makefile.PL                                                  0.09    2003/07/05 generated, replaces 0.08
+     README                                                       0.09    2003/07/05 generated, replaces 0.08
      lib/Test/Tech.pm                                             1.09    2003/06/24 unchanged
-     t/Test/Tech/Tech.t                                           0.09    2003/06/24 revised 0.08
-     t/Test/Tech/techA0.t                                         0.05    2003/06/21 unchanged
+     t/Test/Tech/Tech.t                                           0.1     2003/07/05 revised 0.09
+     t/Test/Tech/techA0.t                                         0.06    2003/07/05 revised 0.05
      t/Test/Tech/techA2.txt                                       0.05    2003/06/19 unchanged
-     t/Test/Tech/techB0.t                                         0.02    2003/06/21 unchanged
-     t/Test/Tech/techC0.t                                         0.05    2003/06/24 unchanged
+     t/Test/Tech/techB0.t                                         0.03    2003/07/05 revised 0.02
+     t/Test/Tech/techC0.t                                         0.06    2003/07/05 revised 0.05
      t/Test/Tech/techC2.txt                                       0.06    2003/06/21 unchanged
      t/Test/Tech/techC3.txt                                       0.06    2003/06/21 unchanged
      t/Test/Tech/techD0.d                                         0.02    2003/06/21 unchanged
@@ -171,9 +171,6 @@ Title Page
   3.3 Changes
 
     Changes to the previous version are as follows:
-
-    Replace code in the 't/Tech/Tech.t' with the test_lib2inc method in the
-    "File::TestPath" module.
 
     Previous changes are as follows:
 
@@ -276,6 +273,22 @@ Title Page
         objects. In other words, all new objects are mostly same.
 
     Test::Tech 0.07
+        t/Test/Tech/Tech.t t/Test/Tech/techCO.t
+            Corrected typos in comments. More info in comments
+
+        Tech::Tech
+            Changed the test for TESTERR and Program_lines for setting in
+            the tech_p hash from version number to if they are defined.
+
+        File::Util
+            Broke "File::FileUtil" apart into modules with more descriptive
+            names. Switch to using the new modules "File::Package" and
+            "File::SmartNL" instead of "file::FileUtil".
+
+    Test::Tech 0.09
+        Left over usage of File::FileUtil in the test script files. Removed
+        them. Switch from "Test::STD::Scrub" to "Text::Scrub"
+
   3.4 Adaptation data.
 
     This installation requires that the installation site has the Perl
@@ -312,12 +325,14 @@ Title Page
 
         The distribution file is at the following respositories:
 
-           http://www.softwarediamonds/packages/Test-Tech-0.08
-           http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.08
+           http://www.softwarediamonds/packages/Test-Tech-0.09
+           http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.09
 
     Prerequistes.
-        'File::SmartNL' => 0, 'File::Package' => 0, 'File::TestPath' => 0,
-        'Test::STD::Scrub' => 0,
+         'File::SmartNL' => 0,
+         'File::Package' => 0,
+         'File::TestPath' => 0,
+         'Text::Scrub' => 0,
 
     Security, privacy, or safety precautions.
         None.
@@ -375,72 +390,219 @@ Title Page
 
     .t  extension for a Perl test script file
 
-    DID Data Item Description
-
-    DOD Department of Defense
-
-    POD Plain Old Documentation
-
-    STD Software Test Description
-
-    SVD Software Version Description
-
-    US  United States
-
 2.0 SEE ALSO
-    Modules with end-user functional interfaces relating to US DOD 2167A
-    automation are as follows:
-
-    Test::STDmaker
-    ExtUtils::SVDmaker
-    DataPort::FileType::FormDB
-    DataPort::DataFile
     Test::Tech
-    Test
-    Data::Dumper
-    Test::STD::Scrub
-    Test::STD::STDutil
-    File::FileUtil
-    The design modules for Test::STDmaker have no other conceivable use then
-    to support the Test::STDmaker functional interface. The Test::STDmaker
-    design modules are as follows:
 
-    Test::STD::Check
-    Test::STD::FileGen
-    Test::STD::STD2167
-    Test::STD::STDgen
-    Test::STDtype::Demo
-    Test::STDtype::STD
-    Test::STDtype::Verify
-    Some US DOD 2167A Software Development Standard, DIDs and other related
-    documents that complement the US DOD 2167A automation are as follows:
+    t/Test/Tech/Tech.t t/Test/Tech/techCO.t
+    Corrected typos in comments. More info in comments
 
-    US DOD Software Development Standard
-    US DOD Specification Practices
-    Computer Operation Manual (COM) DID
-    Computer Programming Manual (CPM) DID)
-    Computer Resources Integrated Support Document (CRISD) DID
-    Computer System Operator's Manual (CSOM) DID
-    Database Design Description (DBDD) DID
-    Engineering Change Proposal (ECP) DID
-    Firmware support Manual (FSM) DID
-    Interface Design Document (IDD) DID
-    Interface Requirements Specification (IRS) DID
-    Operation Concept Description (OCD) DID
-    Specification Change Notice (SCN) DID
-    Software Design Specification (SDD) DID
-    Software Development Plan (SDP) DID
-    Software Input and Output Manual (SIOM) DID
-    Software Installation Plan (SIP) DID
-    Software Programmer's Manual (SPM) DID
-    Software Product Specification (SPS) DID
-    Software Requirements Specification (SRS) DID
-    System or Segment Design Document (SSDD) DID
-    System or Subsystem Specification (SSS) DID
-    Software Test Description (STD) DID
-    Software Test Plan (STP) DID
-    Software Test Report (STR) DID
-    Software Transition Plan (STrP) DID
-    Software User Manual (SUM) DID
-    Software Version Description (SVD) DID
-    Version Description Document (VDD) DID
+    \=item Tech::Tech
+
+    Changed the test for TESTERR and Program_lines for setting in the tech_p
+    hash from version number to if they are defined.
+
+    \=item File::Util
+
+    Broke "File::FileUtil" apart into modules with more descriptive names.
+    Switch to using the new modules "File::Package" and "File::SmartNL"
+    instead of "file::FileUtil".
+
+    \=back
+
+    \=item Test::Tech 0.09
+
+    Left over usage of File::FileUtil in the test script files. Removed
+    them. Switch from "Test::STD::Scrub" to "Text::Scrub"
+
+    \=back
+
+    ^
+
+    CAPABILITIES: The system is the Perl programming language software. As
+    established by the Perl referenced documents, program modules, such the
+    "Test::Tech" module, extend the Perl language.
+
+    The "Test::Tech" module extends the capabilities of the "Test" module.
+
+    The design is simple. The "Test::Tech" module loads the "Test" module
+    without exporting any "Test" subroutines into the "Test::Tech"
+    namespace. There is a "Test::Tech" cover subroutine with the same name
+    for each "Test" module subroutine. Each "Test::Tech" cover subroutine
+    will call the &Test::$subroutine before or after it adds any additional
+    capabilities. The "Test::Tech" module is a drop-in for the "Test"
+    module. Who said you cannot reuse code that is not object oriented? This
+    design proves if the driving reason to use object oriented code is
+    reusability, it is a very poor reason.
+
+    The "Test::Tech" module extends the capabilities of the "Test" module as
+    follows:
+
+    \=over
+
+    \=item *
+
+    If the compared variables are references, stingifies the referenced
+    variable by passing the reference through *Data::Dumper* before making
+    the comparison. Thus, Test::Tech can test almost any data structure. If
+    the compare variables are not refernces, use the &Test::ok and
+    &Test::skip directly.
+
+    \=item *
+
+    Adds a method to skip the rest of the tests upon a critical failure
+
+    \=item *
+
+    Adds a method to generate demos that appear as an interactive session
+    using the methods under test
+
+    \=back
+
+    The "Test::Tech" module was originally developed for the US DOD STD2167A
+    bundle and is an integral part of the US DOD STD2167A bundle of modules.
+    The "Test::Tech" module was broken out from the design modules because
+    it may have uses outside the US DOD STD2167A bundle.
+
+    Two STD2167A bundle end user (functional interface) modules are as
+    follows:
+
+    \=over 4
+
+    \=item Test::STDmaker
+
+    generates Test script, demo script and STD document POD from a text
+    database in the Data::Port::FileTYpe::FormDB format.
+
+    \=item Test::SVDmaker
+
+    generates SVD document POD and distribution *.tar.gz file including a
+    generated Makefile.PL README and MANIFEST file from a text database in
+    the Data::Port::FileTYpe::FormDB format.
+
+    \=back
+
+    The dependency of the program modules in the US DOD STD2167A bundle is
+    as follows:
+
+     File::FileUtil 
+       Test::STD::Scrub
+         Test::Tech
+            DataPort::FileType::FormDB DataPort::DataFile DataPort::Maker Test::STD::Template
+                Test::STDmaker ExtUtils::SVDmaker
+
+    Note the File::FileUtil, Test::STD::STDutil Test::STD::Scrub program
+    modules breaks up the Test::TestUtil program module and Test::TestUtil
+    has disappeared. ^
+
+    PROBLEMS: Known issues are as follows:
+
+    \=over 4
+
+    \=item Merge with the "Test" module
+
+    The "Test::Tech" capabilites could be incorporated into the "Test"
+    program module and "Test::Tech" eliminated.
+
+    \=item TestLevel and Program_Lines
+
+    The "Test" module does not take the *$TestLevel* value into account
+    where it chooses the module to load the *%Program_Line* hash. Since the
+    the Test::Tech manpage module adds a module layer in between the the
+    Test manpage module that the test script, the *$TestLevel* must be set
+    to 1. Thus, the the Test manpage module loads the the Test::Tech manpage
+    module into *%Program_Line* hash instead of the Module Under Test.
+
+    \=item "Data::Dumper" stringification not portable
+
+    For numeric arrays, "Data::Dumper" module will not stringify them the
+    same for all Perls. The below Perl code will produce different results
+    for different Perls
+
+     $probe = 3;
+     $actual = Dumper([0+$probe]);
+
+    For Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary,
+    the results will be '[\'3\']' while for Perl version 5.008 for solaris
+    the results will be '[3]'.
+
+    The '[\'3\']' results is probable wrong, and the Perls that produce them
+    are mutants that should be hunted down and killed.
+
+    \=back ^
+
+    DOCUMENT_OVERVIEW: This document releases ${NAME} version ${VERSION}
+    providing description of the inventory, installation instructions and
+    other information necessary to utilize and track this release. ^
+
+    LICENSE: Software Diamonds permits the redistribution and use in source
+    and binary forms, with or without modification, provided that the
+    following conditions are met:
+
+    \=over 4
+
+    \=item 1
+
+    Redistributions of source code, modified or unmodified must retain the
+    above copyright notice, this list of conditions and the following
+    disclaimer.
+
+    \=item 2
+
+    Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+    \=back
+
+    SOFTWARE DIAMONDS, http://www.SoftwareDiamonds.com, PROVIDES THIS
+    SOFTWARE 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+    NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SOFTWARE
+    DIAMONDS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL,EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF NEGLIGENCE OR OTHERWISE) ARISING IN
+    ANY WAY OUT OF THE POSSIBILITY OF SUCH DAMAGE. ^
+
+    INSTALLATION: To installed the release file, use the CPAN module in the
+    Perl release or the INSTALL.PL script at the following web site:
+
+     http://packages.SoftwareDiamonds.com
+
+    Follow the instructions for the the chosen installation software.
+
+    The distribution file is at the following respositories:
+
+    ${REPOSITORY} ^
+
+    SUPPORT: 603 882-0846 <support@SoftwareDiamonds.com>^
+
+    NOTES: The following are useful acronyms:
+
+    \=over 4
+
+    \=item .d
+
+    extension for a Perl demo script file
+
+    \=item .pm
+
+    extension for a Perl Library Module
+
+    \=item .t
+
+    extension for a Perl test script file
+
+    \=back ^
+
+    SEE_ALSO: Test::Tech
+
+    ^
+
+    HTML: <hr> <p><br> <!-- BLK ID="PROJECT_MANAGEMENT" --> <!-- /BLK -->
+    <p><br> <!-- BLK ID="NOTICE" --> <!-- /BLK --> <p><br> <!-- BLK
+    ID="OPT-IN" --> <!-- /BLK --> <p><br> <!-- BLK ID="LOG_CGI" --> <!--
+    /BLK --> <p><br> ^ ~-~
+
