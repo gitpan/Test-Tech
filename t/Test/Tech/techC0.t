@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.08';
-$DATE = '2003/09/15';
+$VERSION = '0.09';
+$DATE = '2003/09/18';
 
 use Cwd;
 use File::Spec;
@@ -148,8 +148,6 @@ END {
 # 
 tech_config('Test.TESTERR', \*STDOUT);
 
-my $internal_number = tech_config('Internal_Number');
-
 my $x = 2;
 my $y = 3;
 
@@ -159,33 +157,18 @@ my $y = 3;
 #
 #  ok:  1
 #
-if( $internal_number eq 'string') {
-    ok( [$x+$y,$y-$x], # actual results
-              ['5','1'], # expected results
-             '', 'Todo test that passes');
-}
-else {
-    ok( [$x+$y,$y-$x], # actual results
-              [5,1], # expected results
-             '', 'Todo test that passes');
-}
+ok( [$x+$y,$y-$x], # actual results
+    [5,1], # expected results
+    '', 'Todo test that passes');
 
 
 ########
 #
 #  ok:  2
 #
-if( $internal_number eq 'string') {
-    ok( [$x+$y,$x*$y], # actual results
-          ['6','5'], # expected results
-          '', 'Test that fails');
-}
-else{
-    ok( [$x+$y,$x*$y], # actual results
-          [6,5], # expected results
-          '', 'Test that fails');
-}
-
+ok( [$x+$y,$x*$y], # actual results
+    [6,5], # expected results
+    '', 'Test that fails');
 
 __END__
 

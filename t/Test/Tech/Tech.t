@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.12';
-$DATE = '2003/09/15';
+$VERSION = '0.13';
+$DATE = '2003/09/18';
 
 use Cwd;
 use File::Spec;
@@ -193,26 +193,16 @@ ok( $actual_results, $expected_results);
 #####
 #  ok:  5
 # 
-# Run test script test techD0.t
+# Run test script test techC0.t
 #
 # R:
 #
-print "# Run test script techC0.t - Uses Test 1.24 - (0+\$number) test\n";
+print "# Run test script techC0.t - Uses Test 1.24\n";
 
 $actual_results = `perl techC0.t`;
 $snl->fout('tech1.txt', $actual_results);
 $actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
-
-#######
-# expected results depend upon the internal storage from numbers 
-#
-if( $internal_storage eq 'string') {
-    $expected_results = $snl->fin('techC2.txt');
-}
-else {
-    $expected_results = $snl->fin('techC3.txt');
-}
-
+$expected_results = $snl->fin('techC2.txt');
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
 ok( $actual_results, $expected_results); 
 
