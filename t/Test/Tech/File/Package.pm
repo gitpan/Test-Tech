@@ -12,7 +12,7 @@ use warnings::register;
 
 use vars qw($VERSION $DATE $FILE);
 $VERSION = '1.13';
-$DATE = '2004/04/07';
+$DATE = '2004/04/08';
 $FILE = __FILE__;
 
 use File::Spec;

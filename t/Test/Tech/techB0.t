@@ -5,211 +5,98 @@ use 5.001;
 use strict;
 use warnings;
 use warnings::register;
-
 use vars qw($VERSION $DATE);
-$VERSION = '0.07';
-$DATE = '2004/04/07';
+$VERSION = '0.08';
+$DATE = '2004/04/08';
 
-use Cwd;
-use File::Spec;
-
-######
-#
-# T:
-#
-# use a BEGIN block so we print our plan before Module Under Test is loaded
-#
 BEGIN {
 
-   use vars qw($t $__restore_dir__ @__restore_inc__);
-
-   ########
-   # Working directory is that of the script file
-   #
+   use FindBIN;
+   use File::Spec;
+   use Cwd;
+   use vars qw( $__restore_dir__ );
    $__restore_dir__ = cwd();
-   my ($vol, $dirs) = File::Spec->splitpath(__FILE__);
+   my ($vol, $dirs) = File::Spec->splitpath($FindBin::Bin,'nofile');
    chdir $vol if $vol;
    chdir $dirs if $dirs;
-   ($vol, $dirs) = File::Spec->splitpath(cwd(), 'nofile'); # absolutify
+   use lib $FindBin::Bin;
 
-   #######
-   # Add the library of the unit under test (UUT) to @INC
-   # It will be found first because it is first in the include path
-   #
-   @__restore_inc__ = @INC;
-
-   ######
-   # Find root path of the t directory
-   #
-   my @updirs = File::Spec->splitdir( $dirs );
-   while(@updirs && $updirs[-1] ne 't' ) { 
-       chdir File::Spec->updir();
-       pop @updirs;
-   };
-   chdir File::Spec->updir();
-   my $lib_dir = cwd();
-
-   #####
-   # Add this to the include path. Thus modules that start with t::
-   # will be found.
-   # 
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;  # include the current test directory
-
-   #####
-   # Add lib to the include path so that modules under lib at the
-   # same level as t, will be found
-   #
-   $lib_dir = File::Spec->catdir( cwd(), 'lib' );
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;
-
-   #####
-   # Add tlib to the include path so that modules under tlib at the
-   # same level as t, will be found
-   #
-   $lib_dir = File::Spec->catdir( cwd(), 'tlib' );
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;
-   chdir $dirs if $dirs;
-   #######
-   # Add the directory with "Test.pm" version 1.15 to the front of @INC
-   #
-   # Thus, load Test::Tech, will find Test.pm 1.15 first
-   #
+   # Add the directory with "Test.pm" version 1.24 to the front of @INC
+   # Thus, load Test::Tech, will find Test.pm 1.24 first
    unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
 
-   ########
    # Create the test plan by supplying the number of tests
    # and the todo tests
-   #
    require Test::Tech;
    Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
    plan(tests => 8, todo => [4, 8]);
 
 }
 
-
 END {
-
-   #########
    # Restore working directory and @INC back to when enter script
-   #
-   @INC = @__restore_inc__;
+   @INC = @lib::ORIG_INC;
    chdir $__restore_dir__;
 }
 
-######
-#
 # 1.24 error goes to the STDERR
 # while 1.15 goes to STDOUT
-#
 # redirect STDERR to the STDOUT
-# 
 tech_config('Test.TESTERR', \*STDOUT);
 
 my $x = 2;
 my $y = 3;
 
-#########
 #  ok:  1 - Using Test 1.24
-#
 ok( $Test::VERSION, '1.24', '', 'Test version');
-
-
-#########
-#  ok:  2 - Do not skip rest
-#
-skip_tests( 1 ) unless ok(
+skip_tests( 1 ) unless ok( #  ok:  2 - Do not skip rest
     $x + $y, # actual results
     5, # expected results
     '', 'Pass test'); 
 
-#########
-#
 #  ok:  3
-#
-# R:
 #
 skip( 1, # condition to skip test   
       ($x*$y*2), # actual results
       6, # expected results
       '','Skipped tests');
 
-#######
-#  zyw feature
-#  Under development, i.e todo
-#
-#  ok:  4
-#
-# R:
-#
-ok( $x*$y*2, # actual results
-          6, # expected results
-          '','Todo Test that Fails');
-####
-# 
-#  ok:  5
-#
-# R:
-#
-skip_tests(1) unless ok(
+#  zyw feature Under development, i.e todo
+ok( #  ok:  4
+    $x*$y*2, # actual results
+    6, # expected results
+    '','Todo Test that Fails');
+
+skip_tests(1) unless ok( #  ok:  5
     $x + $y, # actual results
     6, # expected results
     '','Failed test that skips the rest'); 
 
-####
-#
-#  ok:  6
-#
-# R:
-#
-ok( $x + $y + $x, # actual results
-          9, # expected results
-          '', 'A test to skip');
+ok( #  ok:  6
+    $x + $y + $x, # actual results
+    9, # expected results
+    '', 'A test to skip');
 
-####
-# 
-#  ok:  7
-# 
-# R:
-#
-ok( $x + $y + $x + $y, # actual results
-          10, # expected results
-          '', 'A not skip to skip');
+ok( #  ok:  7
+    $x + $y + $x + $y, # actual results
+    10, # expected results
+    '', 'A not skip to skip');
 
-####
-# 
-#  ok:  8
-# 
-# R:
-#
 skip_tests(0);
-ok( $x*$y*2, # actual results
-          12, # expected results
-          '', 'Stop skipping tests. Todo Test that Passes');
+ok( #  ok:  8
+    $x*$y*2, # actual results
+         12, # expected results
+         '', 'Stop skipping tests. Todo Test that Passes');
 
-#########
-#  ok:  9
-#
-ok(
+ok( #  ok:  9
     $x * $y, # actual results
     6, # expected results
     {name => 'Unplanned pass test'}); 
 
 
-
-finish() # pick up stats
+finish(); # pick up stats
 
 __END__
-
-=head1 NAME
-
-techB1.t - test script for Test::Tech
-
-=head1 SYNOPSIS
-
- techB1.t 
 
 =head1 COPYRIGHT
 

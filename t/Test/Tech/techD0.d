@@ -7,90 +7,36 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.04';   # automatically generated file
-$DATE = '2003/09/15';
+$VERSION = '0.05';   # automatically generated file
+$DATE = '2004/04/08';
 
 use Cwd;
 use File::Spec;
 
 BEGIN {
-
-   use vars qw($t $T $__restore_dir__ @__restore_inc__);
-
-   ########
-   # Working directory is that of the script file
-   #
+   use FindBIN;
+   use File::Spec;
+   use Cwd;
+   use vars qw( $__restore_dir__ );
    $__restore_dir__ = cwd();
-   my ($vol, $dirs) = File::Spec->splitpath(__FILE__);
+   my ($vol, $dirs) = File::Spec->splitpath($FindBin::Bin,'nofile');
    chdir $vol if $vol;
    chdir $dirs if $dirs;
-   ($vol, $dirs) = File::Spec->splitpath(cwd(), 'nofile'); # absolutify
+   use lib $FindBin::Bin;
 
-   #######
-   # Add the library of the unit under test (UUT) to @INC
-   # It will be found first because it is first in the include path
-   #
-   @__restore_inc__ = @INC;
-
-   ######
-   # Find root path of the t directory
-   #
-   my @updirs = File::Spec->splitdir( $dirs );
-   while(@updirs && $updirs[-1] ne 't' ) { 
-       chdir File::Spec->updir();
-       pop @updirs;
-   };
-   chdir File::Spec->updir();
-   my $lib_dir = cwd();
-
-   #####
-   # Add this to the include path. Thus modules that start with t::
-   # will be found.
-   # 
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;  # include the current test directory
-
-   #####
-   # Add lib to the include path so that modules under lib at the
-   # same level as t, will be found
-   #
-   $lib_dir = File::Spec->catdir( cwd(), 'lib' );
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;
-
-   #####
-   # Add tlib to the include path so that modules under tlib at the
-   # same level as t, will be found
-   #
-   $lib_dir = File::Spec->catdir( cwd(), 'tlib' );
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;
-   chdir $dirs if $dirs;
-
-   #######
-   # Add the directory with "Test.pm" version 1.15 to @INC
-   #
-   # Thus, when load Test::Tech, it will find Test.pm 1.15
-   #
+   # Add the directory with "Test.pm" version 1.24 to the front of @INC
+   # Thus, load Test::Tech, will find Test.pm 1.24 first
    unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
 
-   ########
-   # Create the test plan by supplying the number of tests
-   # and the todo tests
-   #
    require Test::Tech;
    Test::Tech->import( qw(demo) );
 }
 
 END {
-
-   #########
    # Restore working directory and @INC back to when enter script
-   #
-   @INC = @__restore_inc__;
+   @INC = @lib::ORIG_INC;
    chdir $__restore_dir__;
 }
-
 
 print << 'MSG';
 
@@ -191,18 +137,7 @@ $x + $y + $x + $y + $x # execution
 ) unless     1; # condition for execution                            
 
 
-
-=head1 NAME
-
-tgA1.d - demostration script for Test::STDmaker::tg1
-
-=head1 SYNOPSIS
-
- tgA1.d
-
-=head1 OPTIONS
-
-None.
+__END__
 
 =head1 COPYRIGHT
 

@@ -1,3 +1,781 @@
+NAME
+    Test::Tech - adds skip_tests and test data structures capabilities to
+    the "Test" module
+
+SYNOPSIS
+     #######
+     # Procedural (subroutine) Interface
+     #
+     # (use for &Test::plan, &Test::ok, &Test::skip drop in)
+     #  
+     use Test::Tech qw(plan ok skip skip_tests tech_config stringify demo);
+
+     $new_value  = tech_config( $key, $old_value);
+
+     $success = plan(@args);
+
+     $test_ok = ok($actual_results, $expected_results, [@options]);
+     $test_ok = ok($actual_results, $expected_results, {@options});
+     $test_ok = ok($actual_results, $expected_results, $diagnostic, [@options]);
+     $test_ok = ok($actual_results, $expected_results, $diagnostic, {@options});
+     $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name, [@options]);
+     $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name, {@options});
+
+     $test_ok = skip($skip_test, $actual_results,  $expected_results, [@options]);
+     $test_ok = skip($skip_test, $actual_results,  $expected_results, {@options});
+     $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, [@options]);
+     $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, {@options});
+     $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name, [@options]);
+     $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name, {@options});
+
+     $state = skip_tests( $on_off, $skip_diagnostic);
+     $state = skip_tests( $on_off );
+     $state = skip_tests( );
+
+     $string = stringify( $var, @options); # imported from Data::Secs2
+     $string = $tech->stringify($var, [@options]);
+     $string = $tech->stringify($var, {@options});
+
+     (@stats) = finish( );
+     $num_passed = finish( );
+
+     demo($quoted_expression, @expression)
+
+     #####
+     # Object Interface
+     # 
+     $tech = new Test::Tech;
+
+     $test_ok = $tech->ok($actual_results, $expected_results, [@options]);
+     $test_ok = $tech->ok($actual_results, $expected_results, {@options]};
+     $test_ok = $tech->ok($actual_results, $expected_results, $diagnostic, [@options]);
+     $test_ok = $tech->ok($actual_results, $expected_results, $diagnostic, {@options]};
+     $test_ok = $tech->ok($actual_results, $expected_results, $diagnostic, $test_name, [@options]);
+     $test_ok = $tech->ok($actual_results, $expected_results, $diagnostic, $test_name, {@options]};
+
+     $test_ok = $tech->skip($skip_test, $actual_results,  $expected_results, [@options]);
+     $test_ok = $tech->skip($skip_test, $actual_results,  $expected_results, {@options});
+     $test_ok = $tech->skip($skip_test, $actual_results,  $expected_results, $diagnostic, [@options]);
+     $test_ok = $tech->skip($skip_test, $actual_results,  $expected_results, $diagnostic, {@options});
+     $test_ok = $tech->skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name, [@options]);
+     $test_ok = $tech->skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name, {@options});
+
+     $state  = $tech->skip_tests( );
+     $state  = $tech->skip_tests( $on_off );
+     $state = skip_tests( $on_off, $skip_diagnostic );
+
+     $string = $tech->stringify($var); # imported from Data::Secs2
+     $string = $tech->stringify($var, @options); 
+     $string = $tech->stringify($var, [@options]);
+     $string = $tech->stringify($var, {@options});
+
+     $new_value = $tech->tech_config($key, $old_value);
+
+     (@stats) = $tech->finish( );
+     $num_passed = $tech->finish( );
+
+     $tech->demo($quoted_expression, @expression)
+
+DESCRIPTION
+    The "Test::Tech" module extends the capabilities of the "Test" module.
+
+    The design is simple. The "Test::Tech" module loads the "Test" module
+    without exporting any "Test" subroutines into the "Test::Tech"
+    namespace. There is a "Test::Tech" cover subroutine with the same name
+    for each "Test" module subroutine. Each "Test::Tech" cover subroutine
+    will call the &Test::$subroutine before or after it adds any additional
+    capabilities. The "Test::Tech" module procedural (subroutine) interface
+    is a drop-in for the "Test" module.
+
+    The "Test::Tech" has a hybrid interface. The subroutine/methods that use
+    object data are the 'new', 'ok', 'skip', 'skip_tests', 'tech_config' and
+    'finish' subroutines/methods.
+
+    When the module is loaded it creates a default object. If any of the
+    above subroutines/methods are used procedurally, without a class or
+    object, the subroutine/method will use the default method.
+
+    The "Test::Tech" module extends the capabilities of the "Test" module as
+    follows:
+
+    *   Compare almost any data structure by passing variables through the
+        Data::Secs2::stringify() subroutine before making the comparision
+
+    *   Method to skip the rest of the tests, with a $dianostic input, upon
+        a critical failure.
+
+    *   Adds addition $name, [@option], {@option} inputs to the ok and skip
+        subroutines. The $name input is print as "ok $test_num - $name" or
+        "not ok $test_num - $name".
+
+    *   Method to generate demos that appear as an interactive session using
+        the methods under test
+
+  plan subroutine
+     $success = plan(@args);
+
+    The *plan* subroutine is a cover method for &Test::plan. The *@args* are
+    passed unchanged to &Test::plan. All arguments are options. Valid
+    options are as follows:
+
+    tests
+        The number of tests. For example
+
+         tests => 14,
+
+    todo
+        An array of test that will fail. For example
+
+         todo => [3,4]
+
+    onfail
+        A subroutine that the *Test* module will execute on a failure. For
+        example,
+
+         onfail => sub { warn "CALL 911!" } 
+
+  ok subroutine
+     $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name, [@options]);
+     $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name, {@options});
+
+    The $diagnostic, $test_name, [@options], and {@options} inputs are
+    optional. The $actual_results and $expected_results inputs may be
+    references to any type of data structures. The @options is a hash input
+    that will process the 'diagnostic' key the same as the $diagnostic input
+    and the 'name' key the same as the $test_name input.
+
+    The *ok* method is a cover function for the &Test::ok subroutine that
+    extends the &Test::ok routine as follows:
+
+    *   Prints out the *$test_name* to provide an English identification of
+        the test. The $test_name appears as either "ok $test_num - $name" or
+        "not ok $test_num - $name".
+
+    *   The *ok* subroutine passes referenced inputs *$actual_results* and
+        *$expectet_results* through Data::Secs2::stringify() subroutine. The
+        *ok* method then uses &Test::ok to compare the text results from
+        Data::Secs2::stringify() subroutine.
+
+    *   The *ok* subroutine method passes variables that are not a reference
+        directly to &Test::ok unchanged.
+
+    *   Responses to a flag set by the skip_tests subroutine subroutine and
+        skips the test completely.
+
+  skip subroutine
+     $test_ok = skip($actual_results, $expected_results, $diagnostic $test_name, [@options]);
+     $test_ok = skip($actual_results, $expected_results, $diagnostic $test_name, {@options});
+
+    The $diagnostic, $test_name, [@options], and {@options} inputs are
+    optional. The $actual_results and $expected_results inputs may be
+    references to any type of data structures. The @options is a hash input
+    that will process the 'diagnostic' key the same as the $diagnostic input
+    and the 'name' key the same as the $test_name input.
+
+    The *skip* subroutine is a cover function for the &Test::skip subroutine
+    that extends the &Test::skip the same as the ok subroutine subroutine
+    extends the *&Test::ok* subroutine.
+
+  skip_tests method
+     $state = skip_tests( $on_off );
+     $state = skip_tests( );
+
+    The *skip_tests* subroutine sets a flag that causes the *ok* and the
+    *skip* methods to skip testing.
+
+  stringify subroutine
+     $string = stringify( $var );
+
+    The *stringify* subroutine will stringify *$var* using the
+    "Data::Secs2::stringify subroutine" module only if *$var* is a
+    reference; otherwise, it leaves it unchanged.
+
+  tech_config subroutine
+     $old_value = tech_config( $dot_index, $new_value );
+
+    The *tech_config* subroutine reads and writes the below configuration
+    variables
+
+     dot index              contents           mode
+     --------------------   --------------     --------
+     Test.ntest             $Test::ntest       read only 
+     Test.TESTOUT           $Test::TESTOUT     read write
+     Test.TestLevel         $Test::TestLevel   read write
+     Test.ONFAIL            $Test::ONFAIL      read write
+     Test.TESTERR           $Test::TESTERR     read write
+     Skip_Tests             # boolean          read write
+ 
+    The *tech_config* subroutine always returns the *$old_value* of
+    *$dot_index* and only writes the contents if *$new_value* is defined.
+
+    The 'SCALAR' and 'ARRAY' references are transparent. The *tech_config*
+    subroutine, when it senses that the *$dot_index* is for a 'SCALAR' and
+    'ARRAY' reference, will read or write the contents instead of the
+    reference.
+
+    The The *tech_config* subroutine will read 'HASH" references but will
+    never change them.
+
+    The variables for the top level 'Dumper' *$dot_index* are established by
+    "Data::Dumper" module; for the top level 'Test', the "Test" module.
+
+  finish subroutine
+     (@stats) = $tech->finish( );
+     $num_passed = $tech->finish( );
+
+    The finish() subroutine/method outputs the test steps that are missing,
+    failed, unplanned and other statistics.
+
+    The finish() subroutine/method restores changes made to the 'Test'
+    module module made by the 'tech_config' subroutine/method or directly.
+
+    When the 'new' subroutine/method creates a 'Test::Tech' object, the Perl
+    will automatically run the 'finish' method when that object is
+    destoried.
+
+    Running the 'finish' method without a class or object, restores the
+    'Test' module to the values when the 'Test::Tech' module was loaded.
+
+    The @stats array consists of the following:
+
+    *   number of tests
+
+        This is calculated as the maximum of the tests planned and the
+        highest test number. From the maximum, substract the skipped tests.
+        In other words, the sum of the missed, passed and failed test steps.
+
+    1   reference to the unplanned test steps
+
+    2   reference to the missed test steps
+
+    3   reference to the skipped test steps
+
+    4   reference to the passed test steps
+
+    5   reference to the failed test steps
+
+  demo subroutine
+     demo($quoted_expression, @expression)
+
+    The demo subroutine/method provides a session like out. The
+    '$quoted_express' is printed out as typed in from the keyboard. The
+    '@expression' is executed and printed out as the results of
+    '$quoted_expression'.
+
+REQUIREMENTS
+    Coming soon.
+
+DEMONSTRATION
+     ~~~~~~ Demonstration overview ~~~~~
+
+    Perl code begins with the prompt
+
+     =>
+
+    The selected results from executing the Perl Code follow on the next
+    lines. For example,
+
+     => 2 + 2
+     4
+
+     ~~~~~~ The demonstration follows ~~~~~
+
+     =>     use File::Spec;
+
+     =>     use File::Package;
+     =>     my $fp = 'File::Package';
+
+     =>     use Text::Scrub;
+     =>     my $s = 'Text::Scrub';
+
+     =>     use File::SmartNL;
+     =>     my $snl = 'File::SmartNL';
+
+     =>     my $uut = 'Test::Tech';
+     => $snl->fin('techA0.t')
+     '#!perl
+     #
+     #
+     use 5.001;
+     use strict;
+     use warnings;
+     use warnings::register;
+     use vars qw($VERSION $DATE);
+     $VERSION = '0.1';
+     $DATE = '2004/04/07';
+
+     BEGIN {
+        use FindBIN;
+        use File::Spec;
+        use Cwd;
+        use vars qw( $__restore_dir__ );
+        $__restore_dir__ = cwd();
+        my ($vol, $dirs) = File::Spec->splitpath($FindBin::Bin,'nofile');
+        chdir $vol if $vol;
+        chdir $dirs if $dirs;
+        use lib $FindBin::Bin;
+
+        # Add the directory with "Test.pm" version 1.15 to the front of @INC
+        # Thus, 'use Test;' in  Test::Tech, will find Test.pm 1.15 first
+        unshift @INC, File::Spec->catdir ( cwd(), 'V001015'); 
+
+        # Create the test plan by supplying the number of tests
+        # and the todo tests
+        require Test::Tech;
+        Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
+        plan(tests => 8, todo => [4, 8]);
+     }
+
+     END {
+        # Restore working directory and @INC back to when enter script
+        @INC = @lib::ORIG_INC;
+        chdir $__restore_dir__;
+     }
+
+     my $x = 2;
+     my $y = 3;
+
+     #  ok:  1 - Using Test 1.15
+     ok( $Test::VERSION, '1.15', '', 'Test version');
+
+     skip_tests( 1 ) unless ok( #  ok:  2 - Do not skip rest
+         $x + $y, # actual results
+         5, # expected results
+         '', 'Pass test'); 
+
+     #  ok:  3
+     #
+     skip( 1, # condition to skip test   
+           ($x*$y*2), # actual results
+           6, # expected results
+           '','Skipped tests');
+
+     #  zyw featureUnder development, i.e todo
+     ok( #  ok:  4
+         $x*$y*2, # actual results
+         6, # expected results
+         '','Todo Test that Fails');
+
+     skip_tests(1) unless ok( #  ok:  5
+         $x + $y, # actual results
+         6, # expected results
+         '','Failed test that skips the rest'); 
+
+     ok( #  ok:  6
+         $x + $y + $x, # actual results
+         9, # expected results
+         '', 'A test to skip');
+
+     ok( #  ok:  7
+         $x + $y + $x + $y, # actual results
+         10, # expected results
+         '', 'A not skip to skip');
+
+     skip_tests(0);
+     ok( #  ok:  8
+         $x*$y*2, # actual results
+              12, # expected results
+              '', 'Stop skipping tests. Todo Test that Passes');
+
+     ok( #  ok:  9
+         $x * $y, # actual results
+         6, # expected results
+         {name => 'Unplanned pass test'}); 
+
+     finish(); # pick up stats
+
+     __END__
+
+     =head1 COPYRIGHT
+
+     This test script is public domain.
+
+     =cut
+
+     ## end of test script file ##
+
+     '
+
+     =>     my $actual_results = `perl techA0.t`;
+     =>     $snl->fout('tech1.txt', $actual_results);
+     => $s->scrub_probe($s->scrub_file_line($actual_results))
+     '1..8 todo 4 8;
+     ok 1 - Test version 
+     ok 2 - Pass test 
+     ok 3 - Skipped tests  # skip
+     not ok 4 - Todo Test that Fails 
+     # Test 4 got: '12' (xxxx.t at line 000 *TODO*)
+     #   Expected: '6'
+     not ok 5 - Failed test that skips the rest 
+     # Test 5 got: '5' (xxxx.t at line 000)
+     #   Expected: '6'
+     ok 6 - A test to skip  # skip
+     # Test 6 got:
+     # Expected: (Test not performed because of previous failure.)
+     ok 7 - A not skip to skip  # skip
+     # Test 7 got:
+     # Expected: (Test not performed because of previous failure.)
+     ok 8 - Stop skipping tests. Todo Test that Passes  # (xxxx.t at line 000 TODO?!)
+     ok 9 - Unplanned pass test 
+     # Extra  : 9
+     # Skipped: 3 6 7
+     # Failed : 4 5
+     # Passed : 4/6 66%
+     '
+
+     => $snl->fin('techC0.t')
+     '#!perl
+     #
+     #
+     use 5.001;
+     use strict;
+     use warnings;
+     use warnings::register;
+
+     use vars qw($VERSION $DATE);
+     $VERSION = '0.11';
+     $DATE = '2004/04/07';
+
+     BEGIN {
+        use FindBIN;
+        use File::Spec;
+        use Cwd;
+        use vars qw( $__restore_dir__ );
+        $__restore_dir__ = cwd();
+        my ($vol, $dirs) = File::Spec->splitpath($FindBin::Bin,'nofile');
+        chdir $vol if $vol;
+        chdir $dirs if $dirs;
+        use lib $FindBin::Bin;
+
+        # Add the directory with "Test.pm" version 1.24 to the front of @INC
+        # Thus, load Test::Tech, will find Test.pm 1.24 first
+        unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
+
+        # Create the test plan by supplying the number of tests
+        # and the todo tests
+        require Test::Tech;
+        Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
+        plan(tests => 2, todo => [1]);
+
+     }
+
+     END {
+        # Restore working directory and @INC back to when enter script
+        @INC = @lib::ORIG_INC;
+        chdir $__restore_dir__;
+     }
+
+     # 1.24 error goes to the STDERR
+     # while 1.15 goes to STDOUT
+     # redirect STDERR to the STDOUT
+     tech_config('Test.TESTERR', \*STDOUT);
+
+     my $x = 2;
+     my $y = 3;
+
+     #  xy feature Under development, i.e todo
+     ok( #  ok:  1
+         [$x+$y,$y-$x], # actual results
+         [5,1], # expected results
+         '', 'Todo test that passes');
+
+     ok( #  ok:  2
+         [$x+$y,$x*$y], # actual results
+         [6,5], # expected results
+         '', 'Test that fails');
+
+     finish() # pick up stats
+
+     __END__
+
+     =head1 COPYRIGHT
+
+     This test script is public domain.
+
+     =cut
+
+     ## end of test script file ##
+
+     '
+
+     =>     $actual_results = `perl techC0.t`;
+     =>     $snl->fout('tech1.txt', $actual_results);
+     => $s->scrub_probe($s->scrub_file_line($actual_results))
+     '1..2 todo 1;
+     ok 1 - Todo test that passes  # (xxxx.t at line 000 TODO?!)
+     not ok 2 - Test that fails 
+     # Test 2 got: 'L[4]
+       A[0] 
+       A[5] ARRAY
+       A[1] 5
+       A[1] 6
+     ' (xxxx.t at line 000)
+     #   Expected: 'L[4]
+       A[0] 
+       A[5] ARRAY
+       A[1] 6
+       A[1] 5
+     '
+     # Failed : 2
+     # Passed : 1/2 50%
+     '
+
+     => $snl->fin('techE0.t')
+     '#!perl
+     #
+     #
+     use 5.001;
+     use strict;
+     use warnings;
+     use warnings::register;
+
+     use vars qw($VERSION $DATE);
+     $VERSION = '0.06';
+     $DATE = '2004/04/07';
+
+     BEGIN {
+        use FindBIN;
+        use File::Spec;
+        use Cwd;
+        use vars qw( $__restore_dir__ );
+        $__restore_dir__ = cwd();
+        my ($vol, $dirs) = File::Spec->splitpath($FindBin::Bin,'nofile');
+        chdir $vol if $vol;
+        chdir $dirs if $dirs;
+        use lib $FindBin::Bin;
+
+        # Add the directory with "Test.pm" version 1.24 to the front of @INC
+        # Thus, load Test::Tech, will find Test.pm 1.24 first
+        unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
+
+        require Test::Tech;
+        Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
+        plan(tests => 8, todo => [4, 8]);
+     }
+
+     END {
+        # Restore working directory and @INC back to when enter script
+        @INC = @lib::ORIG_INC;
+        chdir $__restore_dir__;
+     }
+
+     # 1.24 error goes to the STDERR
+     # while 1.15 goes to STDOUT
+     # redirect STDERR to the STDOUT
+     tech_config('Test.TESTERR', \*STDOUT);
+
+     my $x = 2;
+     my $y = 3;
+
+     #  ok:  1 - Using Test 1.24
+     ok( $Test::VERSION, '1.24', '', 'Test version');
+
+     skip_tests( 1 ) unless ok(   #  ok:  2 - Do not skip rest
+         $x + $y, # actual results
+         5, # expected results
+         {name => 'Pass test'} ); 
+
+     skip( #  ok:  3
+           1, # condition to skip test   
+           ($x*$y*2), # actual results
+           6, # expected results
+           {name => 'Skipped tests'});
+
+     #  zyw feature Under development, i.e todo
+     ok( #  ok:  4
+         $x*$y*2, # actual results
+         6, # expected results
+         [name => 'Todo Test that Fails',
+         diagnostic => 'Should Fail']);
+
+     skip_tests(1,'Skip test on') unless ok(  #  ok:  5
+         $x + $y, # actual results
+         6, # expected results
+         [diagnostic => 'Should Turn on Skip Test', 
+          name => 'Failed test that skips the rest']); 
+
+     ok( #  ok:  6 
+         $x + $y + $x, # actual results
+         9, # expected results
+         '', 'A test to skip');
+
+     finish() # pick up stats
+
+     __END__
+
+     =head1 COPYRIGHT
+
+     This test script is public domain.
+
+     =cut
+
+     ## end of test script file ##
+
+     '
+
+     =>     $actual_results = `perl techE0.t`;
+     =>     $snl->fout('tech1.txt', $actual_results);
+     => $s->scrub_probe($s->scrub_file_line($actual_results))
+     '1..8 todo 4 8;
+     ok 1 - Test version 
+     ok 2 - Pass test 
+     ok 3 - Skipped tests  # skip
+     not ok 4 - Todo Test that Fails 
+     # Test 4 got: '12' (xxxx.t at line 000 *TODO*)
+     #   Expected: '6' (Should Fail)
+     not ok 5 - Failed test that skips the rest 
+     # Test 5 got: '5' (xxxx.t at line 000)
+     #   Expected: '6' (Should Turn on Skip Test)
+     ok 6 - A test to skip  # skip
+     # Test 6 got:
+     # Expected: (Skip test on)
+     # Missing: 7 8
+     # Skipped: 3 6
+     # Failed : 4 5
+     # Passed : 2/6 33%
+     '
+
+     => my $tech = new Test::Tech
+     => $tech->tech_config('Test.TestLevel')
+     undef
+
+     => $tech->tech_config('Test.TestLevel', 2)
+     undef
+
+     => $tech->tech_config('Test.TestLevel')
+     2
+
+     => $Test::TestLevel
+     2
+
+     => $tech->finish( )
+     => $Test::TestLevel
+     undef
+
+     => unlink 'tech1.txt'
+
+QUALITY ASSURANCE
+    Running the test script 'Tech.t' found in the
+    "Test-Tech-$VERSION.tar.gz" distribution file verifies the requirements
+    for this module.
+
+    All testing software and documentation stems from the Software Test
+    Description (STD) program module 't::Test::Tech::Tech', found in the
+    distribution file "Test-Tech-$VERSION.tar.gz".
+
+    The 't::Test::Tech::Tech' STD POD contains a tracebility matix between
+    the requirements established above for this module, and the test steps
+    identified by a 'ok' number from running the 'Tech.t' test script.
+
+    The t::Test::Tech::Tech' STD program module '__DATA__' section contains
+    the data to perform the following:
+
+    *   to generate the test script 'Tech.t'
+
+    *   generate the tailored STD POD in the 't::Test::Tech::Tech' module,
+
+    *   generate the 'Tech.d' demo script,
+
+    *   replace the POD demonstration section herein with the demo script
+        'Tech.d' output, and
+
+    *   run the test script using Test::Harness with or without the verbose
+        option,
+
+    To perform all the above, prepare and run the automation software as
+    follows:
+
+    *   Install "Test_STDmaker-$VERSION.tar.gz" from one of the
+        respositories only if it has not been installed:
+
+        *   http://www.softwarediamonds/packages/
+
+        *   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
+
+    *   manually place the script tmake.pl in
+        "Test_STDmaker-$VERSION.tar.gz' in the site operating system
+        executable path only if it is not in the executable path
+
+    *   place the 't::Test::Tech::Tech' at the same level in the directory
+        struture as the directory holding the 'Test::Tech' module
+
+    *   execute the following in any directory:
+
+         tmake -test_verbose -replace -run -pm=t::Test::Tech::Tech
+
+NOTES
+  FILES
+    The installation of the "Test-Tech-$VERSION.tar.gz" distribution file
+    installs the 'Docs::Site_SVD::Test_Tech' SVD program module.
+
+    The __DATA__ data section of the 'Docs::Site_SVD::Test_Tech' contains
+    all the necessary data to generate the POD section of
+    'Docs::Site_SVD::Test_Tech' and the "Test-Tech-$VERSION.tar.gz"
+    distribution file.
+
+    To make use of the 'Docs::Site_SVD::Test_Tech' SVD program module,
+    perform the following:
+
+    *   install "ExtUtils-SVDmaker-$VERSION.tar.gz" from one of the
+        respositories only if it has not been installed:
+
+        *   http://www.softwarediamonds/packages/
+
+        *   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
+
+    *   manually place the script vmake.pl in
+        "ExtUtils-SVDmaker-$VERSION.tar.gz' in the site operating system
+        executable path only if it is not in the executable path
+
+    *   Make any appropriate changes to the __DATA__ section of the
+        'Docs::Site_SVD::Test_Tech' module. For example, any changes to
+        'File::Package' will impact the at least 'Changes' field.
+
+    *   Execute the following:
+
+         vmake readme_html all -pm=Docs::Site_SVD::Test_Tech
+
+  AUTHOR
+    The holder of the copyright and maintainer is
+
+    <support@SoftwareDiamonds.com>
+
+  COPYRIGHT NOTICE
+    Copyrighted (c) 2002 Software Diamonds
+
+    All Rights Reserved
+
+  BINDING REQUIREMENTS NOTICE
+    Binding requirements are indexed with the pharse 'shall[dd]' where dd is
+    an unique number for each header section. This conforms to standard
+    federal government practices, US DOD 490A 3.2.3.6. In accordance with
+    the License, Software Diamonds is not liable for any requirement,
+    binding or otherwise.
+
+  LICENSE
+    Software Diamonds permits the redistribution and use in source and
+    binary forms, with or without modification, provided that the following
+    conditions are met:
+
+    1   Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+
+    2   Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    SOFTWARE DIAMONDS, http::www.softwarediamonds.com, PROVIDES THIS
+    SOFTWARE 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+    NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SOFTWARE
+    DIAMONDS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL,EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF NEGLIGENCE OR OTHERWISE) ARISING IN
+    ANY WAY OUT OF THE POSSIBILITY OF SUCH DAMAGE.
+
 Title Page
      Software Version Description
 
@@ -5,11 +783,11 @@ Title Page
 
      Test::Tech - Extends the Test program module
 
-     Revision: P
+     Revision: R
 
-     Version: 0.17
+     Version: 0.18
 
-     Date: 2004/04/07
+     Date: 2004/04/08
 
      Prepared for: General Public 
 
@@ -57,7 +835,7 @@ Title Page
         session using the methods under test
 
   1.3 Document overview.
-    This document releases Test::Tech version 0.17 providing description of
+    This document releases Test::Tech version 0.18 providing description of
     the inventory, installation instructions and other information necessary
     to utilize and track this release.
 
@@ -68,7 +846,7 @@ Title Page
   3.1 Inventory of materials released.
     This document releases the file
 
-     Test-Tech-0.17.tar.gz
+     Test-Tech-0.18.tar.gz
 
     found at the following repository(s):
 
@@ -117,28 +895,27 @@ Title Page
 
      file                                                         version date       comment
      ------------------------------------------------------------ ------- ---------- ------------------------
-     lib/Docs/Site_SVD/Test_Tech.pm                               0.17    2004/04/07 revised 0.16
-     MANIFEST                                                     0.17    2004/04/07 generated, replaces 0.16
-     Makefile.PL                                                  0.17    2004/04/07 generated, replaces 0.16
-     README                                                       0.17    2004/04/07 generated, replaces 0.16
-     lib/Test/Tech.pm                                             1.16    2004/04/07 revised 1.15
-     t/Test/Tech/Tech.d                                           0.02    2004/04/07 revised 0.01
-     t/Test/Tech/Tech.pm                                          0.02    2004/04/07 revised 0.01
-     t/Test/Tech/Tech.t                                           0.15    2004/04/07 revised 0.14
-     t/Test/Tech/techA0.t                                         0.1     2004/04/07 revised 0.09
-     t/Test/Tech/techA2.txt                                       0.08    2004/04/07 revised 0.07
-     t/Test/Tech/techB0.t                                         0.07    2004/04/07 revised 0.06
-     t/Test/Tech/techC0.t                                         0.11    2004/04/07 revised 0.1
-     t/Test/Tech/techC2.txt                                       0.09    2004/04/07 revised 0.08
-     t/Test/Tech/techD0.d                                         0.04    2003/09/15 unchanged
+     lib/Docs/Site_SVD/Test_Tech.pm                               0.18    2004/04/08 revised 0.17
+     MANIFEST                                                     0.18    2004/04/08 generated, replaces 0.17
+     Makefile.PL                                                  0.18    2004/04/08 generated, replaces 0.17
+     README                                                       0.18    2004/04/08 generated, replaces 0.17
+     lib/Test/Tech.pm                                             1.17    2004/04/08 revised 1.16
+     t/Test/Tech/Tech.d                                           0.03    2004/04/08 revised 0.02
+     t/Test/Tech/Tech.pm                                          0.03    2004/04/08 revised 0.02
+     t/Test/Tech/Tech.t                                           0.16    2004/04/08 revised 0.15
+     t/Test/Tech/techA0.t                                         0.11    2004/04/08 revised 0.1
+     t/Test/Tech/techA2.txt                                       0.08    2004/04/07 unchanged
+     t/Test/Tech/techB0.t                                         0.08    2004/04/08 revised 0.07
+     t/Test/Tech/techC0.t                                         0.12    2004/04/08 revised 0.11
+     t/Test/Tech/techC2.txt                                       0.09    2004/04/07 unchanged
+     t/Test/Tech/techD0.d                                         0.05    2004/04/08 revised 0.04
      t/Test/Tech/techD2.txt                                       0.07    2003/09/15 unchanged
      t/Test/Tech/techD3.txt                                       0.07    2003/09/15 unchanged
-     t/Test/Tech/techE0.t                                         0.06    2004/04/07 new
-     t/Test/Tech/techE2.txt                                       0.17    2004/04/07 new
-     tlib/File/Package.pm                                         1.13    2004/04/07 revised 1.12
-     tlib/File/SmartNL.pm                                         1.13    2004/04/07 revised 1.12
-     tlib/Text/Scrub.pm                                           1.11    2004/04/07 unchanged
-     tlib/File/TestPath.pm                                        1.11    2004/04/07 new
+     t/Test/Tech/techE0.t                                         0.07    2004/04/08 revised 0.06
+     t/Test/Tech/techE2.txt                                       0.17    2004/04/07 unchanged
+     t/Test/Tech/File/Package.pm                                  1.13    2004/04/08 new
+     t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/08 new
+     t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/08 new
      t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
      t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
 
@@ -353,6 +1130,13 @@ Title Page
         Added optional [@options] or {@options} input to the end of the ok
         subroutine and the skip subroutine.
 
+    Test-Tech-0.18
+        The test script could not find one of the test library program
+        modules. Revamp the test script and test library modules and added
+        steps to the ExtUtils::SVDmaker to have the SVDmaker test target run
+        tests with just bare @INC that references a vigin Perl installation
+        libraries only.
+
   3.4 Adaptation data.
     This installation requires that the installation site has the Perl
     programming language installed. There are no other additional
@@ -369,17 +1153,34 @@ Title Page
     support are as follows:
 
     Installation Instructions.
-        To installed the release file, use the CPAN module in the Perl
-        release or the INSTALL.PL script at the following web site:
+        To installed the release file, use the CPAN module pr PPM module in
+        the Perl release or the INSTALL.PL script at the following web site:
 
          http://packages.SoftwareDiamonds.com
 
         Follow the instructions for the the chosen installation software.
 
-        The distribution file is at the following respositories:
+        If all else fails, the file may be manually installed. Enter one of
+        the following repositories in a web browser:
 
           http://www.softwarediamonds/packages/
           http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
+
+        Right click on 'Test-Tech-0.18.tar.gz' and download to a temporary
+        installation directory. Enter the following where $make is 'nmake'
+        for microsoft windows; otherwise 'make'.
+
+         gunzip Test-Tech-0.18.tar.gz
+         tar -xf Test-Tech-0.18.tar
+         perl Makefile.PL
+         $make test
+         $make install
+
+        On Microsoft operating system, nmake, tar, and gunzip must be in the
+        exeuction path. If tar and gunzip are not install, download and
+        install unxutils from
+
+         http://packages.softwarediamonds.com
 
     Prerequistes.
          'Data::Secs2' => '0.01'
@@ -413,21 +1214,6 @@ Title Page
         that the test script, the *$TestLevel* must be set to 1. Thus, the
         Test module loads the Test::Tech module into *%Program_Line* hash
         instead of the Module Under Test.
-
-    "Data::Dumper" stringification is not portable
-        For numeric arrays, "Data::Dumper" module will not stringify them
-        the same for all Perls. The below Perl code will produce different
-        results for different Perls
-
-         $probe = 3;
-         $actual = Dumper([0+$probe]);
-
-        For Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631,
-        binary, the results will be '[\'3\']' while for Perl version 5.008
-        for solaris the results will be '[3]'.
-
-        The '[\'3\']' results is probable wrong, and the Perls that produce
-        them are mutants that should be hunted down and killed.
 
 4.0 NOTES
     The following are useful acronyms:

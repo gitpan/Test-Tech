@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.02';   # automatically generated file
-$DATE = '2004/04/07';
+$VERSION = '0.03';   # automatically generated file
+$DATE = '2004/04/08';
 
 
 ##### Demonstration Script ####
@@ -177,6 +177,9 @@ demo( "\$tech\-\>finish\(\ \)"); # typed in command
 demo( "\$Test\:\:TestLevel", # typed in command           
       $Test::TestLevel); # execution
 
+
+demo( "unlink\ \'tech1\.txt\'"); # typed in command           
+      unlink 'tech1.txt'; # execution
 
 
 =head1 NAME

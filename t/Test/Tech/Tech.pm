@@ -10,8 +10,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.02';
-$DATE = '2004/04/07';
+$VERSION = '0.03';
+$DATE = '2004/04/08';
 $FILE = __FILE__;
 
 ########
@@ -40,7 +40,7 @@ $FILE = __FILE__;
 
  Version: 
 
- Date: 2004/04/07
+ Date: 2004/04/08
 
  Prepared for: General Public 
 
@@ -220,7 +220,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
 
 =head2 ok: 11
 
-  N: retore Test::TestLevel on finish^
+  N: restore Test::TestLevel on finish^
   C: $tech->finish( )^
   A: $Test::TestLevel^
   E: 1^
@@ -480,6 +480,7 @@ ok: 10^
  E: 1^
 ok: 11^
 
+ C: unlink 'tech1.txt'^
 
 See_Also: L<Test::Tech>^
 

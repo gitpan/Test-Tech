@@ -13,7 +13,7 @@ use SelfLoader;
 
 use vars qw($VERSION $DATE $FILE);
 $VERSION = '1.11';
-$DATE = '2003/09/18';
+$DATE = '2004/04/08';
 $FILE = __FILE__;
 
 use vars qw(@ISA @EXPORT_OK);
