@@ -7,7 +7,7 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.11';
+$VERSION = '0.06';
 $DATE = '2004/04/07';
 
 use Cwd;
@@ -19,13 +19,8 @@ use File::Spec;
 #
 # use a BEGIN block so we print our plan before Module Under Test is loaded
 #
-######
-#
-# T:
-#
-# use a BEGIN block so we print our plan before Module Under Test is loaded
-#
-BEGIN { 
+BEGIN {
+
    use vars qw($t $__restore_dir__ @__restore_inc__);
 
    ########
@@ -77,6 +72,12 @@ BEGIN {
    $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
    unshift @INC, $lib_dir;
    chdir $dirs if $dirs;
+   #######
+   # Add the directory with "Test.pm" version 1.15 to the front of @INC
+   #
+   # Thus, load Test::Tech, will find Test.pm 1.15 first
+   #
+   unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
 
    ########
    # Create the test plan by supplying the number of tests
@@ -84,7 +85,7 @@ BEGIN {
    #
    require Test::Tech;
    Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
-   plan(tests => 2, todo => [1]);
+   plan(tests => 8, todo => [4, 8]);
 
 }
 
@@ -100,7 +101,7 @@ END {
 
 ######
 #
-# Test 1.24 error goes to the STDERR
+# 1.24 error goes to the STDERR
 # while 1.15 goes to STDOUT
 #
 # redirect STDERR to the STDOUT
@@ -110,24 +111,64 @@ tech_config('Test.TESTERR', \*STDOUT);
 my $x = 2;
 my $y = 3;
 
-########
-#  xy feature
+#########
+#  ok:  1 - Using Test 1.24
+#
+ok( $Test::VERSION, '1.24', '', 'Test version');
+
+
+#########
+#  ok:  2 - Do not skip rest
+#
+skip_tests( 1 ) unless ok(
+    $x + $y, # actual results
+    5, # expected results
+    {name => 'Pass test'} ); 
+
+#########
+#
+#  ok:  3
+#
+# R:
+#
+skip( 1, # condition to skip test   
+      ($x*$y*2), # actual results
+      6, # expected results
+      {name => 'Skipped tests'});
+
+#######
+#  zyw feature
 #  Under development, i.e todo
 #
-#  ok:  1
+#  ok:  4
 #
-ok( [$x+$y,$y-$x], # actual results
-    [5,1], # expected results
-    '', 'Todo test that passes');
+# R:
+#
+ok( $x*$y*2, # actual results
+          6, # expected results
+          [name => 'Todo Test that Fails',
+           diagnostic => 'Should Fail']);
+####
+# 
+#  ok:  5
+#
+# R:
+#
+skip_tests(1,'Skip test on') unless ok(
+    $x + $y, # actual results
+    6, # expected results
+    [diagnostic => 'Should Turn on Skip Test', 
+     name => 'Failed test that skips the rest']); 
 
-
-########
+####
 #
-#  ok:  2
+#  ok:  6
 #
-ok( [$x+$y,$x*$y], # actual results
-    [6,5], # expected results
-    '', 'Test that fails');
+# R:
+#
+ok( $x + $y + $x, # actual results
+          9, # expected results
+          '', 'A test to skip');
 
 finish() # pick up stats
 
@@ -135,11 +176,11 @@ __END__
 
 =head1 NAME
 
-techC0.t - test script for Test::Tech
+techB1.t - test script for Test::Tech
 
 =head1 SYNOPSIS
 
- techC0.t 
+ techB1.t 
 
 =head1 COPYRIGHT
 

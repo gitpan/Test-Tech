@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.01';   # automatically generated file
-$DATE = '2003/09/20';
+$VERSION = '0.02';   # automatically generated file
+$DATE = '2004/04/07';
 
 
 ##### Demonstration Script ####
@@ -133,6 +133,19 @@ demo( "\$snl\-\>fin\(\'techC0\.t\'\)", # typed in command
 demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techC0\.t\`\;\
 \ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
           $actual_results = `perl techC0.t`;
+    $snl->fout('tech1.txt', $actual_results);; # execution
+
+demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # typed in command           
+      $s->scrub_probe($s->scrub_file_line($actual_results))); # execution
+
+
+demo( "\$snl\-\>fin\(\'techE0\.t\'\)", # typed in command           
+      $snl->fin('techE0.t')); # execution
+
+
+demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techE0\.t\`\;\
+\ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
+          $actual_results = `perl techE0.t`;
     $snl->fout('tech1.txt', $actual_results);; # execution
 
 demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # typed in command           

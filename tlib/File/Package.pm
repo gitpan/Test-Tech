@@ -11,16 +11,17 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.12';
-$DATE = '2003/09/15';
+$VERSION = '1.13';
+$DATE = '2004/04/07';
 $FILE = __FILE__;
+
+use File::Spec;
+# use SelfLoader;
 
 use vars qw(@ISA @EXPORT_OK);
 require Exporter;
 @ISA= qw(Exporter);
-@EXPORT_OK = qw(load_package is_package_loaded);
-
-use SelfLoader;
+@EXPORT_OK = qw(load_package is_package_loaded eval_str);
 
 # 1;
 
@@ -32,6 +33,7 @@ use SelfLoader;
 #
 sub load_package
 {
+
      ######
      # This subroutine uses no object data; therefore,
      # drop any class or object.
@@ -39,27 +41,31 @@ sub load_package
      shift @_ if UNIVERSAL::isa($_[0],__PACKAGE__);
 
      my ($package, @import) = @_;
+
      unless ($package) { # have problem if there is no package
-         my $error = "# The package name is empty. There is no package to load.\n";
-         return $error;
+         return  "# The package name is empty. There is no package to load.\n";
      }
+
      if( $package =~ /\-/ ) {
-         my $error =  "# The - in $package causes problems. Perl thinks - is subtraction when it evals it.\n";
-         return $error;      
+         return  "# The - in $package causes problems. Perl thinks - is subtraction when it evals it.\n";
      }
+
+     my $error = '';
      if (File::Package->is_package_loaded( $package )) {
+
+         #####          
+         # Import flagged symbols from load package into current package vocabulary.
+         #
          my $restore_level = $Exporter::ExportLevel;
          $Exporter::ExportLevel = 1;
          if( @import ) {
-             if ($import[0] ) {
-                 $package->import( @import );
-             }
+             $error = eval_str( "$package->import( \@import );" ) if ($import[0] );
          }
          else {
-             $package->import( );
+             $error = eval_str( "$package->import( );" );
          }
-         $Exporter::ExportLevel = $restore_level;  
-         return '';
+         $Exporter::ExportLevel = $restore_level; 
+         return $error;
      }
 
      #####
@@ -69,16 +75,8 @@ sub load_package
      # line of STDERR, at least on one Perl, is return in $@.
      # Save the entire STDERR to a memory variable
      #
-     my $restore_warn = $SIG{__WARN__};
-     my $warn_string = '';
-     $SIG{__WARN__} = sub { $warn_string .= join '', @_; };
-     eval "require $package;";
-     $SIG{__WARN__} = $restore_warn;
-     $warn_string = $@ . $warn_string if $@;
-     if($warn_string) {
-         $warn_string =~ s/\n/\n\t/g;
-         return "Cannot load $package\n\t" . $warn_string;
-     }
+     $error = eval_str ("require $package;");
+     return "Cannot load $package\n\t" . $error if $error;
 
      #####
      # Verify the package vocabulary is present
@@ -86,19 +84,44 @@ sub load_package
      unless (File::Package->is_package_loaded( $package )) {
          return "# $package loaded but package vocabulary absent.\n";
      }
+
+     ####
+     # Import flagged symbols from load package into current package vocabulary.
+     #
+     $error = '';
      my $restore_level = $Exporter::ExportLevel;
      $Exporter::ExportLevel = 1;
      if( @import ) {
-         if ($import[0] ) {
-             $package->import( @import );
-         }
+         $error = eval_str( "$package->import( \@import );" ) if ($import[0] );
      }
      else {
-         $package->import( );
+         $error = eval_str( "$package->import( );" );
      }
      $Exporter::ExportLevel = $restore_level;  
 
-     ''
+     return $error;
+
+}
+
+
+
+#####
+# Many times, all the warnings do not get into the $@ string
+#
+sub eval_str
+{
+     shift @_ if UNIVERSAL::isa($_[0],__PACKAGE__);
+     my ($str) = @_;
+
+     my $restore_warn = $SIG{__WARN__};
+     my $error_msg = '';
+     $SIG{__WARN__} = sub { $error_msg .= join '', @_; };
+     eval $str;
+     $SIG{__WARN__} = $restore_warn;
+
+     $error_msg = $@ . $error_msg if $@;
+     $error_msg =~ s/\n/\n\t/g if $error_msg;
+     $error_msg;
 }
 
 
@@ -116,7 +139,20 @@ sub is_package_loaded
      my ($package) = @_;
    
      $package .= "::";
-     defined %$package
+     my $vocabulary = defined %$package;
+     my $require = File::Spec->catfile( split /::/, $_[0] . '.pm');
+     my $inc = $INC{$require};
+
+     ####
+     # Microsoft cannot make up its mind to use
+     # Microsoft \ or Unix / for path separator.
+     # 
+     # Just in case, running Microsoft, delete
+     # Unix mirror name for the file
+     #
+     $require =~ s|\\|/|g; 
+     $inc = $inc || $INC{$require};
+     ($vocabulary && $inc) ? 1 : '';
 }
 
 1
@@ -133,33 +169,38 @@ File::Package - test load a program module with a package of the same name
  ##########
  # Subroutine interface
  #
- use File::Package qw( is_package_loaded, load_package)
+ use File::Package qw( is_package_loaded load_package);
 
- $package = is_package_loaded($package)
- $error   = load_package($package)
- $error   = load_package($package, @import)
+ $package = is_package_loaded($package);
+ $error   = load_package($package);
+ $error   = load_package($package, @import);
 
  ##########
  # Class Interface
  # 
- use File::Package
+ use File::Package;
 
- $package = File::Package->is_package_loaded($package)
- $error   = File::Package->load_package($package)
- $error   = File::Package->load_package($package, @import)
+ $package = File::Package->is_package_loaded($package);
+ $error   = File::Package->load_package($package);
+ $error   = File::Package->load_package($package, @import);
 
  ###### 
  # Class Interface - Add File::Package to another class
  #
- use File::Package
- use vars qw(@ISA)
- @ISA = qw(File::Package)
+ use File::Package;
+ use vars qw(@ISA);
+ @ISA = qw(File::Package);
 
- $package = __PACKAGE__->is_package_loaded($package)
- $error   = __PACKAGE__->load_package($package)
- $error   = __PACKAGE__->load_package($package, @import)
+ $self = __PACKAGE__;
+ $self = shift @_ if UNIVERSAL::isa($_[0],__PACKAGE__);
+
+ $package = $self->is_package_loaded($package);
+ $error   = $self->load_package($package);
+ $error   = $self->load_package($package, @import);
 
 =head1 DESCRIPTION
+
+=head2 load_package method
 
 The I<load_package> method attempts to capture any load problems by
 loading the package with a "require " under an eval and capturing
@@ -195,8 +236,6 @@ if a package does not load. For example if the package
 'Compress::Zlib' did not load, an attempt may be made
 to use the gzip system command. 
 
-=head1 METHODS
-
 =head2 is_package_loaded method
 
  $package = File::Package->is_package_loaded($package)
@@ -204,11 +243,6 @@ to use the gzip system command.
 The I<is_package_loaded> method determines if a package
 vocabulary is present.
 
-For example, if I<File::Basename> is not loaded
-
- ==> File::Package->is_package_loaded('File::Basename')
-
- ''
 =head1 REQUIREMENTS
 
 Coming soon.

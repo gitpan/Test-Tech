@@ -14,8 +14,11 @@ t/Test/Tech/techC2.txt
 t/Test/Tech/techD0.d
 t/Test/Tech/techD2.txt
 t/Test/Tech/techD3.txt
+t/Test/Tech/techE0.t
+t/Test/Tech/techE2.txt
 tlib/File/Package.pm
 tlib/File/SmartNL.pm
 tlib/Text/Scrub.pm
+tlib/File/TestPath.pm
 t/Test/Tech/V001024/Test.pm
 t/Test/Tech/V001015/Test.pm

@@ -10,31 +10,34 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.16';
-$DATE = '2003/09/20';
+$VERSION = '0.17';
+$DATE = '2004/04/07';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.16 2003/09/20), 'revised 0.15'],
-    'MANIFEST' => [qw(0.16 2003/09/20), 'generated, replaces 0.15'],
-    'Makefile.PL' => [qw(0.16 2003/09/20), 'generated, replaces 0.15'],
-    'README' => [qw(0.16 2003/09/20), 'generated, replaces 0.15'],
-    'lib/Test/Tech.pm' => [qw(1.15 2003/09/20), 'revised 1.14'],
-    't/Test/Tech/Tech.d' => [qw(0.01 2003/09/20), 'new'],
-    't/Test/Tech/Tech.pm' => [qw(0.01 2003/09/20), 'new'],
-    't/Test/Tech/Tech.t' => [qw(0.14 2003/09/20), 'revised 0.13'],
-    't/Test/Tech/techA0.t' => [qw(0.09 2003/09/20), 'revised 0.08'],
-    't/Test/Tech/techA2.txt' => [qw(0.07 2003/09/15), 'unchanged'],
-    't/Test/Tech/techB0.t' => [qw(0.06 2003/09/20), 'revised 0.05'],
-    't/Test/Tech/techC0.t' => [qw(0.1 2003/09/20), 'revised 0.09'],
-    't/Test/Tech/techC2.txt' => [qw(0.08 2003/09/18), 'unchanged'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.17 2004/04/07), 'revised 0.16'],
+    'MANIFEST' => [qw(0.17 2004/04/07), 'generated, replaces 0.16'],
+    'Makefile.PL' => [qw(0.17 2004/04/07), 'generated, replaces 0.16'],
+    'README' => [qw(0.17 2004/04/07), 'generated, replaces 0.16'],
+    'lib/Test/Tech.pm' => [qw(1.16 2004/04/07), 'revised 1.15'],
+    't/Test/Tech/Tech.d' => [qw(0.02 2004/04/07), 'revised 0.01'],
+    't/Test/Tech/Tech.pm' => [qw(0.02 2004/04/07), 'revised 0.01'],
+    't/Test/Tech/Tech.t' => [qw(0.15 2004/04/07), 'revised 0.14'],
+    't/Test/Tech/techA0.t' => [qw(0.1 2004/04/07), 'revised 0.09'],
+    't/Test/Tech/techA2.txt' => [qw(0.08 2004/04/07), 'revised 0.07'],
+    't/Test/Tech/techB0.t' => [qw(0.07 2004/04/07), 'revised 0.06'],
+    't/Test/Tech/techC0.t' => [qw(0.11 2004/04/07), 'revised 0.1'],
+    't/Test/Tech/techC2.txt' => [qw(0.09 2004/04/07), 'revised 0.08'],
     't/Test/Tech/techD0.d' => [qw(0.04 2003/09/15), 'unchanged'],
     't/Test/Tech/techD2.txt' => [qw(0.07 2003/09/15), 'unchanged'],
     't/Test/Tech/techD3.txt' => [qw(0.07 2003/09/15), 'unchanged'],
-    'tlib/File/Package.pm' => [qw(1.12 2003/09/20), 'unchanged'],
-    'tlib/File/SmartNL.pm' => [qw(1.12 2003/09/20), 'unchanged'],
-    'tlib/Text/Scrub.pm' => [qw(1.11 2003/09/20), 'unchanged'],
+    't/Test/Tech/techE0.t' => [qw(0.06 2004/04/07), 'new'],
+    't/Test/Tech/techE2.txt' => [qw(0.17 2004/04/07), 'new'],
+    'tlib/File/Package.pm' => [qw(1.13 2004/04/07), 'revised 1.12'],
+    'tlib/File/SmartNL.pm' => [qw(1.13 2004/04/07), 'revised 1.12'],
+    'tlib/Text/Scrub.pm' => [qw(1.11 2004/04/07), 'unchanged'],
+    'tlib/File/TestPath.pm' => [qw(1.11 2004/04/07), 'new'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.25 2003/09/15), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.16 2003/09/15), 'unchanged'],
 
@@ -63,11 +66,11 @@ use vars qw(%INVENTORY);
 
  Test::Tech - Extends the Test program module
 
- Revision: M
+ Revision: P
 
- Version: 0.16
+ Version: 0.17
 
- Date: 2003/09/20
+ Date: 2004/04/07
 
  Prepared for: General Public 
 
@@ -134,7 +137,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.16
+This document releases Test::Tech version 0.17
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -147,12 +150,14 @@ system file specification.
 
 =head2 3.1 Inventory of materials released.
 
-This document releases the file found
-at the following repository(s):
+This document releases the file 
 
-   http://www.softwarediamonds/packages/Test-Tech-0.16
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.16
+ Test-Tech-0.17.tar.gz
 
+found at the following repository(s):
+
+  http://www.softwarediamonds/packages/
+  http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
 
 Restrictions regarding duplication and license provisions
 are as follows:
@@ -219,25 +224,28 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.16    2003/09/20 revised 0.15
- MANIFEST                                                     0.16    2003/09/20 generated, replaces 0.15
- Makefile.PL                                                  0.16    2003/09/20 generated, replaces 0.15
- README                                                       0.16    2003/09/20 generated, replaces 0.15
- lib/Test/Tech.pm                                             1.15    2003/09/20 revised 1.14
- t/Test/Tech/Tech.d                                           0.01    2003/09/20 new
- t/Test/Tech/Tech.pm                                          0.01    2003/09/20 new
- t/Test/Tech/Tech.t                                           0.14    2003/09/20 revised 0.13
- t/Test/Tech/techA0.t                                         0.09    2003/09/20 revised 0.08
- t/Test/Tech/techA2.txt                                       0.07    2003/09/15 unchanged
- t/Test/Tech/techB0.t                                         0.06    2003/09/20 revised 0.05
- t/Test/Tech/techC0.t                                         0.1     2003/09/20 revised 0.09
- t/Test/Tech/techC2.txt                                       0.08    2003/09/18 unchanged
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.17    2004/04/07 revised 0.16
+ MANIFEST                                                     0.17    2004/04/07 generated, replaces 0.16
+ Makefile.PL                                                  0.17    2004/04/07 generated, replaces 0.16
+ README                                                       0.17    2004/04/07 generated, replaces 0.16
+ lib/Test/Tech.pm                                             1.16    2004/04/07 revised 1.15
+ t/Test/Tech/Tech.d                                           0.02    2004/04/07 revised 0.01
+ t/Test/Tech/Tech.pm                                          0.02    2004/04/07 revised 0.01
+ t/Test/Tech/Tech.t                                           0.15    2004/04/07 revised 0.14
+ t/Test/Tech/techA0.t                                         0.1     2004/04/07 revised 0.09
+ t/Test/Tech/techA2.txt                                       0.08    2004/04/07 revised 0.07
+ t/Test/Tech/techB0.t                                         0.07    2004/04/07 revised 0.06
+ t/Test/Tech/techC0.t                                         0.11    2004/04/07 revised 0.1
+ t/Test/Tech/techC2.txt                                       0.09    2004/04/07 revised 0.08
  t/Test/Tech/techD0.d                                         0.04    2003/09/15 unchanged
  t/Test/Tech/techD2.txt                                       0.07    2003/09/15 unchanged
  t/Test/Tech/techD3.txt                                       0.07    2003/09/15 unchanged
- tlib/File/Package.pm                                         1.12    2003/09/20 unchanged
- tlib/File/SmartNL.pm                                         1.12    2003/09/20 unchanged
- tlib/Text/Scrub.pm                                           1.11    2003/09/20 unchanged
+ t/Test/Tech/techE0.t                                         0.06    2004/04/07 new
+ t/Test/Tech/techE2.txt                                       0.17    2004/04/07 new
+ tlib/File/Package.pm                                         1.13    2004/04/07 revised 1.12
+ tlib/File/SmartNL.pm                                         1.13    2004/04/07 revised 1.12
+ tlib/Text/Scrub.pm                                           1.11    2004/04/07 unchanged
+ tlib/File/TestPath.pm                                        1.11    2004/04/07 new
  t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
 
@@ -475,6 +483,22 @@ Changed to
 
  PREREQ_PM => {'Data::Secs2' => '0.01'},
 
+=item Test-Tech-0.17
+
+The POD was citing &Data::Dumper::Dumper which was replaced by Data::Secs2::stringify.
+Changed the POD over to &Data::Secs2::stringify
+
+The finish() subroutine was in the POD as a subroutine/method but not part of @EXPORT_OK.
+Add it to @EXPORT_OK.
+
+Redirected all output from the 'Test::' module throught a handle Tie. The handle Tie
+added the test name on the same line as the 'ok' 'not ok' and collected stats.
+
+Added printout of the stats to the finish() subroutine.
+
+Added optional [@options] or {@options} input to the end of the ok subroutine and
+the skip subroutine.
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -508,9 +532,8 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.16
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.16
-
+  http://www.softwarediamonds/packages/
+  http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
 
 =item Prerequistes.
 
@@ -632,11 +655,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.16^
+VERSION : 0.17^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.15^
-REVISION: M^
+PREVIOUS_RELEASE: 0.16^
+REVISION: P^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -670,6 +693,7 @@ t/Test/Tech/*
 lib/File/Package.pm => tlib/File/Package.pm
 lib/File/SmartNL.pm => tlib/File/SmartNL.pm
 lib/Text/Scrub.pm => tlib/Text/Scrub.pm
+lib/File/TestPath.pm => tlib/File/TestPath.pm
 ^
 
 REPLACE:
@@ -914,6 +938,22 @@ The PREREQ_PM in the Test-Tech-0.15 MakeFile.PL is as follows:
 Changed to
 
  PREREQ_PM => {'Data::Secs2' => '0.01'},
+
+\=item Test-Tech-0.17
+
+The POD was citing &Data::Dumper::Dumper which was replaced by Data::Secs2::stringify.
+Changed the POD over to &Data::Secs2::stringify
+
+The finish() subroutine was in the POD as a subroutine/method but not part of @EXPORT_OK.
+Add it to @EXPORT_OK.
+
+Redirected all output from the 'Test::' module throught a handle Tie. The handle Tie
+added the test name on the same line as the 'ok' 'not ok' and collected stats.
+
+Added printout of the stats to the finish() subroutine.
+
+Added optional [@options] or {@options} input to the end of the ok subroutine and
+the skip subroutine.
 
 \=back
 

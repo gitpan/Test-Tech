@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.06';
-$DATE = '2003/09/20';
+$VERSION = '0.07';
+$DATE = '2004/04/07';
 
 use Cwd;
 use File::Spec;
@@ -84,7 +84,7 @@ BEGIN {
    # and the todo tests
    #
    require Test::Tech;
-   Test::Tech->import( qw(plan ok skip skip_tests tech_config) );
+   Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
    plan(tests => 8, todo => [4, 8]);
 
 }
@@ -107,11 +107,6 @@ END {
 # redirect STDERR to the STDOUT
 # 
 tech_config('Test.TESTERR', \*STDOUT);
-
-########
-# Start a test with a new File::FileUtil
-#
-my $fu = 'File::FileUtil';
 
 my $x = 2;
 my $y = 3;
@@ -193,6 +188,18 @@ skip_tests(0);
 ok( $x*$y*2, # actual results
           12, # expected results
           '', 'Stop skipping tests. Todo Test that Passes');
+
+#########
+#  ok:  9
+#
+ok(
+    $x * $y, # actual results
+    6, # expected results
+    {name => 'Unplanned pass test'}); 
+
+
+
+finish() # pick up stats
 
 __END__
 

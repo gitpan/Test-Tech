@@ -10,8 +10,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.01';
-$DATE = '2003/09/20';
+$VERSION = '0.02';
+$DATE = '2004/04/07';
 $FILE = __FILE__;
 
 ########
@@ -40,7 +40,7 @@ $FILE = __FILE__;
 
  Version: 
 
- Date: 2003/09/19
+ Date: 2004/04/07
 
  Prepared for: General Public 
 
@@ -80,7 +80,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
 
 =head2 Test Plan
 
- T: 10^
+ T: 11^
 
 =head2 ok: 1
 
@@ -177,40 +177,54 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
 
 =head2 ok: 6
 
-  N: config Test.TestLevel, read 1^
-  C: my $tech = new Test::Tech^
-  A: $tech->tech_config('Test.TestLevel')^
-  E: 1^
+ DO: ^
+  A: $snl->fin('techE0.t')^
+  N:  Run test script techE0.t using Test 1.24^
+
+  C:
+     $actual_results = `perl techE0.t`;
+     $snl->fout('tech1.txt', $actual_results);
+ ^
+  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
+  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt')))^
  ok: 6^
 
 =head2 ok: 7
 
-  N: config Test.TestLevel, read 1, write 2^
-  A: $tech->tech_config('Test.TestLevel', 2)^
+  N: config Test.TestLevel, read 1^
+  C: my $tech = new Test::Tech^
+  A: $tech->tech_config('Test.TestLevel')^
   E: 1^
  ok: 7^
 
 =head2 ok: 8
 
-  N: config Test.TestLevel, read 2^
-  A: $tech->tech_config('Test.TestLevel')^
-  E: 2^
+  N: config Test.TestLevel, read 1, write 2^
+  A: $tech->tech_config('Test.TestLevel', 2)^
+  E: 1^
  ok: 8^
 
 =head2 ok: 9
 
-  N: Test::TestLevel read 2^
-  A: $Test::TestLevel^
+  N: config Test.TestLevel, read 2^
+  A: $tech->tech_config('Test.TestLevel')^
   E: 2^
  ok: 9^
 
 =head2 ok: 10
 
+  N: Test::TestLevel read 2^
+  A: $Test::TestLevel^
+  E: 2^
+ ok: 10^
+
+=head2 ok: 11
+
   N: retore Test::TestLevel on finish^
   C: $tech->finish( )^
   A: $Test::TestLevel^
   E: 1^
- ok: 10^
+ ok: 11^
 
 
 
@@ -330,7 +344,7 @@ Demo: Tech.d^
 Verify: Tech.t^
 
 
- T: 10^
+ T: 11^
 
 
  C:
@@ -426,32 +440,45 @@ VO: ^
  E: $s->scrub_probe($s->scrub_file_line($expected_results))^
 ok: 5^
 
+DO: ^
+ A: $snl->fin('techE0.t')^
+ N:  Run test script techE0.t using Test 1.24^
+
+ C:
+    $actual_results = `perl techE0.t`;
+    $snl->fout('tech1.txt', $actual_results);
+^
+
+ A: $s->scrub_probe($s->scrub_file_line($actual_results))^
+ E: $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt')))^
+ok: 6^
+
  N: config Test.TestLevel, read 1^
  C: my $tech = new Test::Tech^
  A: $tech->tech_config('Test.TestLevel')^
  E: 1^
-ok: 6^
+ok: 7^
 
  N: config Test.TestLevel, read 1, write 2^
  A: $tech->tech_config('Test.TestLevel', 2)^
  E: 1^
-ok: 7^
+ok: 8^
 
  N: config Test.TestLevel, read 2^
  A: $tech->tech_config('Test.TestLevel')^
  E: 2^
-ok: 8^
+ok: 9^
 
  N: Test::TestLevel read 2^
  A: $Test::TestLevel^
  E: 2^
-ok: 9^
+ok: 10^
 
- N: retore Test::TestLevel on finish^
+ N: restore Test::TestLevel on finish^
  C: $tech->finish( )^
  A: $Test::TestLevel^
  E: 1^
-ok: 10^
+ok: 11^
 
 
 See_Also: L<Test::Tech>^

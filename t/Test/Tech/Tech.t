@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '0.14';   # automatically generated file
-$DATE = '2003/09/20';
+$VERSION = '0.15';   # automatically generated file
+$DATE = '2004/04/07';
 $FILE = __FILE__;
 
 use Getopt::Long;
@@ -57,51 +57,8 @@ BEGIN {
    # Add the library of the unit under test (UUT) to @INC
    # It will be found first because it is first in the include path
    #
-   use Cwd;
-   @__restore_inc__ = @INC;
-
-   ######
-   # Find root path of the t directory
-   #
-   my @updirs = File::Spec->splitdir( $dirs );
-   while(@updirs && $updirs[-1] ne 't' ) { 
-       chdir File::Spec->updir();
-       pop @updirs;
-   };
-   chdir File::Spec->updir();
-   my $lib_dir = cwd();
-
-   #####
-   # Add this to the include path. Thus modules that start with t::
-   # will be found.
-   # 
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;  # include the current test directory
-
-   #####
-   # Add lib to the include path so that modules under lib at the
-   # same level as t, will be found
-   #
-   $lib_dir = File::Spec->catdir( cwd(), 'lib' );
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;
-
-   #####
-   # Add tlib to the include path so that modules under tlib at the
-   # same level as t, will be found
-   #
-   $lib_dir = File::Spec->catdir( cwd(), 'tlib' );
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;
-   chdir $dirs if $dirs;
- 
-   #####
-   # Add lib under the directory where the test script resides.
-   # This may be used to place version sensitive modules.
-   #
-   $lib_dir = File::Spec->catdir( cwd(), 'lib' );
-   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
-   unshift @INC, $lib_dir;
+   require File::TestPath;
+   @__restore_inc__ = File::TestPath->test_lib2inc();
 
    ##########
    # Pick up a output redirection file and tests to skip
@@ -121,8 +78,8 @@ BEGIN {
    # and the todo tests
    #
    require Test::Tech;
-   Test::Tech->import( qw(plan ok skip skip_tests tech_config) );
-   plan(tests => 10);
+   Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
+   plan(tests => 11);
 
 }
 
@@ -226,6 +183,17 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
 #  ok:  5
 
    # Perl code from C:
+    $actual_results = `perl techE0.t`;
+    $snl->fout('tech1.txt', $actual_results);
+
+ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
+     $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt'))), # expected results
+     "",
+     " Run test script techE0.t using Test 1.24");
+
+#  ok:  6
+
+   # Perl code from C:
 my $tech = new Test::Tech;
 
 ok(  $tech->tech_config('Test.TestLevel'), # actual results
@@ -233,28 +201,28 @@ ok(  $tech->tech_config('Test.TestLevel'), # actual results
      "",
      "config Test.TestLevel, read 1");
 
-#  ok:  6
+#  ok:  7
 
 ok(  $tech->tech_config('Test.TestLevel', 2), # actual results
      1, # expected results
      "",
      "config Test.TestLevel, read 1, write 2");
 
-#  ok:  7
+#  ok:  8
 
 ok(  $tech->tech_config('Test.TestLevel'), # actual results
      2, # expected results
      "",
      "config Test.TestLevel, read 2");
 
-#  ok:  8
+#  ok:  9
 
 ok(  $Test::TestLevel, # actual results
      2, # expected results
      "",
      "Test::TestLevel read 2");
 
-#  ok:  9
+#  ok:  10
 
    # Perl code from C:
 $tech->finish( );
@@ -264,8 +232,12 @@ ok(  $Test::TestLevel, # actual results
      "",
      "retore Test::TestLevel on finish");
 
-#  ok:  10
+#  ok:  11
 
+
+    finish();
+
+__END__
 
 =head1 NAME
 
