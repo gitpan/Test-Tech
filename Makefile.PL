@@ -29,18 +29,20 @@ else {
 WriteMakefile(
     NAME => 'Test::Tech',
     DISTNAME => 'Test-Tech',
-    VERSION  => '0.06',
+    VERSION  => '0.08',
     dist     => {COMPRESS => 'gzip',
                 'gz' => 'gz'},
     test     => {TESTS => $tests},
-    PREREQ_PM => {'File::FileUtil' => 0,
+    PREREQ_PM => {'File::SmartNL' => 0,
+'File::Package' => 0,
+'File::TestPath' => 0,
 'Test::STD::Scrub' => 0,},
     EXE_FILES => $exe,
 
     ($] >= 5.005 ?     
         (AUTHOR    => 'SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>',
-        ABSTRACT  => 'Objectify the Test module,
-adds the skip_test method to the Test module, and 
+        ABSTRACT  => 'The "Test::Tech" module extends the capabilities of the "Test" module.
+It adds the skip_test method to the Test module, and 
 adds the ability to compare complex data structures to the Test module.', ) : ()),
 );
 

@@ -7,12 +7,14 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.07';
-$DATE = '2003/06/21';
+$VERSION = '0.09';
+$DATE = '2003/06/24';
 
 use Cwd;
 use File::Spec;
-use File::FileUtil;
+use File::Package;
+use File::SmartNL;
+use File::TestPath;
 use Test;
 
 ######
@@ -32,17 +34,24 @@ BEGIN {
    chdir $dirs if $dirs;
 
    #######
-   # Add the library of the unit under test (UUT) to @INC
+   # Add the current test directory to @INC
+   #   (first t directory in upward march)
    #
-   @__restore_inc__ = File::FileUtil->test_lib2inc;
-   unshift @INC, cwd();
+   # Add the library of the unit under test (UUT) to @INC
+   #   (lib directory at the same level as the t directory)
+   #
+   @__restore_inc__ = @INC;
+
+   my $work_dir = cwd(); # remember the work directory so we can restore it
+
+   @INC = File::TestPath->test_lib2inc( );
 
    ########
    # Create the test plan by supplying the number of tests
    # and the todo tests
    #
    require Test;
-   $__tests__ = 7;
+   $__tests__ = 6;
    &Test::plan(tests => $__tests__);
 
 }
@@ -90,7 +99,8 @@ elsif ( $actual eq Dumper(['3']) ) {
 #####
 # New $fu object
 #
-my $fu = 'File::FileUtil';
+my $fp  = 'File::Package';
+my $snl = 'File::SmartNL';
 
 #######
 #
@@ -100,7 +110,7 @@ my $fu = 'File::FileUtil';
 #
 my $loaded;
 print "# is_package_loaded\n";
-ok ($loaded = $fu->is_package_loaded('Test::Tech'), ''); 
+ok ($loaded = $fp->is_package_loaded('Test::Tech'), ''); 
 
 #######
 # 
@@ -109,18 +119,9 @@ ok ($loaded = $fu->is_package_loaded('Test::Tech'), '');
 # R:
 # 
 print "# load_package\n";
-my $errors = $fu->load_package( 'Test::Tech' );
+my $errors = $fp->load_package( 'Test::Tech' );
 skip($loaded, $errors, '');
 skip_rest( $errors, 2 );
-
-#######
-#
-# ok:  3
-#
-# R:
-#
-print "# Pod_pod_errors\n";
-ok( $fu->pod_errors( 'Test::Tech'), 0 );
 
 #####
 # New $scrub object
@@ -129,74 +130,74 @@ use Test::STD::Scrub;
 my $s = 'Test::STD::Scrub';
 
 #####
-#  ok:  4
+#  ok:  3
 # 
 # R:
 #
 # Run test script test techA0.t
 #
-print "# Run test script techA0.t\n";
+print "# Run test script techA0.t - Uses Test 1.15\n";
 
 my $actual_results = `perl techA0.t`;
-$fu->fout('tech1.txt', $actual_results);
+$snl->fout('tech1.txt', $actual_results);
 $actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
 
-my $expected_results = $fu->fin('techA2.txt');
+my $expected_results = $snl->fin('techA2.txt');
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
 
-ok( $actual_results . "\n\n" . $fu->hex_dump($actual_results), 
-    $expected_results . "\n\n" . $fu->hex_dump($expected_results) ); 
+ok( $actual_results . "\n\n" . $snl->hex_dump($actual_results), 
+    $expected_results . "\n\n" . $snl->hex_dump($expected_results) ); 
 
 #####
-#  ok:  5
+#  ok:  4
 # 
 # R:
 #
 # Run test script test techB0.t
 #
-print "# Run test script techB0.t\n";
+print "# Run test script techB0.t - Uses Test 1.24\n";
 
 $actual_results = `perl techB0.t`;
-$fu->fout('tech1.txt', $actual_results);
+$snl->fout('tech1.txt', $actual_results);
 $actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
 
-$expected_results = $fu->fin('techA2.txt');
+$expected_results = $snl->fin('techA2.txt');
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
 
-ok( $actual_results . "\n\n" . $fu->hex_dump($actual_results), 
-    $expected_results . "\n\n" . $fu->hex_dump($expected_results) ); 
+ok( $actual_results . "\n\n" . $snl->hex_dump($actual_results), 
+    $expected_results . "\n\n" . $snl->hex_dump($expected_results) ); 
 
 
 
 #####
-#  ok:  6
+#  ok:  5
 # 
 # Run test script test techD0.t
 #
 # R:
 #
-print "# Run test script techC0.t\n";
+print "# Run test script techC0.t - Uses Test 1.24 - (0+\$number) test\n";
 
 $actual_results = `perl techC0.t`;
-$fu->fout('tech1.txt', $actual_results);
+$snl->fout('tech1.txt', $actual_results);
 $actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
 
 #######
 # expected results depend upon the internal storage from numbers 
 #
 if( $internal_storage eq 'string') {
-    $expected_results = $fu->fin('techC2.txt');
+    $expected_results = $snl->fin('techC2.txt');
 }
 else {
-    $expected_results = $fu->fin('techC3.txt');
+    $expected_results = $snl->fin('techC3.txt');
 }
 
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
-ok( $actual_results . "\n\n" . $fu->hex_dump($actual_results), 
-    $expected_results . "\n\n" . $fu->hex_dump($expected_results) ); 
+ok( $actual_results . "\n\n" . $snl->hex_dump($actual_results), 
+    $expected_results . "\n\n" . $snl->hex_dump($expected_results) ); 
 
 #####
-#  ok:  7
+#  ok:  6
 # 
 # Run demo script techD0.d
 #
@@ -205,22 +206,22 @@ ok( $actual_results . "\n\n" . $fu->hex_dump($actual_results),
 print "# Run demo script techD0.d\n";
 
 $actual_results = `perl techD0.d`;
-$fu->fout('tech1.txt', $actual_results);
+$snl->fout('tech1.txt', $actual_results);
 $actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
 
 #######
 # expected results depend upon the internal storage from numbers 
 #
 if( $internal_storage eq 'string') {
-    $expected_results = $fu->fin('techD2.txt');
+    $expected_results = $snl->fin('techD2.txt');
 }
 else {
-    $expected_results = $fu->fin('techD3.txt');
+    $expected_results = $snl->fin('techD3.txt');
 }
 
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
-ok( $actual_results . "\n\n" . $fu->hex_dump($actual_results), 
-    $expected_results . "\n\n" . $fu->hex_dump($expected_results) ); 
+ok( $actual_results . "\n\n" . $snl->hex_dump($actual_results), 
+    $expected_results . "\n\n" . $snl->hex_dump($expected_results) ); 
 
 
 #####

@@ -5,11 +5,11 @@ Title Page
 
      Test::Tech - Extends the Test program module
 
-     Revision: E
+     Revision: G
 
-     Version: 0.06
+     Version: 0.08
 
-     Date: 2003/06/21
+     Date: 2003/06/24
 
      Prepared for: General Public 
 
@@ -23,34 +23,36 @@ Title Page
     This paragraph identifies and provides an overview of the released
     files.
 
-  1.1 Indentification
+  1.1 Identification
 
-    This release is a collection of Perl modules that extend the
-    capabilities of the Perl language.
+    This release, identified in 3.2, is a collection of Perl modules that
+    extend the capabilities of the Perl language.
 
   1.2 System overview
-
-    The system is the Perl programming language software. The system does
-    not have any hardware. The Perl programming language contains two
-    features that are utilized by this release:
-
-    1   Program Modules to extend the languages
-
-    2   Plain Old Documentation (POD) that may be embedded in the language
-
-    These features are established by the referenced documents.
 
     The system is the Perl programming language software. As established by
     the Perl referenced documents, program modules, such the "Test::Tech"
     module, extend the Perl language.
 
+    The "Test::Tech" module extends the capabilities of the "Test" module.
+
+    The design is simple. The "Test::Tech" module loads the "Test" module
+    without exporting any "Test" subroutines into the "Test::Tech"
+    namespace. There is a "Test::Tech" cover subroutine with the same name
+    for each "Test" module subroutine. Each "Test::Tech" cover subroutine
+    will call the &Test::$subroutine before or after it adds any additional
+    capabilities. The "Test::Tech" module is a drop-in for the "Test"
+    module. Who said you cannot reuse code that is not object oriented? This
+    design proves if the driving reason to use object oriented code is
+    reusability, it is a very poor reason.
+
     The "Test::Tech" module extends the capabilities of the "Test" module as
     follows:
 
-    *   If the compared variables are references, stingifies the refenced
+    *   If the compared variables are references, stingifies the referenced
         variable by passing the reference through *Data::Dumper* before
         making the comparison. Thus, Test::Tech can test almost any data
-        structure. If the compare variables are not refernces, uses the
+        structure. If the compare variables are not refernces, use the
         &Test::ok and &Test::skip directly.
 
     *   Adds a method to skip the rest of the tests upon a critical failure
@@ -81,7 +83,7 @@ Title Page
      File::FileUtil 
        Test::STD::Scrub
          Test::Tech
-            DataPort::FileType::FormDB DataPort::DataFile Test::STD::STDutil
+            DataPort::FileType::FormDB DataPort::DataFile DataPort::Maker Test::STD::Template
                 Test::STDmaker ExtUtils::SVDmaker
 
     Note the File::FileUtil, Test::STD::STDutil Test::STD::Scrub program
@@ -90,7 +92,7 @@ Title Page
 
   1.3 Document overview.
 
-    This document releases Test::Tech version 0.06 providing description of
+    This document releases Test::Tech version 0.08 providing description of
     the inventory, installation instructions and other information necessary
     to utilize and track this release.
 
@@ -100,46 +102,46 @@ Title Page
 
   3.1 Inventory of materials released.
 
-  3.1.1 Files.
+    This document releases the file found at the following repository(s):
 
-    This document releases the file found at the following repository:
+       http://www.softwarediamonds/packages/Test-Tech-0.08
+       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.08
 
-       http://www.softwarediamonds/packages/Test-Tech-0.06
-       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.06
+    Restrictions regarding duplication and license provisions are as
+    follows:
 
-  3.1.2 Copyright.
+    Copyright.
+        copyright © 2003 Software Diamonds
 
-    copyright © 2003 Software Diamonds
+    Copyright holder contact.
+         603 882-0846 E<lt>support@SoftwareDiamonds.comE<gt>
 
-  3.1.3 Copyright holder contact.
+    License.
+        Software Diamonds permits the redistribution and use in source and
+        binary forms, with or without modification, provided that the
+        following conditions are met:
 
-     603 882-0846 E<lt>support@SoftwareDiamonds.comE<gt>
+        1   Redistributions of source code, modified or unmodified must
+            retain the above copyright notice, this list of conditions and
+            the following disclaimer.
 
-  3.1.4 License.
+        2   Redistributions in binary form must reproduce the above
+            copyright notice, this list of conditions and the following
+            disclaimer in the documentation and/or other materials provided
+            with the distribution.
 
-    Software Diamonds permits the redistribution and use in source and
-    binary forms, with or without modification, provided that the following
-    conditions are met:
-
-    1   Redistributions of source code, modified or unmodified must retain
-        the above copyright notice, this list of conditions and the
-        following disclaimer.
-
-    2   Redistributions in binary form must reproduce the above copyright
-        notice, this list of conditions and the following disclaimer in the
-        documentation and/or other materials provided with the distribution.
-
-    SOFTWARE DIAMONDS, http://www.SoftwareDiamonds.com, PROVIDES THIS
-    SOFTWARE 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
-    NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SOFTWARE
-    DIAMONDS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-    SPECIAL,EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,DATA, OR
-    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING USE
-    OF THIS SOFTWARE, EVEN IF ADVISED OF NEGLIGENCE OR OTHERWISE) ARISING IN
-    ANY WAY OUT OF THE POSSIBILITY OF SUCH DAMAGE.
+        SOFTWARE DIAMONDS, http://www.SoftwareDiamonds.com, PROVIDES THIS
+        SOFTWARE 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+        BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+        FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+        SOFTWARE DIAMONDS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        SPECIAL,EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+        LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+        USE,DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+        ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+        NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE POSSIBILITY
+        OF SUCH DAMAGE.
 
   3.2 Inventory of software contents
 
@@ -148,31 +150,30 @@ Title Page
 
      file                                                         version date       comment
      ------------------------------------------------------------ ------- ---------- ------------------------
-     lib/Docs/Site_SVD/Test_Tech.pm                               0.06    2003/06/21 revised 0.05
-     MANIFEST                                                     0.06    2003/06/21 generated, replaces 0.05
-     Makefile.PL                                                  0.06    2003/06/21 generated, replaces 0.05
-     README                                                       0.06    2003/06/21 generated, replaces 0.05
-     lib/Test/Tech.pm                                             1.08    2003/06/21 revised 1.07
-     t/Test/Tech/Tech.t                                           0.07    2003/06/21 revised 0.06
-     t/Test/Tech/techA0.t                                         0.05    2003/06/21 revised 0.04
+     lib/Docs/Site_SVD/Test_Tech.pm                               0.08    2003/06/24 revised 0.07
+     MANIFEST                                                     0.08    2003/06/24 generated, replaces 0.07
+     Makefile.PL                                                  0.08    2003/06/24 generated, replaces 0.07
+     README                                                       0.08    2003/06/24 generated, replaces 0.07
+     lib/Test/Tech.pm                                             1.09    2003/06/24 unchanged
+     t/Test/Tech/Tech.t                                           0.09    2003/06/24 revised 0.08
+     t/Test/Tech/techA0.t                                         0.05    2003/06/21 unchanged
      t/Test/Tech/techA2.txt                                       0.05    2003/06/19 unchanged
-     t/Test/Tech/techB0.t                                         0.02    2003/06/21 revised 0.01
-     t/Test/Tech/techC0.t                                         0.04    2003/06/21 revised 0.01
-     t/Test/Tech/techC2.txt                                       0.06    2003/06/21 new
-     t/Test/Tech/techC3.txt                                       0.06    2003/06/21 new
-     t/Test/Tech/techD0.d                                         0.02    2003/06/21 new
-     t/Test/Tech/techD2.txt                                       0.06    2003/06/21 revised 0.05
-     t/Test/Tech/techD3.txt                                       0.06    2003/06/21 revised 0.05
+     t/Test/Tech/techB0.t                                         0.02    2003/06/21 unchanged
+     t/Test/Tech/techC0.t                                         0.05    2003/06/24 unchanged
+     t/Test/Tech/techC2.txt                                       0.06    2003/06/21 unchanged
+     t/Test/Tech/techC3.txt                                       0.06    2003/06/21 unchanged
+     t/Test/Tech/techD0.d                                         0.02    2003/06/21 unchanged
+     t/Test/Tech/techD2.txt                                       0.06    2003/06/21 unchanged
+     t/Test/Tech/techD3.txt                                       0.06    2003/06/21 unchanged
      t/Test/Tech/V001024/Test.pm                                  1.24    2003/06/19 unchanged
      t/Test/Tech/V001015/Test.pm                                  1.15    2003/06/19 unchanged
 
   3.3 Changes
 
-    This version changes the previous version but eliminating all object
-    methods. Since this module is built on the Test and the Data::Dumper
-    modules, neither which are objectified, there is little advantage in
-    providing methods where a large number of data is static for all
-    objects. In other words, all new objects are mostly same.
+    Changes to the previous version are as follows:
+
+    Replace code in the 't/Tech/Tech.t' with the test_lib2inc method in the
+    "File::TestPath" module.
 
     Previous changes are as follows:
 
@@ -190,7 +191,7 @@ Title Page
         Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
 
     Test::Tech 0.03
-        The &Data::Dumper::Dumper subroutine stringifies the iternal Perl
+        The &Data::Dumper::Dumper subroutine stringifies the internal Perl
         variable. Different Perls keep the have different internal formats
         for numbers. Some keep them as binary numbers, while others as
         strings. The ones that keep them as strings may be well spec. In any
@@ -267,6 +268,14 @@ Title Page
         Replaced using Test::Util that has disappeared with its
         replacements: File::FileUtil, Test::STD::Scrub, Test::STD::STDutil
 
+    Test::Tech 0.06
+        This version changes the previous version but eliminating all object
+        methods. Since this module is built on the Test and the Data::Dumper
+        modules, neither which are objectified, there is little advantage in
+        providing methods where a large number of data is static for all
+        objects. In other words, all new objects are mostly same.
+
+    Test::Tech 0.07
   3.4 Adaptation data.
 
     This installation requires that the installation site has the Perl
@@ -290,36 +299,72 @@ Title Page
 
   3.6 Installation instructions.
 
-    To installed the release file, use the CPAN module in the Perl release
-    or the INSTALL.PL script at the following web site:
+    Instructions for installation, installation tests and installation
+    support are as follows:
 
-     http://packages.SoftwareDiamonds.com
+    Installation Instructions.
+        To installed the release file, use the CPAN module in the Perl
+        release or the INSTALL.PL script at the following web site:
 
-    Follow the instructions for the the chosen installation software.
+         http://packages.SoftwareDiamonds.com
 
-    The distribution file is at the following respositories:
+        Follow the instructions for the the chosen installation software.
 
-       http://www.softwarediamonds/packages/Test-Tech-0.06
-       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.06
+        The distribution file is at the following respositories:
 
-  3.6.1 Installation support.
+           http://www.softwarediamonds/packages/Test-Tech-0.08
+           http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.08
 
-    If there are installation problems or questions with the installation
-    contact
+    Prerequistes.
+        'File::SmartNL' => 0, 'File::Package' => 0, 'File::TestPath' => 0,
+        'Test::STD::Scrub' => 0,
 
-     603 882-0846 E<lt>support@SoftwareDiamonds.comE<gt>
+    Security, privacy, or safety precautions.
+        None.
 
-  3.6.2 Installation Tests.
+    Installation Tests.
+        Most Perl installation software will run the following test
+        script(s) as part of the installation:
 
-    Most Perl installation software will run the following test script(s) as
-    part of the installation:
+         t/Test/Tech/Tech.t
 
-     t/Test/Tech/Tech.t
+    Installation support.
+        If there are installation problems or questions with the
+        installation contact
+
+         603 882-0846 E<lt>support@SoftwareDiamonds.comE<gt>
 
   3.7 Possible problems and known errors
 
-    The Test::Tech capabilites could be incorporated into the Test program
-    module and Test::Tech eliminated.
+    Known issues are as follows:
+
+    Merge with the "Test" module
+        The "Test::Tech" capabilites could be incorporated into the "Test"
+        program module and "Test::Tech" eliminated.
+
+    TestLevel and Program_Lines
+        The "Test" module does not take the *$TestLevel* value into account
+        where it chooses the module to load the *%Program_Line* hash. Since
+        the the Test::Tech manpage module adds a module layer in between the
+        the Test manpage module that the test script, the *$TestLevel* must
+        be set to 1. Thus, the the Test manpage module loads the the
+        Test::Tech manpage module into *%Program_Line* hash instead of the
+        Module Under Test.
+
+    "Data::Dumper" stringification not portable
+        For numeric arrays, "Data::Dumper" module will not stringify them
+        the same for all Perls. The below Perl code will produce different
+        results for different Perls
+
+         $probe = 3;
+         $actual = Dumper([0+$probe]);
+
+        For Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631,
+        binary, the results will be '[\'3\']' while for Perl version 5.008
+        for solaris the results will be '[3]'.
+
+        The '[\'3\']' results is probable wrong, and the Perls that produce
+        them are mutants that should be hunted down and killed.
 
 4.0 NOTES
     The following are useful acronyms:

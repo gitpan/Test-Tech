@@ -10,42 +10,42 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.06';
-$DATE = '2003/06/21';
+$VERSION = '0.08';
+$DATE = '2003/06/24';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.06 2003/06/21), 'revised 0.05'],
-    'MANIFEST' => [qw(0.06 2003/06/21), 'generated, replaces 0.05'],
-    'Makefile.PL' => [qw(0.06 2003/06/21), 'generated, replaces 0.05'],
-    'README' => [qw(0.06 2003/06/21), 'generated, replaces 0.05'],
-    'lib/Test/Tech.pm' => [qw(1.08 2003/06/21), 'revised 1.07'],
-    't/Test/Tech/Tech.t' => [qw(0.07 2003/06/21), 'revised 0.06'],
-    't/Test/Tech/techA0.t' => [qw(0.05 2003/06/21), 'revised 0.04'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.08 2003/06/24), 'revised 0.07'],
+    'MANIFEST' => [qw(0.08 2003/06/24), 'generated, replaces 0.07'],
+    'Makefile.PL' => [qw(0.08 2003/06/24), 'generated, replaces 0.07'],
+    'README' => [qw(0.08 2003/06/24), 'generated, replaces 0.07'],
+    'lib/Test/Tech.pm' => [qw(1.09 2003/06/24), 'unchanged'],
+    't/Test/Tech/Tech.t' => [qw(0.09 2003/06/24), 'revised 0.08'],
+    't/Test/Tech/techA0.t' => [qw(0.05 2003/06/21), 'unchanged'],
     't/Test/Tech/techA2.txt' => [qw(0.05 2003/06/19), 'unchanged'],
-    't/Test/Tech/techB0.t' => [qw(0.02 2003/06/21), 'revised 0.01'],
-    't/Test/Tech/techC0.t' => [qw(0.04 2003/06/21), 'revised 0.01'],
-    't/Test/Tech/techC2.txt' => [qw(0.06 2003/06/21), 'new'],
-    't/Test/Tech/techC3.txt' => [qw(0.06 2003/06/21), 'new'],
-    't/Test/Tech/techD0.d' => [qw(0.02 2003/06/21), 'new'],
-    't/Test/Tech/techD2.txt' => [qw(0.06 2003/06/21), 'revised 0.05'],
-    't/Test/Tech/techD3.txt' => [qw(0.06 2003/06/21), 'revised 0.05'],
+    't/Test/Tech/techB0.t' => [qw(0.02 2003/06/21), 'unchanged'],
+    't/Test/Tech/techC0.t' => [qw(0.05 2003/06/24), 'unchanged'],
+    't/Test/Tech/techC2.txt' => [qw(0.06 2003/06/21), 'unchanged'],
+    't/Test/Tech/techC3.txt' => [qw(0.06 2003/06/21), 'unchanged'],
+    't/Test/Tech/techD0.d' => [qw(0.02 2003/06/21), 'unchanged'],
+    't/Test/Tech/techD2.txt' => [qw(0.06 2003/06/21), 'unchanged'],
+    't/Test/Tech/techD3.txt' => [qw(0.06 2003/06/21), 'unchanged'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.24 2003/06/19), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.15 2003/06/19), 'unchanged'],
 
 );
 
 ########
-# The SVD::SVDmaker module uses the data after the __DATA__ 
-# token to automatically generate the this file.
+# The ExtUtils::SVDmaker module uses the data after the __DATA__ 
+# token to automatically generate this file.
 #
 # Don't edit anything before __DATA_. Edit instead
 # the data after the __DATA__ token.
 #
 # ANY CHANGES MADE BEFORE the  __DATA__ token WILL BE LOST
 #
-# the next time SVD::SVDmaker generates this file.
+# the next time ExtUtils::SVDmaker generates this file.
 #
 #
 
@@ -59,11 +59,11 @@ use vars qw(%INVENTORY);
 
  Test::Tech - Extends the Test program module
 
- Revision: E
+ Revision: G
 
- Version: 0.06
+ Version: 0.08
 
- Date: 2003/06/21
+ Date: 2003/06/24
 
  Prepared for: General Public 
 
@@ -78,36 +78,33 @@ use vars qw(%INVENTORY);
 This paragraph identifies and provides an overview
 of the released files.
 
-=head2 1.1 Indentification
+=head2 1.1 Identification
 
-This release is a collection of Perl modules that
+This release,
+identified in L<3.2|/3.2 Inventory of software contents>,
+is a collection of Perl modules that
 extend the capabilities of the Perl language.
 
 =head2 1.2 System overview
 
 The system is the Perl programming language software.
-The system does not have any hardware.
-The Perl programming language contains two features that
-are utilized by this release:
-
-=over 4
-
-=item 1
-
-Program Modules to extend the languages
-
-=item 2
-
-Plain Old Documentation (POD) that may be embedded in the language
-
-=back
-
-These features are established by the referenced documents.
-
-The system is the Perl programming language software.
 As established by the Perl referenced documents,
 program modules, such the 
 "L<Test::Tech|Test::Tech>" module, extend the Perl language.
+
+The "Test::Tech" module extends the capabilities of the "Test" module.
+       
+The design is simple. 
+The "Test::Tech" module loads the "Test" module without exporting
+any "Test" subroutines into the "Test::Tech" namespace.
+There is a "Test::Tech" cover subroutine with the same name
+for each "Test" module subroutine.
+Each "Test::Tech" cover subroutine will call the &Test::$subroutine
+before or after it adds any additional capabilities.
+The "Test::Tech" module is a drop-in for the "Test" module.
+Who said you cannot reuse code that is not object oriented?
+This design proves if the driving reason to use object oriented
+code is reusability, it is a very poor reason.
 
 The "L<Test::Tech|Test::Tech>" module extends the capabilities of
 the "L<Test|Test>" module as follows:
@@ -117,10 +114,10 @@ the "L<Test|Test>" module as follows:
 =item *
 
 If the compared variables are references, 
-stingifies the refenced variable by passing the reference
+stingifies the referenced variable by passing the reference
 through I<Data::Dumper> before making the comparison.
 Thus, L<Test::Tech|Test::Tech> can test almost any data structure. 
-If the compare variables are not refernces, uses the &Test::ok
+If the compare variables are not refernces, use the &Test::ok
 and &Test::skip directly.
 
 =item *
@@ -162,7 +159,7 @@ The dependency of the program modules in the US DOD STD2167A bundle is as follow
  File::FileUtil 
    Test::STD::Scrub
      Test::Tech
-        DataPort::FileType::FormDB DataPort::DataFile Test::STD::STDutil
+        DataPort::FileType::FormDB DataPort::DataFile DataPort::Maker Test::STD::Template
             Test::STDmaker ExtUtils::SVDmaker
 
 Note the 
@@ -175,7 +172,7 @@ and Test::TestUtil has disappeared.
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.06
+This document releases Test::Tech version 0.08
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -188,24 +185,27 @@ system file specification.
 
 =head2 3.1 Inventory of materials released.
 
-=head2 3.1.1 Files.
-
 This document releases the file found
-at the following repository:
+at the following repository(s):
 
-   http://www.softwarediamonds/packages/Test-Tech-0.06
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.06
+   http://www.softwarediamonds/packages/Test-Tech-0.08
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.08
 
 
-=head2 3.1.2 Copyright.
+Restrictions regarding duplication and license provisions
+are as follows:
+
+=over 4
+
+=item Copyright.
 
 copyright © 2003 Software Diamonds
 
-=head2 3.1.3 Copyright holder contact.
+=item Copyright holder contact.
 
  603 882-0846 E<lt>support@SoftwareDiamonds.comE<gt>
 
-=head2 3.1.4 License.
+=item License.
 
 Software Diamonds permits the redistribution
 and use in source and binary forms, with or
@@ -248,6 +248,8 @@ OR TORT (INCLUDING USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF NEGLIGENCE OR OTHERWISE) ARISING IN
 ANY WAY OUT OF THE POSSIBILITY OF SUCH DAMAGE.
 
+=back
+
 =head2 3.2 Inventory of software contents
 
 The content of the released, compressed, archieve file,
@@ -255,35 +257,31 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.06    2003/06/21 revised 0.05
- MANIFEST                                                     0.06    2003/06/21 generated, replaces 0.05
- Makefile.PL                                                  0.06    2003/06/21 generated, replaces 0.05
- README                                                       0.06    2003/06/21 generated, replaces 0.05
- lib/Test/Tech.pm                                             1.08    2003/06/21 revised 1.07
- t/Test/Tech/Tech.t                                           0.07    2003/06/21 revised 0.06
- t/Test/Tech/techA0.t                                         0.05    2003/06/21 revised 0.04
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.08    2003/06/24 revised 0.07
+ MANIFEST                                                     0.08    2003/06/24 generated, replaces 0.07
+ Makefile.PL                                                  0.08    2003/06/24 generated, replaces 0.07
+ README                                                       0.08    2003/06/24 generated, replaces 0.07
+ lib/Test/Tech.pm                                             1.09    2003/06/24 unchanged
+ t/Test/Tech/Tech.t                                           0.09    2003/06/24 revised 0.08
+ t/Test/Tech/techA0.t                                         0.05    2003/06/21 unchanged
  t/Test/Tech/techA2.txt                                       0.05    2003/06/19 unchanged
- t/Test/Tech/techB0.t                                         0.02    2003/06/21 revised 0.01
- t/Test/Tech/techC0.t                                         0.04    2003/06/21 revised 0.01
- t/Test/Tech/techC2.txt                                       0.06    2003/06/21 new
- t/Test/Tech/techC3.txt                                       0.06    2003/06/21 new
- t/Test/Tech/techD0.d                                         0.02    2003/06/21 new
- t/Test/Tech/techD2.txt                                       0.06    2003/06/21 revised 0.05
- t/Test/Tech/techD3.txt                                       0.06    2003/06/21 revised 0.05
+ t/Test/Tech/techB0.t                                         0.02    2003/06/21 unchanged
+ t/Test/Tech/techC0.t                                         0.05    2003/06/24 unchanged
+ t/Test/Tech/techC2.txt                                       0.06    2003/06/21 unchanged
+ t/Test/Tech/techC3.txt                                       0.06    2003/06/21 unchanged
+ t/Test/Tech/techD0.d                                         0.02    2003/06/21 unchanged
+ t/Test/Tech/techD2.txt                                       0.06    2003/06/21 unchanged
+ t/Test/Tech/techD3.txt                                       0.06    2003/06/21 unchanged
  t/Test/Tech/V001024/Test.pm                                  1.24    2003/06/19 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.15    2003/06/19 unchanged
 
 
 =head2 3.3 Changes
 
-This version changes the previous version but eliminating
-all object methods. 
-Since this module is built on the L<Test|Test> and the
-L<Data::Dumper|Data::Dumper> modules, neither which
-are objectified, 
-there is little advantage in providing methods
-where a large number of data is static for all objects.
-In other words, all new objects are mostly same.
+Changes to the previous version are as follows:
+
+Replace code in the 't/Tech/Tech.t' with
+the test_lib2inc method in the "File::TestPath" module.
 
 Previous changes are as follows:
 
@@ -308,7 +306,7 @@ Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
 
 =item Test::Tech 0.03
 
-The &Data::Dumper::Dumper subroutine stringifies the iternal Perl
+The &Data::Dumper::Dumper subroutine stringifies the internal Perl
 variable. Different Perls keep the have different internal formats
 for numbers. Some keep them as binary numbers, while others as
 strings. The ones that keep them as strings may be well spec.
@@ -397,6 +395,21 @@ Added tests for the new "Test" functions.
 Replaced using Test::Util that has disappeared with its
 replacements: File::FileUtil, Test::STD::Scrub, Test::STD::STDutil
 
+=item Test::Tech 0.06
+
+This version changes the previous version but eliminating
+all object methods. 
+Since this module is built on the L<Test|Test> and the
+L<Data::Dumper|Data::Dumper> modules, neither which
+are objectified, 
+there is little advantage in providing methods
+where a large number of data is static for all objects.
+In other words, all new objects are mostly same.
+
+=item Test::Tech 0.07
+
+
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -423,6 +436,13 @@ test of this release.
 
 =head2 3.6 Installation instructions.
 
+Instructions for installation, installation tests
+and installation support are as follows:
+
+=over 4
+
+=item Installation Instructions.
+
 To installed the release file, use the CPAN module in the Perl release
 or the INSTALL.PL script at the following web site:
 
@@ -432,28 +452,76 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.06
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.06
+   http://www.softwarediamonds/packages/Test-Tech-0.08
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.08
 
 
-=head2 3.6.1 Installation support.
+=item Prerequistes.
 
-If there are installation problems or questions with the installation
-contact
+'File::SmartNL' => 0,
+'File::Package' => 0,
+'File::TestPath' => 0,
+'Test::STD::Scrub' => 0,
 
- 603 882-0846 E<lt>support@SoftwareDiamonds.comE<gt>
+=item Security, privacy, or safety precautions.
 
-=head2 3.6.2 Installation Tests.
+None.
+
+=item Installation Tests.
 
 Most Perl installation software will run the following test script(s)
 as part of the installation:
 
  t/Test/Tech/Tech.t
 
+=item Installation support.
+
+If there are installation problems or questions with the installation
+contact
+
+ 603 882-0846 E<lt>support@SoftwareDiamonds.comE<gt>
+
+=back
+
 =head2 3.7 Possible problems and known errors
 
-The Test::Tech capabilites could be incorporated into the
-Test program module and Test::Tech eliminated.
+Known issues are as follows:
+
+=over 4
+
+=item Merge with the "Test" module
+
+The "Test::Tech" capabilites could be incorporated into the
+"Test" program module and "Test::Tech" eliminated.
+
+=item TestLevel and Program_Lines
+
+The "Test" module does not take the I<$TestLevel> value
+into account where it chooses the module to load the
+I<%Program_Line> hash. 
+Since the L<Test::Tech> module adds a module layer in between
+the L<Test> module that the test script, the I<$TestLevel>
+must be set to 1. 
+Thus, the L<Test> module loads the L<Test::Tech> module into
+I<%Program_Line> hash instead of the Module Under Test.
+
+=item "Data::Dumper" stringification not portable
+
+For numeric arrays, "L<Data::Dumper|Data::Dumper>" module will not
+stringify them the same for all Perls. The below Perl code will
+produce different results for different Perls
+
+ $probe = 3;
+ $actual = Dumper([0+$probe]);
+
+For Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary,
+the results will be '[\'3\']'  
+while for Perl version 5.008 for solaris the results will be '[3]'. 
+
+The '[\'3\']' results is probable wrong, and the Perls that produce
+them are mutants that should be hunted down and killed.
+
+=back
 
 =head1 4.0 NOTES
 
@@ -643,18 +711,18 @@ US DOD 2167A automation are as follows:
 __DATA__
 
 DISTNAME: Test-Tech^
-VERSION : 0.06^
 REPOSITORY_DIR: packages^
+
+VERSION : 0.08^
 FREEZE: 1^
-
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.05^
-REVISION: E^
-AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
+PREVIOUS_RELEASE: 0.07^
+REVISION: G^
 
+AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
-Objectify the Test module,
-adds the skip_test method to the Test module, and 
+The "Test::Tech" module extends the capabilities of the "Test" module.
+It adds the skip_test method to the Test module, and 
 adds the ability to compare complex data structures to the Test module.
 ^
 
@@ -686,7 +754,9 @@ t/Test/Tech/V001015/*
 ^
 
 PREREQ_PM: 
-'File::FileUtil' => 0,
+'File::SmartNL' => 0,
+'File::Package' => 0,
+'File::TestPath' => 0,
 'Test::STD::Scrub' => 0,
 ^
 
@@ -695,14 +765,10 @@ EXE_FILES:  ^
 
 CHANGES:
 
-This version changes the previous version but eliminating
-all object methods. 
-Since this module is built on the L<Test|Test> and the
-L<Data::Dumper|Data::Dumper> modules, neither which
-are objectified, 
-there is little advantage in providing methods
-where a large number of data is static for all objects.
-In other words, all new objects are mostly same.
+Changes to the previous version are as follows:
+
+Replace code in the 't/Tech/Tech.t' with
+the test_lib2inc method in the "File::TestPath" module.
 
 Previous changes are as follows:
 
@@ -727,7 +793,7 @@ Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
 
 \=item Test::Tech 0.03
 
-The &Data::Dumper::Dumper subroutine stringifies the iternal Perl
+The &Data::Dumper::Dumper subroutine stringifies the internal Perl
 variable. Different Perls keep the have different internal formats
 for numbers. Some keep them as binary numbers, while others as
 strings. The ones that keep them as strings may be well spec.
@@ -816,6 +882,21 @@ Added tests for the new "Test" functions.
 Replaced using Test::Util that has disappeared with its
 replacements: File::FileUtil, Test::STD::Scrub, Test::STD::STDutil
 
+\=item Test::Tech 0.06
+
+This version changes the previous version but eliminating
+all object methods. 
+Since this module is built on the L<Test|Test> and the
+L<Data::Dumper|Data::Dumper> modules, neither which
+are objectified, 
+there is little advantage in providing methods
+where a large number of data is static for all objects.
+In other words, all new objects are mostly same.
+
+\=item Test::Tech 0.07
+
+
+
 \=back
 
 ^
@@ -826,6 +907,20 @@ As established by the Perl referenced documents,
 program modules, such the 
 "L<Test::Tech|Test::Tech>" module, extend the Perl language.
 
+The "Test::Tech" module extends the capabilities of the "Test" module.
+       
+The design is simple. 
+The "Test::Tech" module loads the "Test" module without exporting
+any "Test" subroutines into the "Test::Tech" namespace.
+There is a "Test::Tech" cover subroutine with the same name
+for each "Test" module subroutine.
+Each "Test::Tech" cover subroutine will call the &Test::$subroutine
+before or after it adds any additional capabilities.
+The "Test::Tech" module is a drop-in for the "Test" module.
+Who said you cannot reuse code that is not object oriented?
+This design proves if the driving reason to use object oriented
+code is reusability, it is a very poor reason.
+
 The "L<Test::Tech|Test::Tech>" module extends the capabilities of
 the "L<Test|Test>" module as follows:
 
@@ -834,10 +929,10 @@ the "L<Test|Test>" module as follows:
 \=item *
 
 If the compared variables are references, 
-stingifies the refenced variable by passing the reference
+stingifies the referenced variable by passing the reference
 through I<Data::Dumper> before making the comparison.
 Thus, L<Test::Tech|Test::Tech> can test almost any data structure. 
-If the compare variables are not refernces, uses the &Test::ok
+If the compare variables are not refernces, use the &Test::ok
 and &Test::skip directly.
 
 \=item *
@@ -879,7 +974,7 @@ The dependency of the program modules in the US DOD STD2167A bundle is as follow
  File::FileUtil 
    Test::STD::Scrub
      Test::Tech
-        DataPort::FileType::FormDB DataPort::DataFile Test::STD::STDutil
+        DataPort::FileType::FormDB DataPort::DataFile DataPort::Maker Test::STD::Template
             Test::STDmaker ExtUtils::SVDmaker
 
 Note the 
@@ -891,9 +986,44 @@ the Test::TestUtil program module
 and Test::TestUtil has disappeared.
 ^
 
-PROBLEMS: 
-The Test::Tech capabilites could be incorporated into the
-Test program module and Test::Tech eliminated.
+PROBLEMS:
+Known issues are as follows:
+
+\=over 4
+
+\=item Merge with the "Test" module
+
+The "Test::Tech" capabilites could be incorporated into the
+"Test" program module and "Test::Tech" eliminated.
+
+\=item TestLevel and Program_Lines
+
+The "Test" module does not take the I<$TestLevel> value
+into account where it chooses the module to load the
+I<%Program_Line> hash. 
+Since the L<Test::Tech> module adds a module layer in between
+the L<Test> module that the test script, the I<$TestLevel>
+must be set to 1. 
+Thus, the L<Test> module loads the L<Test::Tech> module into
+I<%Program_Line> hash instead of the Module Under Test.
+
+\=item "Data::Dumper" stringification not portable
+
+For numeric arrays, "L<Data::Dumper|Data::Dumper>" module will not
+stringify them the same for all Perls. The below Perl code will
+produce different results for different Perls
+
+ $probe = 3;
+ $actual = Dumper([0+$probe]);
+
+For Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary,
+the results will be '[\'3\']'  
+while for Perl version 5.008 for solaris the results will be '[3]'. 
+
+The '[\'3\']' results is probable wrong, and the Perls that produce
+them are mutants that should be hunted down and killed.
+
+\=back
 ^
 
 DOCUMENT_OVERVIEW:
@@ -1006,7 +1136,6 @@ United States
 ^
 
 SEE_ALSO:
-
 Modules with end-user functional interfaces 
 relating to US DOD 2167A automation are
 as follows:

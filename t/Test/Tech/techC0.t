@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.04';
-$DATE = '2003/06/21';
+$VERSION = '0.05';
+$DATE = '2003/06/24';
 
 use Cwd;
 use File::Spec;
@@ -43,9 +43,9 @@ BEGIN {
    @__restore_inc__ = File::FileUtil->test_lib2inc;
 
    #######
-   # Add the directory with "Test.pm" version 1.15 to @INC
+   # Add the directory with "Test.pm" version 1.24 to @INC
    #
-   # Thus, when load Test::Tech, it will find Test.pm 1.15
+   # Thus, when load Test::Tech, it will find Test.pm 1.24
    #
    unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
 

@@ -13,8 +13,8 @@ use Test ();   # do not import and "Test" subroutines
 use Data::Dumper;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.08';
-$DATE = '2003/06/21';
+$VERSION = '1.09';
+$DATE = '2003/06/24';
 $FILE = __FILE__;
 
 use vars qw(@ISA @EXPORT_OK);
@@ -62,12 +62,8 @@ $tech_p->{Test}->{todo} = \%Test::todo;
 $tech_p->{Test}->{history} = \%Test::history;
 $tech_p->{Test}->{planned} = \$Test::planned;
 $tech_p->{Test}->{FAILDETAIL} = \@Test::FAILDETAIL;
-
-if( 1.24 <= $Test::VERSION ) {
-    $tech_p->{Test}->{Program_Lines} = \%Test::Program_Lines;
-    $tech_p->{Test}->{TESTERR} =   \$Test::TESTERR;
-}
-
+$tech_p->{Test}->{Program_Lines} = \%Test::Program_Lines if defined %Test::Program_lines; 
+$tech_p->{Test}->{TESTERR} = \$Test::TESTERR if defined $Test::TESTERR;
 $tech_p->{Skip_Tests} = 0;
 
 #######
@@ -196,7 +192,7 @@ sub plan
        $perl .= " MacPerl version " . $MacPerl::Version;
    }
 
-   print $Test::TESTOUT <<"EOF" unless 1.24 <= $Test::VERSION;
+   print $Test::TESTOUT <<"EOF" unless defined $Test::TESTERR;
 # OS            : $^O
 # Perl          : $perl
 # Local Time    : $loctime
@@ -415,9 +411,19 @@ Test::Tech - adds skip_tests and test data structures capabilities to the "Test"
  $string = stringify( $var );
 
 =head1 DESCRIPTION
+The "Test::Tech" module extends the capabilities of the "Test" module.
 
-The Test::Tester module extends the capabilities of
-the Test module as follows:
+The design is simple. 
+The "Test::Tech" module loads the "Test" module without exporting
+any "Test" subroutines into the "Test::Tech" namespace.
+There is a "Test::Tech" cover subroutine with the same name
+for each "Test" module subroutine.
+Each "Test::Tech" cover subroutine will call the &Test::$subroutine
+before or after it adds any additional capabilities.
+The "Test::Tech" module is a drop-in for the "Test" module.
+
+The "Test::Tester" module extends the capabilities of
+the "Test" module as follows:
 
 =over 4
 
@@ -440,9 +446,9 @@ session using the methods under test
 The Test::Tech module is an integral part of the US DOD SDT2167A bundle
 of modules.
 The dependency of the program modules in the US DOD STD2167A bundle is as follows:
- 
- File::FileUtil 
-   Test::STD::Scrub
+
+ File::Package
+   File::SmartNL Test::STD::Scrub
      Test::Tech
         DataPort::FileType::FormDB DataPort::DataFile Test::STD::STDutil
             Test::STDmaker ExtUtils::SVDmaker
@@ -581,8 +587,8 @@ below configuration variables
  Test.history          \%Test::history
  Test.planned          \$Test::planned
  Test.FAILDETAIL       \@Test::FAILDETAIL
- Test.Program_Lines}   \%Test::Program_Lines
- Test.TESTERR}         \$Test::TESTERR
+ Test.Program_Lines    \%Test::Program_Lines
+ Test.TESTERR          \$Test::TESTERR
  Skip_Tests            # boolean
  Internal_Number       # 'string' or 'number'
 
