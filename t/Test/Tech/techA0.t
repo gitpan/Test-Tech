@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.04';
-$DATE = '2003/06/19';
+$VERSION = '0.05';
+$DATE = '2003/06/21';
 
 use Cwd;
 use File::Spec;
@@ -20,7 +20,8 @@ use File::FileUtil;
 #
 # use a BEGIN block so we print our plan before Module Under Test is loaded
 #
-BEGIN { 
+BEGIN {
+
    use vars qw($t $__restore_dir__ @__restore_inc__);
 
    ########
@@ -32,27 +33,24 @@ BEGIN {
    chdir $dirs if $dirs;
 
    #######
-   # Add the library of the unit under test (UUT) to E:\User\SoftwareDiamonds\installation\lib E:\User\SoftwareDiamonds\installation\libSD E:\User\SoftwareDiamonds\installation\lib E:\User\SoftwareDiamonds\installation\libperl D:/Perl/lib D:/Perl/site/lib .
-   #
-   #######
-   # Add the library of the unit under test (UUT) to E:\User\SoftwareDiamonds\installation\lib E:\User\SoftwareDiamonds\installation\libSD E:\User\SoftwareDiamonds\installation\lib E:\User\SoftwareDiamonds\installation\libperl D:/Perl/lib D:/Perl/site/lib .
+   # Add the library of the unit under test (UUT) to @INC
    #
    @__restore_inc__ = File::FileUtil->test_lib2inc;
 
    #######
-   # Add the directory with "Test.pm" version 1.15 to @INC
+   # Add the directory with "Test.pm" version 1.15 to the front of @INC
    #
-   # Thus, when load Test::Tech, it will find Test.pm 1.15
+   # Thus, load Test::Tech, will find Test.pm 1.15 first
    #
-   unshift @INC, File::Spec->catdir ( cwd(), 'V001015') ; 
+   unshift @INC, File::Spec->catdir ( cwd(), 'V001015'); 
 
    ########
    # Create the test plan by supplying the number of tests
    # and the todo tests
    #
    require Test::Tech;
-   $t = new Test::Tech;
-   $t->work_breakdown(tests => 8, todo => [4, 8]);
+   Test::Tech->import( qw(plan ok skip skip_tests tech_config) );
+   plan(tests => 8, todo => [4, 8]);
 
 }
 
@@ -67,6 +65,8 @@ END {
 }
 
 
+
+
 ########
 # Start a test with a new File::FileUtil
 #
@@ -78,16 +78,16 @@ my $y = 3;
 #########
 #  ok:  1 - Using Test 1.15
 #
-$t->test( $Test::VERSION, '1.15', 'Test version');
+ok( $Test::VERSION, '1.15', '', 'Test version');
 
 
 #########
 #  ok:  2 - Do not skip rest
 #
-$t->skip_rest() unless $t->test(
+skip_tests( 1 ) unless ok(
     $x + $y, # actual results
     5, # expected results
-    'Pass test'); 
+    '', 'Pass test'); 
 
 #########
 #
@@ -95,10 +95,10 @@ $t->skip_rest() unless $t->test(
 #
 # R:
 #
-$t->verify( 1, # condition to skip test   
-            ($x*$y*2), # actual results
-            6, # expected results
-            'Skipped tests');
+skip( 1, # condition to skip test   
+      ($x*$y*2), # actual results
+      6, # expected results
+      '','Skipped tests');
 
 #######
 #  zyw feature
@@ -108,19 +108,19 @@ $t->verify( 1, # condition to skip test
 #
 # R:
 #
-$t->test( $x*$y*2, # actual results
+ok( $x*$y*2, # actual results
           6, # expected results
-          'Todo Test that Fails');
+          '','Todo Test that Fails');
 ####
 # 
 #  ok:  5
 #
 # R:
 #
-$t->skip_rest(1) unless $t->test(
+skip_tests(1) unless ok(
     $x + $y, # actual results
     6, # expected results
-    'Failed test that skips the rest'); 
+    '','Failed test that skips the rest'); 
 
 ####
 #
@@ -128,9 +128,9 @@ $t->skip_rest(1) unless $t->test(
 #
 # R:
 #
-$t->test( $x + $y + $x, # actual results
+ok( $x + $y + $x, # actual results
           9, # expected results
-          'A test to skip');
+          '', 'A test to skip');
 
 ####
 # 
@@ -138,9 +138,9 @@ $t->test( $x + $y + $x, # actual results
 # 
 # R:
 #
-$t->test( $x + $y + $x + $y, # actual results
+ok( $x + $y + $x + $y, # actual results
           10, # expected results
-          'A not skip to skip');
+          '', 'A not skip to skip');
 
 ####
 # 
@@ -148,12 +148,10 @@ $t->test( $x + $y + $x + $y, # actual results
 # 
 # R:
 #
-$t->skip_rest(0);
-$t->test( $x*$y*2, # actual results
+skip_tests(0);
+ok( $x*$y*2, # actual results
           12, # expected results
-          'Stop skipping tests. Todo Test that Passes');
-
-$t->finish();
+          '', 'Stop skipping tests. Todo Test that Passes');
 
 __END__
 

@@ -8,28 +8,7 @@ use warnings::register;
 
 use vars qw($VERSION $DATE);
 $VERSION = '0.02';   # automatically generated file
-$DATE = '2003/06/19';
-
-
-##### Demonstration Script ####
-#
-# Name: tgA1.d
-#
-# UUT: Test::STDmaker::tg1
-#
-# The module Test::STDmaker generated this demo script from the contents of
-#
-# Test::STDmaker::tgA1 
-#
-# Don't edit this test script file, edit instead
-#
-# Test::STDmaker::tgA1
-#
-#	ANY CHANGES MADE HERE TO THIS SCRIPT FILE WILL BE LOST
-#
-#       the next time Test::STDmaker generates this script file.
-#
-#
+$DATE = '2003/06/21';
 
 ######
 #
@@ -40,20 +19,6 @@ use vars qw($__restore_dir__ $T);
 BEGIN {
     use Cwd;
     use File::Spec;
-    use Test::Tech;
-    use Getopt::Long;
-
-    ##########
-    # Pick up a output redirection file and tests to skip
-    # from the command line.
-    #
-    my $test_log = '';
-    GetOptions('log=s' => \$test_log);
- 
-    ########
-    # Start a demo with a new Tech
-    #
-    $T = new Test::Tech( $test_log );
 
     ########
     # Working directory is that of the script file
@@ -62,6 +27,20 @@ BEGIN {
     my ($vol, $dirs, undef) = File::Spec->splitpath( $0 );
     chdir $vol if $vol;
     chdir $dirs if $dirs;
+
+   #######
+   # Add the directory with "Test.pm" version 1.15 to @INC
+   #
+   # Thus, when load Test::Tech, it will find Test.pm 1.15
+   #
+   unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
+
+   ########
+   # Create the test plan by supplying the number of tests
+   # and the todo tests
+   #
+   require Test::Tech;
+   Test::Tech->import( qw(demo) );
 }
 
 END {
@@ -90,45 +69,45 @@ follow on the next lines. For example,
 
 MSG
 
-$T->demo(   
+demo(   
 "my\ \$x\ \=\ 2"); # typed in command           
 my $x = 2; # execution
 
-$T->demo(   
+demo(   
 "my\ \$y\ \=\ 3"); # typed in command           
 my $y = 3; # execution
 
-$T->demo(   
+demo(   
 "\$x\ \+\ \$y", # typed in command           
 $x + $y); # execution
 
 
-$T->demo(   
+demo(   
 "\(\$x\+\$y\,\$y\-\$x\)", # typed in command           
 ($x+$y,$y-$x)); # execution
 
 
-$T->demo(   
+demo(   
 "\(\$x\+4\,\$x\*\$y\)", # typed in command           
 ($x+4,$x*$y)); # execution
 
 
-$T->demo(   
+demo(   
 "\$x\*\$y\*2", # typed in command           
 $x*$y*2 # execution
 ) unless     1; # condition for execution                            
 
-$T->demo(   
+demo(   
 "\$x\*\$y\*2", # typed in command           
 $x*$y*2 # execution
 ) unless     0; # condition for execution                            
 
-$T->demo(   
+demo(   
 "\$x", # typed in command           
 $x); # execution
 
 
-$T->demo(   
+demo(   
 "\ \ \ \ my\ \@expected\ \=\ \(\'200\'\,\'201\'\,\'202\'\)\;\
 \ \ \ \ my\ \$i\;\
 \ \ \ \ for\(\ \$i\=0\;\ \$i\ \<\ 3\;\ \$i\+\+\)\ \{"); # typed in command           
@@ -136,42 +115,40 @@ $T->demo(
     my $i;
     for( $i=0; $i < 3; $i++) {; # execution
 
-$T->demo(   
+demo(   
 "\$i\+200", # typed in command           
 $i+200); # execution
 
 
-$T->demo(   
+demo(   
 "\$i\ \+\ \(\$x\ \*\ 100\)", # typed in command           
 $i + ($x * 100)); # execution
 
 
-$T->demo(   
+demo(   
 "\ \ \ \ \}\;"); # typed in command           
     };; # execution
 
-$T->demo(   
+demo(   
 "\$x\ \+\ \$y", # typed in command           
 $x + $y); # execution
 
 
-$T->demo(   
+demo(   
 "\$x\ \+\ \$y\ \+\ \$x", # typed in command           
 $x + $y + $x); # execution
 
 
-$T->demo(   
+demo(   
 "\$x\ \+\ \$y\ \+\ \$x\ \+\ \$y", # typed in command           
 $x + $y + $x + $y # execution
 ) unless     0; # condition for execution                            
 
-$T->demo(   
+demo(   
 "\$x\ \+\ \$y\ \+\ \$x\ \+\ \$y\ \+\ \$x", # typed in command           
 $x + $y + $x + $y + $x # execution
 ) unless     1; # condition for execution                            
 
-
-$T->finish();
 
 
 =head1 NAME

@@ -7,13 +7,19 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.01';
-$DATE = '2003/06/19';
+$VERSION = '0.04';
+$DATE = '2003/06/21';
 
 use Cwd;
 use File::Spec;
 use File::FileUtil;
 
+######
+#
+# T:
+#
+# use a BEGIN block so we print our plan before Module Under Test is loaded
+#
 ######
 #
 # T:
@@ -47,8 +53,9 @@ BEGIN {
    # Create the test plan by supplying the number of tests
    # and the todo tests
    #
-   use Test::Tech qw(plan ok skip skip_tests done tech);
-   plan(tests => 8, todo => [4, 8]);
+   require Test::Tech;
+   Test::Tech->import( qw(plan ok skip skip_tests tech_config) );
+   plan(tests => 2, todo => [1]);
 
 }
 
@@ -64,14 +71,44 @@ END {
 
 
 
-
-########
-# Start a test with a new File::FileUtil
+######
+# This is perl, v5.6.1 built for MSWin32-x86-multi-thread
+# (with 1 registered patch, see perl -V for more detail)
 #
-my $fu = 'File::FileUtil';
-
-my $x = 2;
-my $y = 3;
+# Copyright 1987-2001, Larry Wall
+#
+# Binary build 631 provided by ActiveState Tool Corp. http://www.ActiveState.com
+# Built 17:16:22 Jan  2 2002
+#
+#
+# Perl may be copied only under the terms of either the Artistic License or the
+# GNU General Public License, which may be found in the Perl 5 source kit.
+#
+# Complete documentation for Perl, including FAQ lists, should be found on
+# this system using `man perl' or `perldoc perl'.  If you have access to the
+# Internet, point your browser at http://www.perl.com/, the Perl Home Page.
+#
+# ~~~~~~~
+#
+# Wall, Christiansen and Orwant on Perl internal storage
+#
+# Page 351 of Programming Perl, Third Addition, Overloadable Operators
+# quote:
+# 
+# Conversion operators: "", 0+, bool
+#   These three keys let you provide behaviors for Perl's automatic conversions
+#   to strings, numbers, and Boolean values, respectively.
+# 
+# ~~~~~~~
+#
+# Internal Storage of Perls that are in the wild
+#
+#   string - Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary
+#   number - Perl version 5.008 for solaris  
+#
+#   Perls in the wild with internal storage of string may be mutants that need to 
+#   be hunted down killed.
+#
 
 ######
 #
@@ -80,98 +117,56 @@ my $y = 3;
 #
 # redirect STDERR to the STDOUT
 # 
-$t = tech();
-${$t->{Test}->{TESTERR}} = *STDOUT; 
+tech_config('Test.TESTERR', \*STDOUT);
 
-#########
-#  ok:  1 - Using Test 1.24
-#
-ok( $Test::VERSION, '1.24', '', 'Test version');
+my $internal_number = tech_config('Internal_Number');
 
+my $x = 2;
+my $y = 3;
 
-#########
-#  ok:  2 - Do not skip rest
-#
-skip_tests() unless ok(
-    $x + $y, # actual results
-    5, # expected results
-    '', 'Pass test'); 
-
-#########
-#
-#  ok:  3
-#
-# R:
-#
-skip( 1, # condition to skip test   
-      ($x*$y*2), # actual results
-      6, # expected results
-      '','Skipped tests');
-
-#######
-#  zyw feature
+########
+#  xy feature
 #  Under development, i.e todo
 #
-#  ok:  4
+#  ok:  1
 #
-# R:
-#
-ok( $x*$y*2, # actual results
-          6, # expected results
-          '','Todo Test that Fails');
-####
-# 
-#  ok:  5
-#
-# R:
-#
-skip_tests(1) unless ok(
-    $x + $y, # actual results
-    6, # expected results
-    '','Failed test that skips the rest'); 
+if( $internal_number eq 'string') {
+    ok( [$x+$y,$y-$x], # actual results
+              ['5','1'], # expected results
+             '', 'Todo test that passes');
+}
+else {
+    ok( [$x+$y,$y-$x], # actual results
+              [5,1], # expected results
+             '', 'Todo test that passes');
+}
 
-####
-#
-#  ok:  6
-#
-# R:
-#
-ok( $x + $y + $x, # actual results
-          9, # expected results
-          '', 'A test to skip');
 
-####
-# 
-#  ok:  7
-# 
-# R:
+########
 #
-ok( $x + $y + $x + $y, # actual results
-          10, # expected results
-          '', 'A not skip to skip');
-
-####
-# 
-#  ok:  8
-# 
-# R:
+#  ok:  2
 #
-skip_tests(0);
-ok( $x*$y*2, # actual results
-          12, # expected results
-          '', 'Stop skipping tests. Todo Test that Passes');
+if( $internal_number eq 'string') {
+    ok( [$x+$y,$x*$y], # actual results
+          ['6','5'], # expected results
+          '', 'Test that fails');
+}
+else{
+    ok( [$x+$y,$x*$y], # actual results
+          [6,5], # expected results
+          '', 'Test that fails');
+}
 
-done();
 
 __END__
 
 =head1 NAME
 
-tgA1.t - test script for Test::Tech
+tgC0.t - test script for Test::Tech
 
 =head1 SYNOPSIS
 
- tgA1.t 
+ tgC0.t 
 
 =head1 COPYRIGHT
 

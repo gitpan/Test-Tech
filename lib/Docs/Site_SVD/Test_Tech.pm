@@ -10,30 +10,29 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.05';
-$DATE = '2003/06/19';
+$VERSION = '0.06';
+$DATE = '2003/06/21';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.05 2003/06/19), 'revised 0.04'],
-    'MANIFEST' => [qw(0.05 2003/06/19), 'generated, replaces 0.04'],
-    'Makefile.PL' => [qw(0.05 2003/06/19), 'generated, replaces 0.04'],
-    'README' => [qw(0.05 2003/06/19), 'generated, replaces 0.04'],
-    'lib/Test/Tech.pm' => [qw(1.07 2003/06/19), 'revised 1.06'],
-    't/Test/Tech/Tech.t' => [qw(0.06 2003/06/19), 'revised 0.05'],
-    't/Test/Tech/techA0.t' => [qw(0.04 2003/06/19), 'new'],
-    't/Test/Tech/techA2.txt' => [qw(0.05 2003/06/19), 'new'],
-    't/Test/Tech/techB0.t' => [qw(0.01 2003/06/19), 'new'],
-    't/Test/Tech/techC0.t' => [qw(0.01 2003/06/19), 'new'],
-    't/Test/Tech/techD0.t' => [qw(0.04 2003/06/19), 'new'],
-    't/Test/Tech/techD2.txt' => [qw(0.05 2003/06/19), 'new'],
-    't/Test/Tech/techD3.txt' => [qw(0.05 2003/06/19), 'new'],
-    't/Test/Tech/techE0.d' => [qw(0.02 2003/06/19), 'new'],
-    't/Test/Tech/techE2.txt' => [qw(0.05 2003/06/19), 'new'],
-    't/Test/Tech/techE3.txt' => [qw(0.05 2003/06/19), 'new'],
-    't/Test/Tech/V001024/Test.pm' => [qw(1.24 2003/06/19), 'new'],
-    't/Test/Tech/V001015/Test.pm' => [qw(1.15 2003/06/19), 'new'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.06 2003/06/21), 'revised 0.05'],
+    'MANIFEST' => [qw(0.06 2003/06/21), 'generated, replaces 0.05'],
+    'Makefile.PL' => [qw(0.06 2003/06/21), 'generated, replaces 0.05'],
+    'README' => [qw(0.06 2003/06/21), 'generated, replaces 0.05'],
+    'lib/Test/Tech.pm' => [qw(1.08 2003/06/21), 'revised 1.07'],
+    't/Test/Tech/Tech.t' => [qw(0.07 2003/06/21), 'revised 0.06'],
+    't/Test/Tech/techA0.t' => [qw(0.05 2003/06/21), 'revised 0.04'],
+    't/Test/Tech/techA2.txt' => [qw(0.05 2003/06/19), 'unchanged'],
+    't/Test/Tech/techB0.t' => [qw(0.02 2003/06/21), 'revised 0.01'],
+    't/Test/Tech/techC0.t' => [qw(0.04 2003/06/21), 'revised 0.01'],
+    't/Test/Tech/techC2.txt' => [qw(0.06 2003/06/21), 'new'],
+    't/Test/Tech/techC3.txt' => [qw(0.06 2003/06/21), 'new'],
+    't/Test/Tech/techD0.d' => [qw(0.02 2003/06/21), 'new'],
+    't/Test/Tech/techD2.txt' => [qw(0.06 2003/06/21), 'revised 0.05'],
+    't/Test/Tech/techD3.txt' => [qw(0.06 2003/06/21), 'revised 0.05'],
+    't/Test/Tech/V001024/Test.pm' => [qw(1.24 2003/06/19), 'unchanged'],
+    't/Test/Tech/V001015/Test.pm' => [qw(1.15 2003/06/19), 'unchanged'],
 
 );
 
@@ -60,11 +59,11 @@ use vars qw(%INVENTORY);
 
  Test::Tech - Extends the Test program module
 
- Revision: D
+ Revision: E
 
- Version: 0.05
+ Version: 0.06
 
- Date: 2003/06/19
+ Date: 2003/06/21
 
  Prepared for: General Public 
 
@@ -105,20 +104,24 @@ Plain Old Documentation (POD) that may be embedded in the language
 
 These features are established by the referenced documents.
 
-The L<Test::Tech|Test::Tech> module extends the capabilities of
-the L<Test|Test> module as follows:
+The system is the Perl programming language software.
+As established by the Perl referenced documents,
+program modules, such the 
+"L<Test::Tech|Test::Tech>" module, extend the Perl language.
+
+The "L<Test::Tech|Test::Tech>" module extends the capabilities of
+the "L<Test|Test>" module as follows:
 
 =over
 
 =item *
 
 If the compared variables are references, 
-stingifies the refenced variable by passing the referenced
+stingifies the refenced variable by passing the reference
 through I<Data::Dumper> before making the comparison.
-Thus, Test::Tech can test almost any data structure. 
+Thus, L<Test::Tech|Test::Tech> can test almost any data structure. 
 If the compare variables are not refernces, uses the &Test::ok
 and &Test::skip directly.
-
 
 =item *
 
@@ -131,13 +134,13 @@ session using the methods under test
 
 =back
 
-The L<Test::Tech|Test::Tech> module was originally developed for
+The "L<Test::Tech|Test::Tech>" module was originally developed for
 the US DOD STD2167A bundle and is an integral part of the US DOD STD2167A bundle
 of modules. 
-The L<Test::Tech|Test::Tech> module was broken out from the design modules
+The "L<Test::Tech|Test::Tech>" module was broken out from the design modules
 because it may have uses outside the US DOD STD2167A bundle.
 
-Two STD2167A bundle end user modules are as follows:
+Two STD2167A bundle end user (functional interface) modules are as follows:
 
 =over 4
 
@@ -172,7 +175,7 @@ and Test::TestUtil has disappeared.
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.05
+This document releases Test::Tech version 0.06
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -190,8 +193,8 @@ system file specification.
 This document releases the file found
 at the following repository:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.05
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.05
+   http://www.softwarediamonds/packages/Test-Tech-0.06
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.06
 
 
 =head2 3.1.2 Copyright.
@@ -252,29 +255,125 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.05    2003/06/19 revised 0.04
- MANIFEST                                                     0.05    2003/06/19 generated, replaces 0.04
- Makefile.PL                                                  0.05    2003/06/19 generated, replaces 0.04
- README                                                       0.05    2003/06/19 generated, replaces 0.04
- lib/Test/Tech.pm                                             1.07    2003/06/19 revised 1.06
- t/Test/Tech/Tech.t                                           0.06    2003/06/19 revised 0.05
- t/Test/Tech/techA0.t                                         0.04    2003/06/19 new
- t/Test/Tech/techA2.txt                                       0.05    2003/06/19 new
- t/Test/Tech/techB0.t                                         0.01    2003/06/19 new
- t/Test/Tech/techC0.t                                         0.01    2003/06/19 new
- t/Test/Tech/techD0.t                                         0.04    2003/06/19 new
- t/Test/Tech/techD2.txt                                       0.05    2003/06/19 new
- t/Test/Tech/techD3.txt                                       0.05    2003/06/19 new
- t/Test/Tech/techE0.d                                         0.02    2003/06/19 new
- t/Test/Tech/techE2.txt                                       0.05    2003/06/19 new
- t/Test/Tech/techE3.txt                                       0.05    2003/06/19 new
- t/Test/Tech/V001024/Test.pm                                  1.24    2003/06/19 new
- t/Test/Tech/V001015/Test.pm                                  1.15    2003/06/19 new
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.06    2003/06/21 revised 0.05
+ MANIFEST                                                     0.06    2003/06/21 generated, replaces 0.05
+ Makefile.PL                                                  0.06    2003/06/21 generated, replaces 0.05
+ README                                                       0.06    2003/06/21 generated, replaces 0.05
+ lib/Test/Tech.pm                                             1.08    2003/06/21 revised 1.07
+ t/Test/Tech/Tech.t                                           0.07    2003/06/21 revised 0.06
+ t/Test/Tech/techA0.t                                         0.05    2003/06/21 revised 0.04
+ t/Test/Tech/techA2.txt                                       0.05    2003/06/19 unchanged
+ t/Test/Tech/techB0.t                                         0.02    2003/06/21 revised 0.01
+ t/Test/Tech/techC0.t                                         0.04    2003/06/21 revised 0.01
+ t/Test/Tech/techC2.txt                                       0.06    2003/06/21 new
+ t/Test/Tech/techC3.txt                                       0.06    2003/06/21 new
+ t/Test/Tech/techD0.d                                         0.02    2003/06/21 new
+ t/Test/Tech/techD2.txt                                       0.06    2003/06/21 revised 0.05
+ t/Test/Tech/techD3.txt                                       0.06    2003/06/21 revised 0.05
+ t/Test/Tech/V001024/Test.pm                                  1.24    2003/06/19 unchanged
+ t/Test/Tech/V001015/Test.pm                                  1.15    2003/06/19 unchanged
 
 
 =head2 3.3 Changes
 
-The changes to the last version are as follows:
+This version changes the previous version but eliminating
+all object methods. 
+Since this module is built on the L<Test|Test> and the
+L<Data::Dumper|Data::Dumper> modules, neither which
+are objectified, 
+there is little advantage in providing methods
+where a large number of data is static for all objects.
+In other words, all new objects are mostly same.
+
+Previous changes are as follows:
+
+=over 4
+
+=item Test::Tester 0.01
+
+Originated.
+
+=item Test::Tester 0.02
+
+Minor changes to this SVD.
+
+=item Test::Tech 0.01
+
+Due to a non-registered namespace conflict with CPAN,
+changed the namespace from Test::Tester to Test::Tech
+
+=item Test::Tech 0.02
+
+Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
+
+=item Test::Tech 0.03
+
+The &Data::Dumper::Dumper subroutine stringifies the iternal Perl
+variable. Different Perls keep the have different internal formats
+for numbers. Some keep them as binary numbers, while others as
+strings. The ones that keep them as strings may be well spec.
+In any case they have been let loose in the wild so the test 
+scripts that use Data::Dumper must deal with them.
+
+Added a probe to determine how a Perl stores its internal
+numbers and added code to the test script to adjust for 
+the difference in Perl
+
+~~~~~
+
+ ######
+ # This is perl, v5.6.1 built for MSWin32-x86-multi-thread
+ # (with 1 registered patch, see perl -V for more detail)
+ #
+ # Copyright 1987-2001, Larry Wall
+ #
+ # Binary build 631 provided by ActiveState Tool Corp. http://www.ActiveState.com
+ # Built 17:16:22 Jan  2 2002
+ #
+ #
+ # Perl may be copied only under the terms of either the Artistic License or the
+ # GNU General Public License, which may be found in the Perl 5 source kit.
+ #
+ # Complete documentation for Perl, including FAQ lists, should be found on
+ # this system using `man perl' or `perldoc perl'.  If you have access to the
+ # Internet, point your browser at http://www.perl.com/, the Perl Home Page.
+ #
+ # ~~~~~~~
+ #
+ # Wall, Christiansen and Orwant on Perl internal storage
+ #
+ # Page 351 of Programming Perl, Third Addition, Overloadable Operators
+ # quote:
+ # 
+ # Conversion operators: "", 0+, bool
+ #   These three keys let you provide behaviors for Perl's automatic conversions
+ #   to strings, numbers, and Boolean values, respectively.
+ # 
+ # ~~~~~~~
+ #
+ # Internal Storage of Perls that are in the wild
+ #
+ #   string - Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary
+ #   number - Perl version 5.008 for solaris  
+ #
+ #   Perls in the wild with internal storage of string may be mutants that need to 
+ #   be hunted down killed.
+ # 
+
+ ########
+ # Probe Perl for internal storage method
+ #
+ my $probe = 3;
+ my $actual = Dumper([0+$probe]);
+ my $internal_storage = 'undetermine';
+ if( $actual eq Dumper([5]) ) {
+     $internal_storage = 'number';
+ }
+ elsif ( $actual eq Dumper(['3']) ) {
+     $internal_storage = 'string';
+ }
+
+=item Test::Tech 0.04
 
 =over 4
 
@@ -291,6 +390,12 @@ Added tests not only for Test 1.15 but also Test 1.24
 
 Added tests for the new "Test" functions.
 
+=back
+
+=item Test::Tech 0.05
+
+Replaced using Test::Util that has disappeared with its
+replacements: File::FileUtil, Test::STD::Scrub, Test::STD::STDutil
 
 =back
 
@@ -327,8 +432,8 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.05
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.05
+   http://www.softwarediamonds/packages/Test-Tech-0.06
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.06
 
 
 =head2 3.6.1 Installation support.
@@ -538,13 +643,13 @@ US DOD 2167A automation are as follows:
 __DATA__
 
 DISTNAME: Test-Tech^
-VERSION : 0.05^
+VERSION : 0.06^
 REPOSITORY_DIR: packages^
 FREEZE: 1^
 
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.04^
-REVISION: D^
+PREVIOUS_RELEASE: 0.05^
+REVISION: E^
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 
 ABSTRACT: 
@@ -589,7 +694,105 @@ TESTS: t/Test/Tech/Tech.t^
 EXE_FILES:  ^
 
 CHANGES:
-The changes to the last version are as follows:
+
+This version changes the previous version but eliminating
+all object methods. 
+Since this module is built on the L<Test|Test> and the
+L<Data::Dumper|Data::Dumper> modules, neither which
+are objectified, 
+there is little advantage in providing methods
+where a large number of data is static for all objects.
+In other words, all new objects are mostly same.
+
+Previous changes are as follows:
+
+\=over 4
+
+\=item Test::Tester 0.01
+
+Originated.
+
+\=item Test::Tester 0.02
+
+Minor changes to this SVD.
+
+\=item Test::Tech 0.01
+
+Due to a non-registered namespace conflict with CPAN,
+changed the namespace from Test::Tester to Test::Tech
+
+\=item Test::Tech 0.02
+
+Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
+
+\=item Test::Tech 0.03
+
+The &Data::Dumper::Dumper subroutine stringifies the iternal Perl
+variable. Different Perls keep the have different internal formats
+for numbers. Some keep them as binary numbers, while others as
+strings. The ones that keep them as strings may be well spec.
+In any case they have been let loose in the wild so the test 
+scripts that use Data::Dumper must deal with them.
+
+Added a probe to determine how a Perl stores its internal
+numbers and added code to the test script to adjust for 
+the difference in Perl
+
+~~~~~
+
+ ######
+ # This is perl, v5.6.1 built for MSWin32-x86-multi-thread
+ # (with 1 registered patch, see perl -V for more detail)
+ #
+ # Copyright 1987-2001, Larry Wall
+ #
+ # Binary build 631 provided by ActiveState Tool Corp. http://www.ActiveState.com
+ # Built 17:16:22 Jan  2 2002
+ #
+ #
+ # Perl may be copied only under the terms of either the Artistic License or the
+ # GNU General Public License, which may be found in the Perl 5 source kit.
+ #
+ # Complete documentation for Perl, including FAQ lists, should be found on
+ # this system using `man perl' or `perldoc perl'.  If you have access to the
+ # Internet, point your browser at http://www.perl.com/, the Perl Home Page.
+ #
+ # ~~~~~~~
+ #
+ # Wall, Christiansen and Orwant on Perl internal storage
+ #
+ # Page 351 of Programming Perl, Third Addition, Overloadable Operators
+ # quote:
+ # 
+ # Conversion operators: "", 0+, bool
+ #   These three keys let you provide behaviors for Perl's automatic conversions
+ #   to strings, numbers, and Boolean values, respectively.
+ # 
+ # ~~~~~~~
+ #
+ # Internal Storage of Perls that are in the wild
+ #
+ #   string - Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary
+ #   number - Perl version 5.008 for solaris  
+ #
+ #   Perls in the wild with internal storage of string may be mutants that need to 
+ #   be hunted down killed.
+ # 
+
+ ########
+ # Probe Perl for internal storage method
+ #
+ my $probe = 3;
+ my $actual = Dumper([0+$probe]);
+ my $internal_storage = 'undetermine';
+ if( $actual eq Dumper([5]) ) {
+     $internal_storage = 'number';
+ }
+ elsif ( $actual eq Dumper(['3']) ) {
+     $internal_storage = 'string';
+ }
+
+\=item Test::Tech 0.04
 
 \=over 4
 
@@ -606,26 +809,36 @@ Added tests not only for Test 1.15 but also Test 1.24
 
 Added tests for the new "Test" functions.
 
+\=back
+
+\=item Test::Tech 0.05
+
+Replaced using Test::Util that has disappeared with its
+replacements: File::FileUtil, Test::STD::Scrub, Test::STD::STDutil
 
 \=back
 
 ^
 
 CAPABILITIES:
-The L<Test::Tech|Test::Tech> module extends the capabilities of
-the L<Test|Test> module as follows:
+The system is the Perl programming language software.
+As established by the Perl referenced documents,
+program modules, such the 
+"L<Test::Tech|Test::Tech>" module, extend the Perl language.
+
+The "L<Test::Tech|Test::Tech>" module extends the capabilities of
+the "L<Test|Test>" module as follows:
 
 \=over
 
 \=item *
 
 If the compared variables are references, 
-stingifies the refenced variable by passing the referenced
+stingifies the refenced variable by passing the reference
 through I<Data::Dumper> before making the comparison.
-Thus, Test::Tech can test almost any data structure. 
+Thus, L<Test::Tech|Test::Tech> can test almost any data structure. 
 If the compare variables are not refernces, uses the &Test::ok
 and &Test::skip directly.
-
 
 \=item *
 
@@ -638,13 +851,13 @@ session using the methods under test
 
 \=back
 
-The L<Test::Tech|Test::Tech> module was originally developed for
+The "L<Test::Tech|Test::Tech>" module was originally developed for
 the US DOD STD2167A bundle and is an integral part of the US DOD STD2167A bundle
 of modules. 
-The L<Test::Tech|Test::Tech> module was broken out from the design modules
+The "L<Test::Tech|Test::Tech>" module was broken out from the design modules
 because it may have uses outside the US DOD STD2167A bundle.
 
-Two STD2167A bundle end user modules are as follows:
+Two STD2167A bundle end user (functional interface) modules are as follows:
 
 \=over 4
 

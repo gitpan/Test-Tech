@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.06';
-$DATE = '2003/06/19';
+$VERSION = '0.07';
+$DATE = '2003/06/21';
 
 use Cwd;
 use File::Spec;
@@ -42,7 +42,7 @@ BEGIN {
    # and the todo tests
    #
    require Test;
-   $__tests__ = 8;
+   $__tests__ = 7;
    &Test::plan(tests => $__tests__);
 
 }
@@ -167,10 +167,11 @@ ok( $actual_results . "\n\n" . $fu->hex_dump($actual_results),
     $expected_results . "\n\n" . $fu->hex_dump($expected_results) ); 
 
 
+
 #####
 #  ok:  6
 # 
-# Run test script test techC0.t
+# Run test script test techD0.t
 #
 # R:
 #
@@ -180,23 +181,30 @@ $actual_results = `perl techC0.t`;
 $fu->fout('tech1.txt', $actual_results);
 $actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
 
-$expected_results = $fu->fin('techA2.txt');
-$expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
+#######
+# expected results depend upon the internal storage from numbers 
+#
+if( $internal_storage eq 'string') {
+    $expected_results = $fu->fin('techC2.txt');
+}
+else {
+    $expected_results = $fu->fin('techC3.txt');
+}
 
+$expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
 ok( $actual_results . "\n\n" . $fu->hex_dump($actual_results), 
     $expected_results . "\n\n" . $fu->hex_dump($expected_results) ); 
-
 
 #####
 #  ok:  7
 # 
-# Run test script test techD0.t
+# Run demo script techD0.d
 #
 # R:
 #
-print "# Run test script techD0.t\n";
+print "# Run demo script techD0.d\n";
 
-$actual_results = `perl techD0.t`;
+$actual_results = `perl techD0.d`;
 $fu->fout('tech1.txt', $actual_results);
 $actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
 
@@ -208,33 +216,6 @@ if( $internal_storage eq 'string') {
 }
 else {
     $expected_results = $fu->fin('techD3.txt');
-}
-
-$expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
-ok( $actual_results . "\n\n" . $fu->hex_dump($actual_results), 
-    $expected_results . "\n\n" . $fu->hex_dump($expected_results) ); 
-
-#####
-#  ok:  8
-# 
-# Run demo script techE0.d
-#
-# R:
-#
-print "# Run demo script techE0.d\n";
-
-$actual_results = `perl techE0.d`;
-$fu->fout('tech1.txt', $actual_results);
-$actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
-
-#######
-# expected results depend upon the internal storage from numbers 
-#
-if( $internal_storage eq 'string') {
-    $expected_results = $fu->fin('techE2.txt');
-}
-else {
-    $expected_results = $fu->fin('techE3.txt');
 }
 
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));

@@ -9,268 +9,138 @@ use strict;
 use warnings;
 use warnings::register;
 
-require Test;
+use Test ();   # do not import and "Test" subroutines
 use Data::Dumper;
-use File::FileUtil;
-use Config;
-
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.07';
-$DATE = '2003/06/19';
+$VERSION = '1.08';
+$DATE = '2003/06/21';
 $FILE = __FILE__;
 
 use vars qw(@ISA @EXPORT_OK);
 require Exporter;
 @ISA=('Exporter');
-@EXPORT_OK = qw(&tech &plan &ok &skip &skip_tests &done &stringify &example);
-
-use vars qw( $tech );
-$tech = new Test::Tech;
-
-######
-#
-#
-sub tech
-{
-   if( @_ ) {
-       $tech = new Test::Tech( @_ ) ;
-   }
-   else {
-       $tech = new Test::Tech() unless $tech;
-   }
-   $tech  
-}
-
-
-######
-#
-#
-sub plan
-{
-   $tech->work_breakdown( @_ );
-   $Test::TestLevel = 2;
-}
-
-
-######
-#
-#
-sub ok
-{
-   my ($result, $expected, $diagnostic, $name) = @_;
-   $tech->test($result, $expected, $name, $diagnostic);
-}
-
-
-######
-#
-#
-sub skip
-{
-   my ($mod, $result, $expected, $diagnostic, $name) = @_;
-   $tech->verify($mod, $result, $expected, $name, $diagnostic );
-}
-
-
-######
-#
-#
-sub skip_tests
-{
-   $tech->skip_rest( @_ );
-}
-
-
-######
-#
-#
-sub done
-{
-   $tech->finish( @_ );
-
-}
-
-
-######
-#
-#
-sub example
-{
-   $tech->demo( @_ );
-
-}
-
-
-#####
-# Because Test::TestUtil uses SelfLoader, the @ISA
-# method of inheriting Test::TestUtil has problems.
-#
-# Use AUTOLOAD inheritance technique below instead.
-#
-# use vars qw(@ISA);
-# @ISA = qw(Test::TestUtil);
-
-
-####
-# Using an object to pass localized object data
-# between functions. Makes the functions reentrant
-# where out right globals can be clobbered when
-# used with different threads (processes??)
-#
-sub new
-{
-    my ($class, $log) = @_;
-    $class = ref($class) if ref($class);
-    my $self = bless {}, $class;
-
-    ########
-    # Tend to Data::Dumper variables
-    #
-    $self->{Dumper}->{Terse} = \$Data::Dumper::Terse;
-    $self->{Dumper}->{Indent} = \$Data::Indent;
-    $self->{Dumper}->{Purity} = \$Data::Purity;
-    $self->{Dumper}->{Pad} = \$Data::Pad;
-    $self->{Dumper}->{Varname} = \$Data::Varname;
-    $self->{Dumper}->{Useqq} = \$Data::Useqq;
-    $self->{Dumper}->{Freezer} = \$Data::Freezer;
-    $self->{Dumper}->{Toaster} = \$Data::Toaster;
-    $self->{Dumper}->{Deepcopy} = \$Data::Deepcopy;
-    $self->{Dumper}->{Quotekeys} = \$Data::Quotekeys;
-    $self->{Dumper}->{Maxdepth} = \$Data::Maxdepth;
-
-
-    ######
-    # Tend to Test variables
-    #  
-    $self->{Test}->{ntest} = \$Test::ntest;
-    $self->{Test}->{TESTOUT} = \$Test::TESTOUT;
-    $self->{Test}->{TestLevel} = \$Test::TestLevel;
-    $self->{Test}->{ONFAIL} = \$Test::ONFAIL;
-    $self->{Test}->{todo} = \%Test::todo;
-    $self->{Test}->{history} = \%Test::history;
-    $self->{Test}->{planned} = \$Test::planned;
-    $self->{Test}->{FAILDETAIL} = \@Test::FAILDETAIL;
-
-    if( 1.24 <= $Test::VERSION ) {
-        $self->{Test}->{Program_Lines} = \%Test::Program_Lines;
-        $self->{Test}->{TESTERR} =   \$Test::TESTERR;
-    }
-
-    $self->{LOG} = $log if $log;
-    if($self->{LOG}) {
-        unless ( open($Test::TESTOUT, ">>$self->{LOG}") ) {
-            warn( "Cannot open $self->{LOG}\n" );
-            $Test::TESTOUT = ${$self->{TESTOUT}};
-            $self->skip_rest();
-            return $self;
-        }
-        binmode $Test::TESTOUT; # make the test friendly for more platforms
-    }
-
-    $self
-}
-
-
-#####
-# Done with the test
-#
-sub finish # end a test
-{
-   my ($self)=@_;
-   if( $self->{LOG} ) {
-       $self->{LOG} = '';
-       unless (close( $Test::TESTOUT )) {
-           warn( "Cannot close $self->{LOG}\n" );
-       }
-       $Test::TESTOUT = ${$self->{TESTOUT}};
-   }
-   1
-}
-
+@EXPORT_OK = qw(&tech_config &plan &ok &skip &skip_tests &stringify &demo);
 
 #######
-# Sets flag to skip rest of tests
 #
-sub skip_rest
-{
-   my ($self,$value) =  @_;
-   my $result = $self->{SKIP_ALL};
-   $self->{SKIP_ALL} = $value if defined $value;
-   $result;   
-}
+# Keep all data hidden in a local hash
+# 
+# Too bad "Test" and "Data::Dumper" are not objectified
+#
+# Senseless to objectify "Test::Tech" if unless "Test" and "Data::Dumper"
+# are objectified
+#
 
+my %tech = ();
+my $tech_p = \%tech;  # quasi objectify by using $tech_p instead of %tech
+
+########
+# Tend to Data::Dumper variables
+#
+$tech_p->{Dumper} = {};
+$tech_p->{Dumper}->{Terse} = \$Data::Dumper::Terse;
+$tech_p->{Dumper}->{Indent} = \$Data::Indent;
+$tech_p->{Dumper}->{Purity} = \$Data::Purity;
+$tech_p->{Dumper}->{Pad} = \$Data::Pad;
+$tech_p->{Dumper}->{Varname} = \$Data::Varname;
+$tech_p->{Dumper}->{Useqq} = \$Data::Useqq;
+$tech_p->{Dumper}->{Freezer} = \$Data::Freezer;
+$tech_p->{Dumper}->{Toaster} = \$Data::Toaster;
+$tech_p->{Dumper}->{Deepcopy} = \$Data::Deepcopy;
+$tech_p->{Dumper}->{Quotekeys} = \$Data::Quotekeys;
+$tech_p->{Dumper}->{Maxdepth} = \$Data::Maxdepth;
 
 ######
-# Cover function for &Test::plan
-#
-sub work_breakdown  # open a file
-{
-   my $self = shift @_;
+# Tend to Test variables
+#  
+$tech_p->{Test}->{ntest} = \$Test::ntest;
+$tech_p->{Test}->{TESTOUT} = \$Test::TESTOUT;
+$tech_p->{Test}->{TestLevel} = \$Test::TestLevel;
+$tech_p->{Test}->{ONFAIL} = \$Test::ONFAIL;
+$tech_p->{Test}->{todo} = \%Test::todo;
+$tech_p->{Test}->{history} = \%Test::history;
+$tech_p->{Test}->{planned} = \$Test::planned;
+$tech_p->{Test}->{FAILDETAIL} = \@Test::FAILDETAIL;
 
-   &Test::plan( @_ );
-
-   ###############
-   #  
-   # Establish default for Test and Data::Dumper
-   #
-   # Test 1.24 resets global variables in plan which
-   # never happens in 1.15
-   #
-   $Data::Dumper::Terse = 1; 
-   $Test::TestLevel = 1;
-
-   my $loctime = localtime();
-   my $gmtime = gmtime();
-
-   #######
-   # Probe for internal storage
-   #
-   my $probe = 3;
-   my $actual = Dumper([0+$probe]);
-   my $internal_storage = 'undetermine';
-   if( $actual eq Dumper([3]) ) {
-       $internal_storage = 'number';
-   }
-   elsif ( $actual eq Dumper(['3']) ) {
-      $internal_storage = 'string';
-   }
-   $self->{Number_Internal_Storage} = $internal_storage;
-  
-   my $perl = "$]";
-   if(defined(&Win32::BuildNumber) and defined &Win32::BuildNumber()) {
-       $perl .= " Win32 Build " . &Win32::BuildNumber();
-   }
-   elsif(defined $MacPerl::Version) {
-       $perl .= " MacPerl version " . $MacPerl::Version;
-   }
-
-   print $Test::TESTOUT <<"EOF" unless 1.24 <= $Test::VERSION;
-# OS            : $^O
-# Perl          : $perl
-# Local Time    : $loctime
-# GMT Time      : $gmtime GMT
-# Test          : $Test::VERSION
-EOF
-
-   print $Test::TESTOUT <<"EOF";
-# Number Storage: $internal_storage
-# Test::Tech    : $VERSION
-# Data::Dumper  : $Data::Dumper::VERSION
-# =cut 
-EOF
-
-   1
-
+if( 1.24 <= $Test::VERSION ) {
+    $tech_p->{Test}->{Program_Lines} = \%Test::Program_Lines;
+    $tech_p->{Test}->{TESTERR} =   \$Test::TESTERR;
 }
 
+$tech_p->{Skip_Tests} = 0;
+
+#######
+# Probe for internal storage
+#
+# The &Data::Dumper::Dumper subroutine stringifies the iternal Perl variable. 
+# Different Perls keep the have different internal formats for numbers. Some
+# keep them as binary numbers, while others as strings. The ones that keep
+# them as strings may be well spec. In any case they have been let loose in
+# the wild so the test scripts that use Data::Dumper must deal with them.
+#
+# This is perl, v5.6.1 built for MSWin32-x86-multi-thread 
+# (with 1 registered patch, see perl -V for more detail)
+#
+# Copyright 1987-2001, Larry Wall 
+#
+# Binary build 631 provided by ActiveState Tool Corp. http://www.ActiveState.com
+# Built 17:16:22 Jan 2 2002
+#
+#
+# Perl may be copied only under the terms of either the Artistic License or the
+# GNU General Public License, which may be found in the Perl 5 source kit.
+# 
+# Complete documentation for Perl, including FAQ lists, should be found on
+# this system using `man perl' or `perldoc perl'. If you have access to the
+# Internet, point your browser at http://www.perl.com/, the Perl Home Page.
+#
+# ~~~~~~~
+#
+# Wall, Christiansen and Orwant on Perl internal storage
+#
+# Page 351 of Programming Perl, Third Addition, Overloadable Operators
+# quote: 
+#
+# Conversion operators: ``'', 0+, bool
+#
+# These three keys let you provide behaviors for Perl's automatic conversions
+# to strings, numbers, and Boolean values, respectively.
+#
+# ~~~~~~~
+#
+# Internal Storage of Perls that are in the wild
+#
+# string - Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary
+# number - Perl version 5.008 for solaris
+#
+# Perls in the wild with internal storage of string may be mutants that need to
+# be hunted down killed.
+#
+my $probe = 3;
+my $actual = Dumper([0+$probe]);
+if( $actual eq Dumper([3]) ) {
+   $tech_p->{Internal_Number} = 'number';
+}
+elsif ( $actual eq Dumper(['3']) ) {
+   $tech_p->{Internal_Number} = 'string';
+}
+else {
+   $tech_p->{Internal_Number} = 'undetermine';
+}
+  
 
 #####
 # Stringify the variable and compare the string.
 #
+# This is the code that adds the big new capability of testing complex data
+# structures to the "Test" module
+#
 sub stringify
 {
    my ($var_p) = @_;
+
+   return '' unless $var_p;
    
    my ($result, $ref);
    if($ref = ref($var_p)) {
@@ -296,53 +166,182 @@ sub stringify
 }
 
 
-#######
-#
-# Cover function for &TEST::ok that uses Dumper 
-# so can test arbitary inputs
-#
-sub test
-{
 
-   my ($self, $actual_p, $expected_p, $name, $diagnostic) = @_;
+######
+# Cover function for &Test::plan that sets the proper 'Test::TestLevel'
+# and outputs some info on the current site
+#
+sub plan
+{
+   &Test::plan( @_ );
+
+   ###############
+   #  
+   # Establish default for Test and Data::Dumper
+   #
+   # Test 1.24 resets global variables in plan which
+   # never happens in 1.15
+   #
+   $Data::Dumper::Terse = 1; 
+   $Test::TestLevel = 1;
+
+   my $loctime = localtime();
+   my $gmtime = gmtime();
+
+   my $perl = "$]";
+   if(defined(&Win32::BuildNumber) and defined &Win32::BuildNumber()) {
+       $perl .= " Win32 Build " . &Win32::BuildNumber();
+   }
+   elsif(defined $MacPerl::Version) {
+       $perl .= " MacPerl version " . $MacPerl::Version;
+   }
+
+   print $Test::TESTOUT <<"EOF" unless 1.24 <= $Test::VERSION;
+# OS            : $^O
+# Perl          : $perl
+# Local Time    : $loctime
+# GMT Time      : $gmtime GMT
+# Test          : $Test::VERSION
+EOF
+
+   print $Test::TESTOUT <<"EOF";
+# Number Storage: $tech_p->{Internal_Number}
+# Test::Tech    : $VERSION
+# Data::Dumper  : $Data::Dumper::VERSION
+# =cut 
+EOF
+
+   1
+}
+
+
+######
+#
+# Cover function for &Test::ok that adds capability to test 
+# complex data structures.
+#
+sub ok
+{
+   my ($actual_result, $expected_result, $diagnostic, $name) = @_;
+
    print $Test::TESTOUT "# $name\n" if $name;
-   if($self->{SKIP_ALL}) {  # skip rest of tests switch
+   if($tech_p->{Skip_Tests}) { # skip rest of tests switch
        print $Test::TESTOUT "# Test invalid because of previous failure.\n";
        &Test::skip( 1, 0, '');
        return 1; 
    }
 
-   my $expected = stringify($expected_p);
-   my $actual = stringify($actual_p); 
-   &Test::ok($actual, $expected, $diagnostic);
-
+   &Test::ok(stringify($actual_result), stringify($expected_result), $diagnostic);
 }
 
 
-#######
+######
 #
-# Cover function for &TEST::skip so that uses Dumper 
-# so can test arbitary inputs
 #
-sub verify  # store expected array for later use
+sub skip
 {
-   my ($self, $mod, $actual_p, $expected_p, $name, $diagnostic) = @_;
+   my ($mod, $actual_result, $expected_result, $diagnostic, $name) = @_;
 
    print $Test::TESTOUT "# $name\n" if $name;
 
-   if($self->{SKIP_ALL}) {  # skip rest of tests switch
+   if($tech_p->{Skip_Tests}) {  # skip rest of tests switch
        print $Test::TESTOUT "# Test invalid because of previous failure.\n";
        &Test::skip( 1, 0, '');
        return 1; 
    }
   
-   my $expected = stringify($expected_p);
-   my $actual = stringify($actual_p); 
-   my $test_ok = &Test::skip($mod, $actual, $expected, $diagnostic);
-   $test_ok = 1 if $mod;  # make sure do not stop 
-   $test_ok
+   &Test::skip($mod, stringify($actual_result), stringify($expected_result), $diagnostic);
 
 }
+
+
+######
+#
+#
+sub skip_tests
+{
+   my ($value) =  @_;
+   my $result = $tech_p->{Skip_Tests};
+   $tech_p->{Skip_Tests} = $value if defined $value;
+   $result;   
+}
+
+
+
+#######
+# This accesses the values in the %tech hash
+#
+# Use a dot notation for following down layers
+# of hashes of hashes
+#
+sub tech_config
+{
+    my ($key, @values) = @_;
+    my @keys = split /\./, $key;
+
+    #########
+    # Follow the hash with the current
+    # dot index until there are no more
+    # hashes. Hopefully the dot hash 
+    # notation matches the structure.
+    #
+    my $key_p = $tech_p;
+    while (@keys) {
+
+        $key = shift @keys;
+
+        ######
+        # Do not allow creation of new configs
+        #
+        if( defined( $key_p->{$key}) ) {
+
+            ########
+            # Follow the hash
+            # 
+            if( ref($key_p->{$key}) eq 'HASH' ) { 
+                $key_p  = $key_p->{$key};
+            }
+            else {
+               if(@keys) {
+                    warn( "More key levels than hashes.\n");
+                    return undef; 
+               } 
+               last;
+            }
+        }
+    }
+
+
+    #########
+    # References to arrays and scalars in the config may
+    # be transparent.
+    #
+    my $current_value = $key_p->{$key};
+    return $current_value if ref($current_value) eq 'HASH';
+    if (defined $values[0]) {
+        if(ref($key_p->{$key}) eq 'ARRAY') {
+            if( ref($values[0]) eq 'ARRAY' ) {
+                $key_p->{$key} = $values[0];
+            }
+            else {
+                my @current_value = @{$key_p->{$key}};
+                $key_p->{$key} = \@values;
+                return @current_value;
+            }
+        }
+        elsif( ref($key_p->{$key}) ) {
+            $current_value = ${$key_p->{$key}};
+            ${$key_p->{$key}} = $values[0];
+        }
+        else {
+            $key_p->{$key} = $values[0];
+        }
+    }
+
+    $current_value;
+
+}
+
 
 
 ######
@@ -350,7 +349,7 @@ sub verify  # store expected array for later use
 #
 sub demo
 {
-   my ($self, $quoted_expression, @expression_results) = @_;
+   my ($quoted_expression, @expression_results) = @_;
 
    #######
    # A demo trys to simulate someone typing expresssions
@@ -387,54 +386,33 @@ sub demo
 
 }
 
-
 1
+
 
 __END__
 
 =head1 NAME
   
-Test::Tech - extends the capabilites of the I<Test> module
+Test::Tech - adds skip_tests and test data structures capabilities to the "Test" module
 
 =head1 SYNOPSIS
 
-  use Test::Tech
+ use Test::Tech
 
-  $T = new Test::Tester(@args);
+ @args    = tech_config( @args );
 
-  $success = $T->work_breakdown(@args);
+ $success = plan(@args);
 
-  $test_ok = $T->test(\@actual_results, \@expected_results, $test_name, $diagnostic);
-  $test_ok = $T->verify($skip_test, \@actual_results,  \@expected_results, $test_name, $diagnostic);
+ $test_ok = ok(\@actual_results, \@expected_results, $diagnostic, $test_name);
+ $test_ok = skip($skip_test, \@actual_results,  \@expected_results, $diagnostic, $test_name);
 
-  $test_ok = $T->test($actual_results, $expected_results, $test_name, $diagnostic);
-  $test_ok = $T->verify($skip_test, $actual_results,  $expected_results, $test_name, $diagnostic);
+ $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name);
+ $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name);
 
-  $state = $T->skip_rest(on_off);
-  $state = $T->skip_rest();
+ $state = skip_tests( $on_off );
+ $state = skip_tests( );
 
-  $success = $T->finish( );
-
-  $success = $T->demo( $quoted_expression, @expression_results );
-
-
-  $tech_hash = tech( @args );
-
-  $success = plan(@args);
-
-  $test_ok = ok(\@actual_results, \@expected_results, $diagnostic, $test_name);
-  $test_ok = skip($skip_test, \@actual_results,  \@expected_results, $diagnostic, $test_name);
-
-  $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name);
-  $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name);
-
-  $state = skip_tests( $on_off );
-  $state = skip_tests( );
-
-  $success = done( );
-
-  $success = example($quoted_expression, @expression_results );
-
+ $string = stringify( $var );
 
 =head1 DESCRIPTION
 
@@ -469,20 +447,12 @@ The dependency of the program modules in the US DOD STD2167A bundle is as follow
         DataPort::FileType::FormDB DataPort::DataFile Test::STD::STDutil
             Test::STDmaker ExtUtils::SVDmaker
 
+=head2 plan subroutine
 
+ $success = plan(@args);
 
-=head2 new method
-
- $T = new Test::Tech;
-
-The I<new> method creates a new I<Test::Tech> object.
-
-=head2 work_breakdown method
-
- $success = $T->work_breakdown(@args);
-
-The I<work_breakdown> method is a cover method for &Test::plan.
-The I<@args> are passed unchanged directory to &Test::plan.
+The I<plan> subroutine is a cover method for &Test::plan.
+The I<@args> are passed unchanged to &Test::plan.
 All arguments are options. Valid options are as follows:
 
 =over 4
@@ -508,10 +478,10 @@ execute on a failure. For example,
 
 =back
 
-=head2 test method
+=head2 ok subroutine
 
-  $test_ok = $T->test(\@actual_results, \@expected_results, $test_name);
-  $test_ok = $T->test($actual_results, $expected_results, $test_name);
+ $test_ok = ok(\@actual_results, \@expected_results, $test_name);
+ $test_ok = ok($actual_results, $expected_results, $test_name);
 
 The I<test> method is a cover function for the &Test::ok subroutine
 that extends the &Test::ok routine as follows:
@@ -525,99 +495,112 @@ of the test.
 
 =item *
 
-The I<test> method passes the arrays from an array reference
+The I<ok> subroutine passes the arrays from an array reference
 I<@actual_results> and I<@expectet_results> through &Data::Dumper::Dumper.
 The I<test> method then uses &Test::ok to compare the text results
 from &Data::Dumper::Dumper.
 
 =item *
 
-The I<test> method passes variables that are not a reference
+The I<ok> subroutine method passes variables that are not a reference
 directly to &Test::ok unchanged.
 
 =item *
 
-Responses to a flag set by the L<skip_rest method|Test::Tech/skip_rest method>
+Responses to a flag set by the L<skip_tests subroutine|Test::Tech/skip_tests> subroutine
 and skips the test completely.
 
 =back
 
-=head2 verify method
-
-  $test_ok = $T->verify(test, \@actual_results,  \@expected_results, $test_name);
-
-The I<test> method is a cover function for the &Test::skip subroutine
-that extends the &Test::skip the same as the I<test> method extends
-the I<&Test::ok> subroutine.
-See L<test method|Test::Tech/test method>
-
-=head2 skip_rest method
-
-  $success = $T->skip_rest();
-
-The I<skip_rest> method sets a flag that causes the
-I<test> and the I<verify> methods to skip testing.
-
-=head2 finish method
-
-  $success = $T->finish( );
-
-The I<finish> method shuts down the I<$T Test::Tech> object.
-
-=head2 tech subroutine
-
-  $tech_hash = tech( @args );
-
-This module creates a "Test::Tech" object to
-provide a bridge from the subroutines to the
-methods.
-
-The tech subroutine returns a reference to
-this internal static object.
-The object hash contains all the public
-variables for the "Test" module and
-the "Data::Dump" modules used by this module.
-
-=head2 plan subroutine
-
-  $success = plan(@args);
-
-Calls the L<work_breakdown method|Test::Tech/work_breakdown method>
-
-=head2 ok subroutine
-
-  $test_ok = ok(\@actual_results, \@expected_results, $diagnostic, $test_name);
-  $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name);
-
-Calls the L<test method|Test::Tech/test method>
-
 =head2 skip subroutine
 
-  $test_ok = skip($skip_test, \@actual_results,  \@expected_results, $diagnostic, $test_name);
-  $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name);
+ $test_ok = skip(\@actual_results, \@expected_results, $test_name);
+ $test_ok = skip($actual_results, $expected_results, $test_name);
 
-Calls the L<verify method|Test::Tech/verify method>
+The I<skip> subroutine is a cover function for the &Test::skip subroutine
+that extends the &Test::skip the same as the 
+L<ok subroutine|Test::Tech/ok> subroutine extends
+the I<&Test::ok> subroutine.
 
+=head2 skip_tests method
 
-=head2 skip_tests subroutine
+ $state = skip_tests( $on_off );
+ $state = skip_tests( );
 
-  $state = skip_tests( $on_off );
-  $state = skip_tests( );
+The I<skip_tests> subroutine sets a flag that causes the
+I<ok> and the I<skip> methods to skip testing.
 
-Calls the L<skip_rest method|Test::Tech/skip_rest method>
+=head2 stringify subroutine
 
-=head2 done subroutine
+ $string = stringify( $var );
 
-  $success = done( );
+The I<stringify> subroutine will stringify I<$var> using
+the "L<Data::Dumper|Data::Dumper>" module only if I<$var> is a reference;
+otherwise, it leaves it unchanged.
 
-Calls the L<finish method|Test::Tech/finish method>
+For numeric arrays, "L<Data::Dumper|Data::Dumper>" module will not
+stringify them the same for all Perls. The below Perl code will
+produce different results for different Perls
 
-=head2 example subroutine
+ $probe = 3;
+ $actual = Dumper([0+$probe]);
 
-  $success = example($quoted_expression, @expression_results );
+For Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary,
+the results will be '[\'3\']'  
+while for Perl version 5.008 for solaris the results will be '[3]'. 
 
-Calls the L<demo method|Test::Tech/demo method>
+This module will automatically, when loaded, probe the site Perl
+and will this statement and enter the results as 'string' or
+'number' in the I<Internal_Number> configuration variable.
 
+=head2 tech_config subroutine
+
+ $old_value = tech_config( $dot_index, $new_value );
+
+The I<tech_config> subroutine reads and writes the
+below configuration variables
+
+ dot index              contents 
+ --------------------   --------------
+ Dumper.Terse          \$Data::Dumper::Terse
+ Dumper.Indent         \$Data::Indent
+ Dumper.Purity         \$Data::Purity
+ Dumper.Pad            \$Data::Pad
+ Dumper.Varname        \$Data::Varname
+ Dumper.Useqq          \$Data::Useqq
+ Dumper.Freezer        \$Data::Freezer
+ Dumper.Toaster        \$Data::Toaster
+ Dumper.Deepcopy       \$Data::Deepcopy
+ Dumper.Quotekeys      \$Data::Quotekeys
+ Dumper.Maxdepth       \$Data::Maxdepth
+ Test.ntest            \$Test::ntest
+ Test.TESTOUT          \$Test::TESTOUT
+ Test.TestLevel        \$Test::TestLevel
+ Test.ONFAIL           \$Test::ONFAIL
+ Test.todo             \%Test::todo
+ Test.history          \%Test::history
+ Test.planned          \$Test::planned
+ Test.FAILDETAIL       \@Test::FAILDETAIL
+ Test.Program_Lines}   \%Test::Program_Lines
+ Test.TESTERR}         \$Test::TESTERR
+ Skip_Tests            # boolean
+ Internal_Number       # 'string' or 'number'
+
+The I<tech_config> subroutine always returns the
+I<$old_value> of I<$dot_index> and only writes
+the contents if I<$new_value> is defined.
+
+The 'SCALAR' and 'ARRAY' references are transparent.
+The I<tech_config> subroutine, when it senses that
+the I<$dot_index> is for a 'SCALAR' and 'ARRAY' reference,
+will read or write the contents instead of the reference.
+
+The The I<tech_config> subroutine will read 'HASH" references
+but will never change them. 
+
+The variables for the top level 'Dumper' I<$dot_index> are
+established by "L<Data::Dumper|Data::Dumper>" module;
+for the top level 'Test', the "L<Test|Test>" module.
 
 =head1 NOTES
 
@@ -639,7 +622,7 @@ Binding requirements are indexed with the
 pharse 'shall[dd]' where dd is an unique number
 for each header section.
 This conforms to standard federal
-government practices, 490A (L<STD490A/3.2.3.6>).
+government practices, L<US DOD 490A 3.2.3.6|Docs::US_DOD::STD490A/3.2.3.6>.
 In accordance with the License, Software Diamonds
 is not liable for any requirement, binding or otherwise.
 
