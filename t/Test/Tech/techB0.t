@@ -7,12 +7,11 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.03';
-$DATE = '2003/07/05';
+$VERSION = '0.04';
+$DATE = '2003/07/27';
 
 use Cwd;
 use File::Spec;
-use File::TestPath;
 
 ######
 #
@@ -28,15 +27,51 @@ BEGIN {
    # Working directory is that of the script file
    #
    $__restore_dir__ = cwd();
-   my ($vol, $dirs, undef) = File::Spec->splitpath( $0 );
+   my ($vol, $dirs) = File::Spec->splitpath(__FILE__);
    chdir $vol if $vol;
    chdir $dirs if $dirs;
+   ($vol, $dirs) = File::Spec->splitpath(cwd(), 'nofile'); # absolutify
 
    #######
    # Add the library of the unit under test (UUT) to @INC
+   # It will be found first because it is first in the include path
    #
-   @__restore_inc__ = File::TestPath->test_lib2inc;
+   @__restore_inc__ = @INC;
 
+   ######
+   # Find root path of the t directory
+   #
+   my @updirs = File::Spec->splitdir( $dirs );
+   while(@updirs && $updirs[-1] ne 't' ) { 
+       chdir File::Spec->updir();
+       pop @updirs;
+   };
+   chdir File::Spec->updir();
+   my $lib_dir = cwd();
+
+   #####
+   # Add this to the include path. Thus modules that start with t::
+   # will be found.
+   # 
+   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
+   unshift @INC, $lib_dir;  # include the current test directory
+
+   #####
+   # Add lib to the include path so that modules under lib at the
+   # same level as t, will be found
+   #
+   $lib_dir = File::Spec->catdir( cwd(), 'lib' );
+   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
+   unshift @INC, $lib_dir;
+
+   #####
+   # Add tlib to the include path so that modules under tlib at the
+   # same level as t, will be found
+   #
+   $lib_dir = File::Spec->catdir( cwd(), 'tlib' );
+   $lib_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
+   unshift @INC, $lib_dir;
+   chdir $dirs if $dirs;
    #######
    # Add the directory with "Test.pm" version 1.15 to the front of @INC
    #

@@ -10,29 +10,32 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.11';
-$DATE = '2003/07/18';
+$VERSION = '0.12';
+$DATE = '2003/07/27';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.11 2003/07/18), 'revised 0.10'],
-    'MANIFEST' => [qw(0.11 2003/07/18), 'generated, replaces 0.10'],
-    'Makefile.PL' => [qw(0.11 2003/07/18), 'generated, replaces 0.10'],
-    'README' => [qw(0.11 2003/07/18), 'generated, replaces 0.10'],
-    'lib/Test/Tech.pm' => [qw(1.1 2003/07/11), 'unchanged'],
-    't/Test/Tech/Tech.t' => [qw(0.11 2003/07/18), 'revised 0.1'],
-    't/Test/Tech/techA0.t' => [qw(0.06 2003/07/05), 'unchanged'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.12 2003/07/27), 'revised 0.11'],
+    'MANIFEST' => [qw(0.12 2003/07/27), 'generated, replaces 0.11'],
+    'Makefile.PL' => [qw(0.12 2003/07/27), 'generated, replaces 0.11'],
+    'README' => [qw(0.12 2003/07/27), 'generated, replaces 0.11'],
+    'lib/Test/Tech.pm' => [qw(1.11 2003/07/27), 'revised 1.1'],
+    't/Test/Tech/Tech.t' => [qw(0.11 2003/07/27), 'revised 0.1'],
+    't/Test/Tech/techA0.t' => [qw(0.07 2003/07/27), 'revised 0.06'],
     't/Test/Tech/techA2.txt' => [qw(0.05 2003/06/19), 'unchanged'],
-    't/Test/Tech/techB0.t' => [qw(0.03 2003/07/05), 'unchanged'],
-    't/Test/Tech/techC0.t' => [qw(0.06 2003/07/05), 'unchanged'],
+    't/Test/Tech/techB0.t' => [qw(0.04 2003/07/27), 'revised 0.03'],
+    't/Test/Tech/techC0.t' => [qw(0.07 2003/07/27), 'revised 0.06'],
     't/Test/Tech/techC2.txt' => [qw(0.06 2003/06/21), 'unchanged'],
     't/Test/Tech/techC3.txt' => [qw(0.06 2003/06/21), 'unchanged'],
-    't/Test/Tech/techD0.d' => [qw(0.02 2003/06/21), 'unchanged'],
+    't/Test/Tech/techD0.d' => [qw(0.03 2003/07/27), 'revised 0.02'],
     't/Test/Tech/techD2.txt' => [qw(0.06 2003/06/21), 'unchanged'],
     't/Test/Tech/techD3.txt' => [qw(0.06 2003/06/21), 'unchanged'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.24 2003/06/19), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.15 2003/06/19), 'unchanged'],
+    'tlib/File/Package.pm' => [qw(1.11 2003/07/27), 'new'],
+    'tlib/File/SmartNL.pm' => [qw(1.1 2003/07/27), 'new'],
+    'tlib/Text/Scrub.pm' => [qw(1.09 2003/07/27), 'new'],
 
 );
 
@@ -59,11 +62,11 @@ use vars qw(%INVENTORY);
 
  Test::Tech - Extends the Test program module
 
- Revision: I
+ Revision: J
 
- Version: 0.11
+ Version: 0.12
 
- Date: 2003/07/18
+ Date: 2003/07/27
 
  Prepared for: General Public 
 
@@ -93,7 +96,7 @@ program modules, such the
 "L<Test::Tech|Test::Tech>" module, extend the Perl language.
 
 The "Test::Tech" module extends the capabilities of the "Test" module.
-       
+
 The design is simple. 
 The "Test::Tech" module loads the "Test" module without exporting
 any "Test" subroutines into the "Test::Tech" namespace.
@@ -102,9 +105,6 @@ for each "Test" module subroutine.
 Each "Test::Tech" cover subroutine will call the &Test::$subroutine
 before or after it adds any additional capabilities.
 The "Test::Tech" module is a drop-in for the "Test" module.
-Who said you cannot reuse code that is not object oriented?
-This design proves if the driving reason to use object oriented
-code is reusability, it is a very poor reason.
 
 The "L<Test::Tech|Test::Tech>" module extends the capabilities of
 the "L<Test|Test>" module as follows:
@@ -133,7 +133,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.11
+This document releases Test::Tech version 0.12
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -149,8 +149,8 @@ system file specification.
 This document releases the file found
 at the following repository(s):
 
-   http://www.softwarediamonds/packages/Test-Tech-0.11
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.11
+   http://www.softwarediamonds/packages/Test-Tech-0.12
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.12
 
 
 Restrictions regarding duplication and license provisions
@@ -218,53 +218,52 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.11    2003/07/18 revised 0.10
- MANIFEST                                                     0.11    2003/07/18 generated, replaces 0.10
- Makefile.PL                                                  0.11    2003/07/18 generated, replaces 0.10
- README                                                       0.11    2003/07/18 generated, replaces 0.10
- lib/Test/Tech.pm                                             1.1     2003/07/11 unchanged
- t/Test/Tech/Tech.t                                           0.11    2003/07/18 revised 0.1
- t/Test/Tech/techA0.t                                         0.06    2003/07/05 unchanged
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.12    2003/07/27 revised 0.11
+ MANIFEST                                                     0.12    2003/07/27 generated, replaces 0.11
+ Makefile.PL                                                  0.12    2003/07/27 generated, replaces 0.11
+ README                                                       0.12    2003/07/27 generated, replaces 0.11
+ lib/Test/Tech.pm                                             1.11    2003/07/27 revised 1.1
+ t/Test/Tech/Tech.t                                           0.11    2003/07/27 revised 0.1
+ t/Test/Tech/techA0.t                                         0.07    2003/07/27 revised 0.06
  t/Test/Tech/techA2.txt                                       0.05    2003/06/19 unchanged
- t/Test/Tech/techB0.t                                         0.03    2003/07/05 unchanged
- t/Test/Tech/techC0.t                                         0.06    2003/07/05 unchanged
+ t/Test/Tech/techB0.t                                         0.04    2003/07/27 revised 0.03
+ t/Test/Tech/techC0.t                                         0.07    2003/07/27 revised 0.06
  t/Test/Tech/techC2.txt                                       0.06    2003/06/21 unchanged
  t/Test/Tech/techC3.txt                                       0.06    2003/06/21 unchanged
- t/Test/Tech/techD0.d                                         0.02    2003/06/21 unchanged
+ t/Test/Tech/techD0.d                                         0.03    2003/07/27 revised 0.02
  t/Test/Tech/techD2.txt                                       0.06    2003/06/21 unchanged
  t/Test/Tech/techD3.txt                                       0.06    2003/06/21 unchanged
  t/Test/Tech/V001024/Test.pm                                  1.24    2003/06/19 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.15    2003/06/19 unchanged
+ tlib/File/Package.pm                                         1.11    2003/07/27 new
+ tlib/File/SmartNL.pm                                         1.1     2003/07/27 new
+ tlib/Text/Scrub.pm                                           1.09    2003/07/27 new
 
 
 =head2 3.3 Changes
 
-Changes to the previous version are as follows:
-
-
-
-Previous changes are as follows:
+Changes  are as follows:
 
 =over 4
 
-=item Test::Tester 0.01
+=item Test-Tester-0.01
 
 Originated.
 
-=item Test::Tester 0.02
+=item Test-Tester-0.02
 
 Minor changes to this SVD.
 
-=item Test::Tech 0.01
+=item Test-Tech-0.01
 
 Due to a non-registered namespace conflict with CPAN,
 changed the namespace from Test::Tester to Test::Tech
 
-=item Test::Tech 0.02
+=item Test-Tech-0.02
 
 Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
 
-=item Test::Tech 0.03
+=item Test-Tech-0.03
 
 The &Data::Dumper::Dumper subroutine stringifies the internal Perl
 variable. Different Perls keep the have different internal formats
@@ -350,12 +349,12 @@ Added tests for the new "Test" functions.
 
 =back
 
-=item Test::Tech 0.05
+=item Test-Tech-0.05
 
 Replaced using Test::Util that has disappeared with its
 replacements: File::FileUtil, Test::STD::Scrub, Test::STD::STDutil
 
-=item Test::Tech 0.06
+=item Test-Tech-0.06
 
 This version changes the previous version but eliminating
 all object methods. 
@@ -366,7 +365,7 @@ there is little advantage in providing methods
 where a large number of data is static for all objects.
 In other words, all new objects are mostly same.
 
-=item Test::Tech 0.07
+=item Test-Tech-0.07
 
 =over 4
 
@@ -387,15 +386,30 @@ instead of "file::FileUtil".
 
 =back
 
-=item Test::Tech 0.09
+=item Test-Tech-0.09
 
 Left over usage of File::FileUtil in the test script files.
 Removed them. Switch from "Test::STD::Scrub" to "Text::Scrub"
 
-=item Test::Tech 0.11
+=item Test-Tech-0.11
 
 In the test script, switch to using "Data::Hexdumper" module.
 Much better hex dumper.
+
+=item Test-Tech-0.12
+
+Removed hex dump in test script.
+
+Change test for begining printout of data, modules used, tec to 1.20 < Test::VERSION
+
+Change the test so that test support program modules resides in distribution
+directory tlib directory instead of the lib directory. 
+Because they are no longer in the lib directory, 
+test support files will not be installed as a pre-condition for the 
+test of this module.
+The test of this module will precede immediately.
+The test support files in the tlib directory will vanish after
+the installtion.
 
 =back
 
@@ -403,15 +417,6 @@ Much better hex dumper.
 
 This installation requires that the installation site
 has the Perl programming language installed.
-Installation sites running Microsoft Operating systems require
-the installation of Unix utilities. 
-An excellent, highly recommended Unix utilities for Microsoft
-operating systems is unxutils by Karl M. Syring.
-A copy is available at the following web sites:
-
- http://unxutils.sourceforge.net
- http://packages.SoftwareDiamnds.com
-
 There are no other additional requirements or tailoring needed of 
 configurations files, adaptation data or other software needed for this
 installation particular to any installation site.
@@ -439,16 +444,13 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.11
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.11
+   http://www.softwarediamonds/packages/Test-Tech-0.12
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.12
 
 
 =item Prerequistes.
 
- 'File::SmartNL' => '0',
- 'File::Package' => '0',
- 'File::TestPath' => '0',
- 'Text::Scrub' => '0',
+ None.
 
 
 =item Security, privacy, or safety precautions.
@@ -533,7 +535,13 @@ extension for a Perl test script file
 
 =head1 2.0 SEE ALSO
 
-L<Test::Tech|Test::Tech>
+=over 4
+
+=item L<Test::Tech|Test::Tech> 
+
+=item L<Docs::US_DOD::SVD|Docs::US_DOD::SVD> 
+
+=back
 
 =for html
 <hr>
@@ -560,11 +568,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.11^
+VERSION : 0.12^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.10^
-REVISION: I^
+PREVIOUS_RELEASE: 0.11^
+REVISION: J^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -590,7 +598,6 @@ COMPRESS: gzip^
 COMPRESS_SUFFIX: gz^
 
 CHANGE2CURRENT:  ^
-
 RESTRUCTURE:  ^
 
 AUTO_REVISE: 
@@ -598,46 +605,40 @@ lib/Test/Tech.pm
 t/Test/Tech/*
 t/Test/Tech/V001024/*
 t/Test/Tech/V001015/*
+lib/File/Package.pm => tlib/File/Package.pm
+lib/File/SmartNL.pm => tlib/File/SmartNL.pm
+lib/Text/Scrub.pm => tlib/Text/Scrub.pm
 ^
 
-PREREQ_PM: 
-'File::SmartNL' => '0',
-'File::Package' => '0',
-'File::TestPath' => '0',
-'Text::Scrub' => '0',
-^
+PREREQ_PM:  ^
 
 TESTS: t/Test/Tech/Tech.t^
 EXE_FILES:  ^
 
 CHANGES:
 
-Changes to the previous version are as follows:
-
-
-
-Previous changes are as follows:
+Changes  are as follows:
 
 \=over 4
 
-\=item Test::Tester 0.01
+\=item Test-Tester-0.01
 
 Originated.
 
-\=item Test::Tester 0.02
+\=item Test-Tester-0.02
 
 Minor changes to this SVD.
 
-\=item Test::Tech 0.01
+\=item Test-Tech-0.01
 
 Due to a non-registered namespace conflict with CPAN,
 changed the namespace from Test::Tester to Test::Tech
 
-\=item Test::Tech 0.02
+\=item Test-Tech-0.02
 
 Fixed prototype for &Test::Tech::skip_rest Test::Tech line 84
 
-\=item Test::Tech 0.03
+\=item Test-Tech-0.03
 
 The &Data::Dumper::Dumper subroutine stringifies the internal Perl
 variable. Different Perls keep the have different internal formats
@@ -723,12 +724,12 @@ Added tests for the new "Test" functions.
 
 \=back
 
-\=item Test::Tech 0.05
+\=item Test-Tech-0.05
 
 Replaced using Test::Util that has disappeared with its
 replacements: File::FileUtil, Test::STD::Scrub, Test::STD::STDutil
 
-\=item Test::Tech 0.06
+\=item Test-Tech-0.06
 
 This version changes the previous version but eliminating
 all object methods. 
@@ -739,11 +740,11 @@ there is little advantage in providing methods
 where a large number of data is static for all objects.
 In other words, all new objects are mostly same.
 
-\=item Test::Tech 0.07
+\=item Test-Tech-0.07
 
 \=over 4
 
-=item t/Test/Tech/Tech.t t/Test/Tech/techCO.t
+\=item t/Test/Tech/Tech.t t/Test/Tech/techCO.t
 
 Corrected typos in comments. More info in comments 
 
@@ -760,15 +761,30 @@ instead of "file::FileUtil".
 
 \=back
 
-\=item Test::Tech 0.09
+\=item Test-Tech-0.09
 
 Left over usage of File::FileUtil in the test script files.
 Removed them. Switch from "Test::STD::Scrub" to "Text::Scrub"
 
-\=item Test::Tech 0.11
+\=item Test-Tech-0.11
 
 In the test script, switch to using "Data::Hexdumper" module.
 Much better hex dumper.
+
+\=item Test-Tech-0.12
+
+Removed hex dump in test script.
+
+Change test for begining printout of data, modules used, tec to 1.20 < Test::VERSION
+
+Change the test so that test support program modules resides in distribution
+directory tlib directory instead of the lib directory. 
+Because they are no longer in the lib directory, 
+test support files will not be installed as a pre-condition for the 
+test of this module.
+The test of this module will precede immediately.
+The test support files in the tlib directory will vanish after
+the installtion.
 
 \=back
 
@@ -781,7 +797,7 @@ program modules, such the
 "L<Test::Tech|Test::Tech>" module, extend the Perl language.
 
 The "Test::Tech" module extends the capabilities of the "Test" module.
-       
+
 The design is simple. 
 The "Test::Tech" module loads the "Test" module without exporting
 any "Test" subroutines into the "Test::Tech" namespace.
@@ -790,9 +806,6 @@ for each "Test" module subroutine.
 Each "Test::Tech" cover subroutine will call the &Test::$subroutine
 before or after it adds any additional capabilities.
 The "Test::Tech" module is a drop-in for the "Test" module.
-Who said you cannot reuse code that is not object oriented?
-This design proves if the driving reason to use object oriented
-code is reusability, it is a very poor reason.
 
 The "L<Test::Tech|Test::Tech>" module extends the capabilities of
 the "L<Test|Test>" module as follows:
@@ -946,10 +959,16 @@ extension for a Perl test script file
 \=back
 ^
 
-SEE_ALSO:
-L<Test::Tech|Test::Tech>
+SEE_ALSO: 
+\=over 4
 
+\=item L<Test::Tech|Test::Tech> 
+
+\=item L<Docs::US_DOD::SVD|Docs::US_DOD::SVD> 
+
+\=back
 ^
+
 
 HTML:
 <hr>

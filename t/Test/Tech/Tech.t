@@ -7,15 +7,11 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.1';
-$DATE = '2003/07/18';
+$VERSION = '0.11';
+$DATE = '2003/07/27';
 
 use Cwd;
 use File::Spec;
-use File::Package;
-use File::SmartNL;
-use File::TestPath;
-use Data::HexDump;
 use Test;
 
 ######
@@ -26,45 +22,68 @@ use Test;
 #
 BEGIN { 
    use vars qw( $T $__restore_dir__ @__restore_inc__ $__tests__);
-   ########
-   # Working directory is that of the script file
-   #
-   $__restore_dir__ = cwd();
-   my ($vol, $dirs, undef) = File::Spec->splitpath( $0 );
-   chdir $vol if $vol;
-   chdir $dirs if $dirs;
-
-   #######
-   # Add the current test directory to @INC
-   #   (first t directory in upward march)
-   #
-   # Add the library of the unit under test (UUT) to @INC
-   #   (lib directory at the same level as the t directory)
-   #
-   @__restore_inc__ = @INC;
-
-   my $work_dir = cwd(); # remember the work directory so we can restore it
-
-   @INC = File::TestPath->test_lib2inc( );
-
+ 
    ########
    # Create the test plan by supplying the number of tests
    # and the todo tests
    #
-   require Test;
    $__tests__ = 6;
    &Test::plan(tests => $__tests__);
 
+   ########
+   # Working directory is that of the script file
+   #
+   $__restore_dir__ = cwd();
+   my ($vol, $dirs, undef) = File::Spec->splitpath( __FILE__ );
+   chdir $vol if $vol;
+   chdir $dirs if $dirs;
+   ($vol, $dirs) = File::Spec->splitpath(cwd(), 'nofile'); # absolutify
+
+   #######
+   # Add the library of the unit under test (UUT) to @INC
+   # It will be found first because it is first in the include path
+   #
+   use Cwd;
+   @__restore_inc__ = @INC;
+
+   ######
+   # Find root path of the t directory
+   #
+   my @updirs = File::Spec->splitdir( $dirs );
+   while(@updirs && $updirs[-1] ne 't' ) { 
+       chdir File::Spec->updir();
+       pop @updirs;
+   };
+   chdir File::Spec->updir();
+   my $lib_dir = cwd();
+
+   #####
+   # Add lib to the include path so that modules under lib at the
+   # same level as t, will be found
+   #
+   my $inc_dir = File::Spec->catdir( $lib_dir, 'lib' );
+   $inc_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
+   unshift @INC, $inc_dir;
+
+   #####
+   # Add tlib to the include path so that modules under tlib at the
+   # same level as t, will be found
+   #
+   $inc_dir = File::Spec->catdir( $lib_dir, 'tlib' );
+   $inc_dir =~ s|/|\\|g if $^O eq 'MSWin32';  # microsoft abberation
+   unshift @INC, $inc_dir;
+   chdir $dirs if $dirs;
 }
 
 END {
 
-    #########
-    # Restore working directory and @INC back to when enter script
-    #
-    @INC = @__restore_inc__;
-    chdir $__restore_dir__;
+   #########
+   # Restore working directory and @INC back to when enter script
+   #
+   @INC = @__restore_inc__;
+   chdir $__restore_dir__;
 }
+
 
     #### 
     # File Legend
@@ -100,6 +119,8 @@ elsif ( $actual eq Dumper(['3']) ) {
 #####
 # New $fu object
 #
+use File::Package;
+use File::SmartNL;
 my $fp  = 'File::Package';
 my $snl = 'File::SmartNL';
 
