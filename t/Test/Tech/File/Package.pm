@@ -11,8 +11,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.13';
-$DATE = '2004/04/08';
+$VERSION = '1.14';
+$DATE = '2004/04/09';
 $FILE = __FILE__;
 
 use File::Spec;
@@ -22,6 +22,7 @@ use vars qw(@ISA @EXPORT_OK);
 require Exporter;
 @ISA= qw(Exporter);
 @EXPORT_OK = qw(load_package is_package_loaded eval_str);
+use vars qw(@import);
 
 # 1;
 
@@ -38,9 +39,10 @@ sub load_package
      # This subroutine uses no object data; therefore,
      # drop any class or object.
      #
-     shift @_ if UNIVERSAL::isa($_[0],__PACKAGE__);
+     shift if UNIVERSAL::isa($_[0],__PACKAGE__);
+     local @import;
 
-     my ($package, @import) = @_;
+     (my $package, @import) = @_;
 
      unless ($package) { # have problem if there is no package
          return  "# The package name is empty. There is no package to load.\n";
@@ -51,53 +53,45 @@ sub load_package
      }
 
      my $error = '';
-     if (File::Package->is_package_loaded( $package )) {
-
-         #####          
-         # Import flagged symbols from load package into current package vocabulary.
-         #
-         my $restore_level = $Exporter::ExportLevel;
-         $Exporter::ExportLevel = 1;
-         if( @import ) {
-             $error = eval_str( "$package->import( \@import );" ) if ($import[0] );
-         }
-         else {
-             $error = eval_str( "$package->import( );" );
-         }
-         $Exporter::ExportLevel = $restore_level; 
-         return $error;
-     }
-
-     #####
-     # Load the module
-     #
-     # On error when evaluating "require $package" only the last
-     # line of STDERR, at least on one Perl, is return in $@.
-     # Save the entire STDERR to a memory variable
-     #
-     $error = eval_str ("require $package;");
-     return "Cannot load $package\n\t" . $error if $error;
-
-     #####
-     # Verify the package vocabulary is present
-     #
      unless (File::Package->is_package_loaded( $package )) {
-         return "# $package loaded but package vocabulary absent.\n";
+
+         #####
+         # Load the module
+         #
+         # On error when evaluating "require $package" only the last
+         # line of STDERR, at least on one Perl, is return in $@.
+         # Save the entire STDERR to a memory variable
+         #
+         $error = eval_str ("require $package;");
+         return "Cannot load $package\n\t" . $error if $error;
+
+         #####
+         # Verify the package vocabulary is present
+         #
+         unless (File::Package->is_package_loaded( $package )) {
+             return "# $package loaded but package vocabulary absent.\n";
+         }
      }
 
      ####
      # Import flagged symbols from load package into current package vocabulary.
      #
-     $error = '';
-     my $restore_level = $Exporter::ExportLevel;
-     $Exporter::ExportLevel = 1;
      if( @import ) {
-         $error = eval_str( "$package->import( \@import );" ) if ($import[0] );
+         ####
+         # Poor man's eval so that we can maintain caller stack for
+         # proper use by import.
+         #
+         my $restore_level = $Exporter::ExportLevel;
+         $Exporter::ExportLevel = 1;
+         my $restore_warn = $SIG{__WARN__};
+         my $restore_die = $SIG{__DIE__};
+         $SIG{__WARN__} = sub { $error .= join '', @_; };
+         $SIG{__DIE__} = sub { $error .= join '', @_; };
+         $package->import( @import );
+         $SIG{__WARN__} = ref( $restore_warn ) ? $restore_warn : '';
+         $SIG{__DIE__} = ref( $restore_die ) ? $restore_die : '';
+         $Exporter::ExportLevel = $restore_level;  
      }
-     else {
-         $error = eval_str( "$package->import( );" );
-     }
-     $Exporter::ExportLevel = $restore_level;  
 
      return $error;
 
@@ -117,7 +111,7 @@ sub eval_str
      my $error_msg = '';
      $SIG{__WARN__} = sub { $error_msg .= join '', @_; };
      eval $str;
-     $SIG{__WARN__} = $restore_warn;
+     $SIG{__WARN__} = ref( $restore_warn ) ? $restore_warn : '';
 
      $error_msg = $@ . $error_msg if $@;
      $error_msg =~ s/\n/\n\t/g if $error_msg;

@@ -10,33 +10,33 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.18';
-$DATE = '2004/04/08';
+$VERSION = '0.19';
+$DATE = '2004/04/09';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.18 2004/04/08), 'revised 0.17'],
-    'MANIFEST' => [qw(0.18 2004/04/08), 'generated, replaces 0.17'],
-    'Makefile.PL' => [qw(0.18 2004/04/08), 'generated, replaces 0.17'],
-    'README' => [qw(0.18 2004/04/08), 'generated, replaces 0.17'],
-    'lib/Test/Tech.pm' => [qw(1.17 2004/04/08), 'revised 1.16'],
-    't/Test/Tech/Tech.d' => [qw(0.03 2004/04/08), 'revised 0.02'],
-    't/Test/Tech/Tech.pm' => [qw(0.03 2004/04/08), 'revised 0.02'],
-    't/Test/Tech/Tech.t' => [qw(0.16 2004/04/08), 'revised 0.15'],
-    't/Test/Tech/techA0.t' => [qw(0.11 2004/04/08), 'revised 0.1'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.19 2004/04/09), 'revised 0.18'],
+    'MANIFEST' => [qw(0.19 2004/04/09), 'generated, replaces 0.18'],
+    'Makefile.PL' => [qw(0.19 2004/04/09), 'generated, replaces 0.18'],
+    'README' => [qw(0.19 2004/04/09), 'generated, replaces 0.18'],
+    'lib/Test/Tech.pm' => [qw(1.17 2004/04/08), 'unchanged'],
+    't/Test/Tech/Tech.d' => [qw(0.04 2004/04/09), 'revised 0.03'],
+    't/Test/Tech/Tech.pm' => [qw(0.01 2004/04/08), 'unchanged'],
+    't/Test/Tech/Tech.t' => [qw(0.17 2004/04/09), 'revised 0.16'],
+    't/Test/Tech/techA0.t' => [qw(0.11 2004/04/08), 'unchanged'],
     't/Test/Tech/techA2.txt' => [qw(0.08 2004/04/07), 'unchanged'],
-    't/Test/Tech/techB0.t' => [qw(0.08 2004/04/08), 'revised 0.07'],
-    't/Test/Tech/techC0.t' => [qw(0.12 2004/04/08), 'revised 0.11'],
+    't/Test/Tech/techB0.t' => [qw(0.08 2004/04/08), 'unchanged'],
+    't/Test/Tech/techC0.t' => [qw(0.12 2004/04/08), 'unchanged'],
     't/Test/Tech/techC2.txt' => [qw(0.09 2004/04/07), 'unchanged'],
-    't/Test/Tech/techD0.d' => [qw(0.05 2004/04/08), 'revised 0.04'],
+    't/Test/Tech/techD0.d' => [qw(0.05 2004/04/08), 'unchanged'],
     't/Test/Tech/techD2.txt' => [qw(0.07 2003/09/15), 'unchanged'],
     't/Test/Tech/techD3.txt' => [qw(0.07 2003/09/15), 'unchanged'],
-    't/Test/Tech/techE0.t' => [qw(0.07 2004/04/08), 'revised 0.06'],
+    't/Test/Tech/techE0.t' => [qw(0.07 2004/04/08), 'unchanged'],
     't/Test/Tech/techE2.txt' => [qw(0.17 2004/04/07), 'unchanged'],
-    't/Test/Tech/File/Package.pm' => [qw(1.13 2004/04/08), 'new'],
-    't/Test/Tech/File/SmartNL.pm' => [qw(1.13 2004/04/08), 'new'],
-    't/Test/Tech/Text/Scrub.pm' => [qw(1.11 2004/04/08), 'new'],
+    't/Test/Tech/File/Package.pm' => [qw(1.14 2004/04/09), 'revised 1.13'],
+    't/Test/Tech/File/SmartNL.pm' => [qw(1.13 2004/04/09), 'unchanged'],
+    't/Test/Tech/Text/Scrub.pm' => [qw(1.11 2004/04/09), 'unchanged'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.25 2003/09/15), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.16 2003/09/15), 'unchanged'],
 
@@ -65,11 +65,11 @@ use vars qw(%INVENTORY);
 
  Test::Tech - Extends the Test program module
 
- Revision: R
+ Revision: S
 
- Version: 0.18
+ Version: 0.19
 
- Date: 2004/04/08
+ Date: 2004/04/09
 
  Prepared for: General Public 
 
@@ -136,7 +136,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.18
+This document releases Test::Tech version 0.19
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -151,7 +151,7 @@ system file specification.
 
 This document releases the file 
 
- Test-Tech-0.18.tar.gz
+ Test-Tech-0.19.tar.gz
 
 found at the following repository(s):
 
@@ -223,27 +223,27 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.18    2004/04/08 revised 0.17
- MANIFEST                                                     0.18    2004/04/08 generated, replaces 0.17
- Makefile.PL                                                  0.18    2004/04/08 generated, replaces 0.17
- README                                                       0.18    2004/04/08 generated, replaces 0.17
- lib/Test/Tech.pm                                             1.17    2004/04/08 revised 1.16
- t/Test/Tech/Tech.d                                           0.03    2004/04/08 revised 0.02
- t/Test/Tech/Tech.pm                                          0.03    2004/04/08 revised 0.02
- t/Test/Tech/Tech.t                                           0.16    2004/04/08 revised 0.15
- t/Test/Tech/techA0.t                                         0.11    2004/04/08 revised 0.1
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.19    2004/04/09 revised 0.18
+ MANIFEST                                                     0.19    2004/04/09 generated, replaces 0.18
+ Makefile.PL                                                  0.19    2004/04/09 generated, replaces 0.18
+ README                                                       0.19    2004/04/09 generated, replaces 0.18
+ lib/Test/Tech.pm                                             1.17    2004/04/08 unchanged
+ t/Test/Tech/Tech.d                                           0.04    2004/04/09 revised 0.03
+ t/Test/Tech/Tech.pm                                          0.01    2004/04/08 unchanged
+ t/Test/Tech/Tech.t                                           0.17    2004/04/09 revised 0.16
+ t/Test/Tech/techA0.t                                         0.11    2004/04/08 unchanged
  t/Test/Tech/techA2.txt                                       0.08    2004/04/07 unchanged
- t/Test/Tech/techB0.t                                         0.08    2004/04/08 revised 0.07
- t/Test/Tech/techC0.t                                         0.12    2004/04/08 revised 0.11
+ t/Test/Tech/techB0.t                                         0.08    2004/04/08 unchanged
+ t/Test/Tech/techC0.t                                         0.12    2004/04/08 unchanged
  t/Test/Tech/techC2.txt                                       0.09    2004/04/07 unchanged
- t/Test/Tech/techD0.d                                         0.05    2004/04/08 revised 0.04
+ t/Test/Tech/techD0.d                                         0.05    2004/04/08 unchanged
  t/Test/Tech/techD2.txt                                       0.07    2003/09/15 unchanged
  t/Test/Tech/techD3.txt                                       0.07    2003/09/15 unchanged
- t/Test/Tech/techE0.t                                         0.07    2004/04/08 revised 0.06
+ t/Test/Tech/techE0.t                                         0.07    2004/04/08 unchanged
  t/Test/Tech/techE2.txt                                       0.17    2004/04/07 unchanged
- t/Test/Tech/File/Package.pm                                  1.13    2004/04/08 new
- t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/08 new
- t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/08 new
+ t/Test/Tech/File/Package.pm                                  1.14    2004/04/09 revised 1.13
+ t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/09 unchanged
+ t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/09 unchanged
  t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
 
@@ -504,6 +504,12 @@ the test script and test library modules and added steps to the ExtUtils::SVDmak
 to have the SVDmaker test target run tests with just bare @INC that references
 a vigin Perl installation libraries only.
 
+The lastest build of Test::STDmaker now assumes and expects the test library in the same
+directory as the test script.
+Coordiated with the lastest Test::STDmaker by moving the
+test library from tlib to t/Tie, the same directory as the test script
+and deleting the test library File::TestPath program module.
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -542,13 +548,13 @@ Enter one of the following repositories in a web browser:
   http://www.softwarediamonds/packages/
   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
 
-Right click on 'Test-Tech-0.18.tar.gz' and download to a temporary
+Right click on 'Test-Tech-0.19.tar.gz' and download to a temporary
 installation directory.
 Enter the following where $make is 'nmake' for microsoft
 windows; otherwise 'make'.
 
- gunzip Test-Tech-0.18.tar.gz
- tar -xf Test-Tech-0.18.tar
+ gunzip Test-Tech-0.19.tar.gz
+ tar -xf Test-Tech-0.19.tar
  perl Makefile.PL
  $make test
  $make install
@@ -663,11 +669,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.18^
+VERSION : 0.19^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.17^
-REVISION: R^
+PREVIOUS_RELEASE: 0.18^
+REVISION: S^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -969,6 +975,12 @@ The test script could not find one of the test library program modules. Revamp
 the test script and test library modules and added steps to the ExtUtils::SVDmaker
 to have the SVDmaker test target run tests with just bare @INC that references
 a vigin Perl installation libraries only.
+
+The lastest build of Test::STDmaker now assumes and expects the test library in the same
+directory as the test script.
+Coordiated with the lastest Test::STDmaker by moving the
+test library from tlib to t/Tie, the same directory as the test script
+and deleting the test library File::TestPath program module.
 
 \=back
 
