@@ -4,7 +4,7 @@
 #
 package  Test::Tech;
 
-use 5.001;
+# use 5.001;
 use strict;
 use warnings;
 use warnings::register;
@@ -13,8 +13,8 @@ use Test ();   # do not import the "Test" subroutines
 use Data::Secs2 qw(stringify);
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.17';
-$DATE = '2004/04/08';
+$VERSION = '1.18';
+$DATE = '2004/04/13';
 $FILE = __FILE__;
 
 use vars qw(@ISA @EXPORT_OK);
@@ -90,18 +90,31 @@ sub finish
 {
     my $self = UNIVERSAL::isa($_[0],__PACKAGE__) ? shift @_ : $tech_p;
 
+    return undef unless $Test::TESTOUT;  # if IO::Handle object may be destroyed and undef
+    return undef unless $Test::planned;  
+
+    my $missing = $self->{last_test} + 1;
+    $self->{test_name} = '';
+    while($missing <= $self->{num_tests}) {
+        if($self->{Skip_Diag}) {
+            print $Test::TESTOUT "not ok $missing Not Performed # missing\n";
+            if( 1.20 < $Test::VERSION ) {
+                print $Test::TESTERR "# Test $missing got:\n";
+                print $Test::TESTERR "# Expected: (Missing. $self->{Skip_Diag})\n";
+            }
+            else {
+                print $Test::TESTOUT "# Test $missing got:\n";
+                print $Test::TESTOUT "# Expected: (Missing. $self->{Skip_Diag})\n";
+            }
+        }
+        push @{$self->{missed}}, $missing++;
+    }
+
     $Test::TESTOUT = $self->{TestDefault}->{TESTOUT};
     $Test::TestLevel = $self->{TestDefault}->{TestLevel};
     $Test::ONFAIL = $self->{TestDefault}->{ONFAIL};
     $Test::TESTERR = $self->{TestDefault}->{TESTERR} if defined $Test::TESTERR;
 
-    return unless $Test::TESTOUT;  # if IO::Handle object may be destroyed and undef
-    return unless $self->{last_test} && $self->{num_tests};  
-
-    my $missing = $self->{last_test} + 1;
-    while($missing <= $self->{num_tests}) {
-         push @{$self->{missed}}, $missing++;
-    }
     if(@{$self->{unplanned}}) {
         print $Test::TESTOUT '# Extra  : ' . (join ' ', @{$self->{unplanned}}) . "\n";
     }
@@ -123,10 +136,15 @@ sub finish
     my $passed =  @{$self->{passed}};
     print $Test::TESTOUT '# Passed : ' . "$passed/$total " . ((100*$passed)/$total) . "%\n" if $total;
 
+    ######
+    # Only once per test run.
+    #
+    $Test::planned = 0;
+
     return ($total,$self->{unplanned},$self->{missed},$self->{skipped},$self->{passed},$self->{failed})
           if wantarray;
 
-    $passed;
+    $passed ? 1 : 0;
 }
 
 # *finish = &*Test::Tech::DESTORY; # DESTORY is alias for finish
@@ -232,8 +250,14 @@ sub ok
        &Test::skip( 1, 0, '');
        if($self->{Skip_Diag}) {
            my $test_number = $Test::ntest - 1;
-           print $Test::TESTOUT "# Test $test_number got:\n";
-           print $Test::TESTOUT "# Expected: ($self->{Skip_Diag})\n";
+           if( 1.20 < $Test::VERSION ) {
+               print $Test::TESTERR "# Test $test_number got:\n";
+               print $Test::TESTERR "# Expected: ($self->{Skip_Diag})\n";
+           }
+           else {
+               print $Test::TESTOUT "# Test $test_number got:\n";
+               print $Test::TESTOUT "# Expected: ($self->{Skip_Diag})\n";
+           }
        }
        return 1; 
    }
@@ -280,8 +304,14 @@ sub skip
        &Test::skip( 1, 0, '');
        if($self->{Skip_Diag}) {
            my $test_number = $Test::ntest - 1;
-           print $Test::TESTOUT "# Test $test_number got:\n";
-           print $Test::TESTOUT "# Expected: ($self->{Skip_Diag})\n";
+           if( 1.20 < $Test::VERSION ) {
+               print $Test::TESTERR "# Test $test_number got:\n";
+               print $Test::TESTERR "# Expected: ($self->{Skip_Diag})\n";
+           }
+           else {
+               print $Test::TESTOUT "# Test $test_number got:\n";
+               print $Test::TESTOUT "# Expected: ($self->{Skip_Diag})\n";
+           }
        }
        return 1; 
    }
@@ -790,22 +820,37 @@ for the top level 'Test', the "L<Test|Test>" module.
  (@stats) = $tech->finish( );
  $num_passed = $tech->finish( );
 
-The finish() subroutine/method outputs the test steps
-that are missing, failed, unplanned and other statistics.
+The C<finish()> subroutine/method restores changes made
+to the C<Test> module module made by the 
+C<tech_config> subroutine/method or directly.
 
-The finish() subroutine/method restores changes made
-to the 'Test' module module made by the 
-'tech_config' subroutine/method or directly.
-
-When the 'new' subroutine/method creates a 'Test::Tech'
-object, the Perl will automatically run the
-'finish' method when that object is destoried.
+When the C<new> subroutine/method creates a C<Test::Tech>
+object.
+Perl will automatically run the
+C<finish()> method when that object is destoried.
 
 Running the 'finish' method without a class or object,
 restores the 'Test' module to the values when
 the 'Test::Tech' module was loaded.
 
-The @stats array consists of the following:
+When used in an array context
+the C<finish()> subroutine/method 
+returns the C<@stats> array.
+The C<@stats> array consists of the following:
+
+The C<finish()> subroutine resets the C<last_test> and
+to zero and will returns undef without
+performing any of the above. 
+The C<finish()> subroutine will not be active again
+until a new test run is start with  C<&Test::Tech::plan>
+and the first test performed by C<&Test::Tech::ok> or
+C<&Test::Tech::skip>.
+
+In a scalar contents, the C<finish()> subroutine/method outputs
+a 1 for sucess and 0 for failure.
+In an array context,
+the C<finish()> subroutine/method outputs C<@stats>
+array that consists of the following:
 
 =over 4
 
@@ -891,11 +936,11 @@ follow on the next lines. For example,
  use warnings;
  use warnings::register;
  use vars qw($VERSION $DATE);
- $VERSION = '0.1';
- $DATE = '2004/04/07';
+ $VERSION = '0.12';
+ $DATE = '2004/04/13';
 
  BEGIN {
-    use FindBIN;
+    use FindBin;
     use File::Spec;
     use Cwd;
     use vars qw( $__restore_dir__ );
@@ -1023,11 +1068,11 @@ follow on the next lines. For example,
  use warnings::register;
 
  use vars qw($VERSION $DATE);
- $VERSION = '0.11';
- $DATE = '2004/04/07';
+ $VERSION = '0.13';
+ $DATE = '2004/04/13';
 
  BEGIN {
-    use FindBIN;
+    use FindBin;
     use File::Spec;
     use Cwd;
     use vars qw( $__restore_dir__ );
@@ -1094,113 +1139,14 @@ follow on the next lines. For example,
  '1..2 todo 1;
  ok 1 - Todo test that passes  # (xxxx.t at line 000 TODO?!)
  not ok 2 - Test that fails 
- # Test 2 got: 'L[4]
-   A[0] 
-   A[5] ARRAY
-   A[1] 5
-   A[1] 6
+ # Test 2 got: 'U1[1] 80
+ U1[2] 5 6
  ' (xxxx.t at line 000)
- #   Expected: 'L[4]
-   A[0] 
-   A[5] ARRAY
-   A[1] 6
-   A[1] 5
+ #   Expected: 'U1[1] 80
+ U1[2] 6 5
  '
  # Failed : 2
  # Passed : 1/2 50%
- '
-
- => $snl->fin('techE0.t')
- '#!perl
- #
- #
- use 5.001;
- use strict;
- use warnings;
- use warnings::register;
-
- use vars qw($VERSION $DATE);
- $VERSION = '0.06';
- $DATE = '2004/04/07';
-
- BEGIN {
-    use FindBIN;
-    use File::Spec;
-    use Cwd;
-    use vars qw( $__restore_dir__ );
-    $__restore_dir__ = cwd();
-    my ($vol, $dirs) = File::Spec->splitpath($FindBin::Bin,'nofile');
-    chdir $vol if $vol;
-    chdir $dirs if $dirs;
-    use lib $FindBin::Bin;
-
-    # Add the directory with "Test.pm" version 1.24 to the front of @INC
-    # Thus, load Test::Tech, will find Test.pm 1.24 first
-    unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
-
-    require Test::Tech;
-    Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
-    plan(tests => 8, todo => [4, 8]);
- }
-
- END {
-    # Restore working directory and @INC back to when enter script
-    @INC = @lib::ORIG_INC;
-    chdir $__restore_dir__;
- }
-
- # 1.24 error goes to the STDERR
- # while 1.15 goes to STDOUT
- # redirect STDERR to the STDOUT
- tech_config('Test.TESTERR', \*STDOUT);
-
- my $x = 2;
- my $y = 3;
-
- #  ok:  1 - Using Test 1.24
- ok( $Test::VERSION, '1.24', '', 'Test version');
-
- skip_tests( 1 ) unless ok(   #  ok:  2 - Do not skip rest
-     $x + $y, # actual results
-     5, # expected results
-     {name => 'Pass test'} ); 
-
- skip( #  ok:  3
-       1, # condition to skip test   
-       ($x*$y*2), # actual results
-       6, # expected results
-       {name => 'Skipped tests'});
-
- #  zyw feature Under development, i.e todo
- ok( #  ok:  4
-     $x*$y*2, # actual results
-     6, # expected results
-     [name => 'Todo Test that Fails',
-     diagnostic => 'Should Fail']);
-
- skip_tests(1,'Skip test on') unless ok(  #  ok:  5
-     $x + $y, # actual results
-     6, # expected results
-     [diagnostic => 'Should Turn on Skip Test', 
-      name => 'Failed test that skips the rest']); 
-
- ok( #  ok:  6 
-     $x + $y + $x, # actual results
-     9, # expected results
-     '', 'A test to skip');
-
- finish() # pick up stats
-
- __END__
-
- =head1 COPYRIGHT
-
- This test script is public domain.
-
- =cut
-
- ## end of test script file ##
-
  '
 
  =>     $actual_results = `perl techE0.t`;
@@ -1219,29 +1165,37 @@ follow on the next lines. For example,
  ok 6 - A test to skip  # skip
  # Test 6 got:
  # Expected: (Skip test on)
+ not ok 7 Not Performed # missing
+ # Test 7 got:
+ # Expected: (Missing. Skip test on)
+ not ok 8 Not Performed # missing
+ # Test 8 got:
+ # Expected: (Missing. Skip test on)
  # Missing: 7 8
  # Skipped: 3 6
- # Failed : 4 5
+ # Failed : 4 5 7 8
  # Passed : 2/6 33%
  '
 
  => my $tech = new Test::Tech
- => $tech->tech_config('Test.TestLevel')
+ => $tech->tech_config('Test.ONFAIL')
  undef
 
- => $tech->tech_config('Test.TestLevel', 2)
+ => $tech->tech_config('Test.ONFAIL',0)
  undef
 
- => $tech->tech_config('Test.TestLevel')
- 2
+ => $tech->tech_config('Test.ONFAIL')
+ 0
 
- => $Test::TestLevel
- 2
+ => $Test::ONFAIL
+ 0
 
- => $tech->finish( )
- => $Test::TestLevel
- undef
+ =>      $tech->finish( );
+ =>      $Test::planned = 1;  # keep going
+ => $tech->tech_config('Test.ONFAIL')
+ 0
 
+ => unlink 'tech1.txt'
  => unlink 'tech1.txt'
 
 =head1 QUALITY ASSURANCE

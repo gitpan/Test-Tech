@@ -1,25 +1,19 @@
 1..2 todo 1;
-# OS            : MSWin32
-# Perl          : 5.008 Win32 Build 806
-# Local Time    : Tue Apr  6 22:06:29 2004
-# GMT Time      : Wed Apr  7 02:06:29 2004
-# Test          : 1.20
-# Test::Tech    : 1.15
-# Data::Secs2   : 1.15
+# Running under perl version 5.006001 for MSWin32
+# Win32::BuildNumber 635
+# Current time local: Tue Apr 13 17:38:00 2004
+# Current time GMT:   Tue Apr 13 21:38:00 2004
+# Using Test.pm version 1.24
+# Test::Tech    : 1.17
+# Data::Secs2   : 1.16
 # =cut 
-ok 1 - Todo test that passes  # (techC0.t at line 119 TODO?!)
+ok 1 - Todo test that passes  # (techC0.t at line 51 TODO?!)
 not ok 2 - Test that fails 
-# Test 2 got: 'L[4]
-  A[0] 
-  A[5] ARRAY
-  A[1] 5
-  A[1] 6
-' (techC0.t at line 128)
-#   Expected: 'L[4]
-  A[0] 
-  A[5] ARRAY
-  A[1] 6
-  A[1] 5
+# Test 2 got: 'U1[1] 80
+U1[2] 5 6
+' (techC0.t at line 56)
+#   Expected: 'U1[1] 80
+U1[2] 6 5
 '
 # Failed : 2
 # Passed : 1/2 50%

@@ -112,6 +112,7 @@ DESCRIPTION
         the methods under test
 
   plan subroutine
+
      $success = plan(@args);
 
     The *plan* subroutine is a cover method for &Test::plan. The *@args* are
@@ -135,6 +136,7 @@ DESCRIPTION
          onfail => sub { warn "CALL 911!" } 
 
   ok subroutine
+
      $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name, [@options]);
      $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name, {@options});
 
@@ -163,6 +165,7 @@ DESCRIPTION
         skips the test completely.
 
   skip subroutine
+
      $test_ok = skip($actual_results, $expected_results, $diagnostic $test_name, [@options]);
      $test_ok = skip($actual_results, $expected_results, $diagnostic $test_name, {@options});
 
@@ -177,6 +180,7 @@ DESCRIPTION
     extends the *&Test::ok* subroutine.
 
   skip_tests method
+
      $state = skip_tests( $on_off );
      $state = skip_tests( );
 
@@ -184,6 +188,7 @@ DESCRIPTION
     *skip* methods to skip testing.
 
   stringify subroutine
+
      $string = stringify( $var );
 
     The *stringify* subroutine will stringify *$var* using the
@@ -191,6 +196,7 @@ DESCRIPTION
     reference; otherwise, it leaves it unchanged.
 
   tech_config subroutine
+
      $old_value = tech_config( $dot_index, $new_value );
 
     The *tech_config* subroutine reads and writes the below configuration
@@ -220,25 +226,34 @@ DESCRIPTION
     "Data::Dumper" module; for the top level 'Test', the "Test" module.
 
   finish subroutine
+
      (@stats) = $tech->finish( );
      $num_passed = $tech->finish( );
 
-    The finish() subroutine/method outputs the test steps that are missing,
-    failed, unplanned and other statistics.
+    The "finish()" subroutine/method restores changes made to the "Test"
+    module module made by the "tech_config" subroutine/method or directly.
 
-    The finish() subroutine/method restores changes made to the 'Test'
-    module module made by the 'tech_config' subroutine/method or directly.
-
-    When the 'new' subroutine/method creates a 'Test::Tech' object, the Perl
-    will automatically run the 'finish' method when that object is
+    When the "new" subroutine/method creates a "Test::Tech" object. Perl
+    will automatically run the "finish()" method when that object is
     destoried.
 
     Running the 'finish' method without a class or object, restores the
     'Test' module to the values when the 'Test::Tech' module was loaded.
 
-    The @stats array consists of the following:
+    When used in an array context the "finish()" subroutine/method returns
+    the "@stats" array. The "@stats" array consists of the following:
 
-    *   number of tests
+    The "finish()" subroutine resets the "last_test" and to zero and will
+    returns undef without performing any of the above. The "finish()"
+    subroutine will not be active again until a new test run is start with
+    "&Test::Tech::plan" and the first test performed by "&Test::Tech::ok" or
+    "&Test::Tech::skip".
+
+    In a scalar contents, the "finish()" subroutine/method outputs a 1 for
+    sucess and 0 for failure. In an array context, the "finish()"
+    subroutine/method outputs "@stats" array that consists of the following:
+
+    0   number of tests
 
         This is calculated as the maximum of the tests planned and the
         highest test number. From the maximum, substract the skipped tests.
@@ -255,6 +270,7 @@ DESCRIPTION
     5   reference to the failed test steps
 
   demo subroutine
+
      demo($quoted_expression, @expression)
 
     The demo subroutine/method provides a session like out. The
@@ -301,11 +317,11 @@ DEMONSTRATION
      use warnings;
      use warnings::register;
      use vars qw($VERSION $DATE);
-     $VERSION = '0.1';
-     $DATE = '2004/04/07';
+     $VERSION = '0.12';
+     $DATE = '2004/04/13';
 
      BEGIN {
-        use FindBIN;
+        use FindBin;
         use File::Spec;
         use Cwd;
         use vars qw( $__restore_dir__ );
@@ -433,11 +449,11 @@ DEMONSTRATION
      use warnings::register;
 
      use vars qw($VERSION $DATE);
-     $VERSION = '0.11';
-     $DATE = '2004/04/07';
+     $VERSION = '0.13';
+     $DATE = '2004/04/13';
 
      BEGIN {
-        use FindBIN;
+        use FindBin;
         use File::Spec;
         use Cwd;
         use vars qw( $__restore_dir__ );
@@ -504,113 +520,14 @@ DEMONSTRATION
      '1..2 todo 1;
      ok 1 - Todo test that passes  # (xxxx.t at line 000 TODO?!)
      not ok 2 - Test that fails 
-     # Test 2 got: 'L[4]
-       A[0] 
-       A[5] ARRAY
-       A[1] 5
-       A[1] 6
+     # Test 2 got: 'U1[1] 80
+     U1[2] 5 6
      ' (xxxx.t at line 000)
-     #   Expected: 'L[4]
-       A[0] 
-       A[5] ARRAY
-       A[1] 6
-       A[1] 5
+     #   Expected: 'U1[1] 80
+     U1[2] 6 5
      '
      # Failed : 2
      # Passed : 1/2 50%
-     '
-
-     => $snl->fin('techE0.t')
-     '#!perl
-     #
-     #
-     use 5.001;
-     use strict;
-     use warnings;
-     use warnings::register;
-
-     use vars qw($VERSION $DATE);
-     $VERSION = '0.06';
-     $DATE = '2004/04/07';
-
-     BEGIN {
-        use FindBIN;
-        use File::Spec;
-        use Cwd;
-        use vars qw( $__restore_dir__ );
-        $__restore_dir__ = cwd();
-        my ($vol, $dirs) = File::Spec->splitpath($FindBin::Bin,'nofile');
-        chdir $vol if $vol;
-        chdir $dirs if $dirs;
-        use lib $FindBin::Bin;
-
-        # Add the directory with "Test.pm" version 1.24 to the front of @INC
-        # Thus, load Test::Tech, will find Test.pm 1.24 first
-        unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
-
-        require Test::Tech;
-        Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
-        plan(tests => 8, todo => [4, 8]);
-     }
-
-     END {
-        # Restore working directory and @INC back to when enter script
-        @INC = @lib::ORIG_INC;
-        chdir $__restore_dir__;
-     }
-
-     # 1.24 error goes to the STDERR
-     # while 1.15 goes to STDOUT
-     # redirect STDERR to the STDOUT
-     tech_config('Test.TESTERR', \*STDOUT);
-
-     my $x = 2;
-     my $y = 3;
-
-     #  ok:  1 - Using Test 1.24
-     ok( $Test::VERSION, '1.24', '', 'Test version');
-
-     skip_tests( 1 ) unless ok(   #  ok:  2 - Do not skip rest
-         $x + $y, # actual results
-         5, # expected results
-         {name => 'Pass test'} ); 
-
-     skip( #  ok:  3
-           1, # condition to skip test   
-           ($x*$y*2), # actual results
-           6, # expected results
-           {name => 'Skipped tests'});
-
-     #  zyw feature Under development, i.e todo
-     ok( #  ok:  4
-         $x*$y*2, # actual results
-         6, # expected results
-         [name => 'Todo Test that Fails',
-         diagnostic => 'Should Fail']);
-
-     skip_tests(1,'Skip test on') unless ok(  #  ok:  5
-         $x + $y, # actual results
-         6, # expected results
-         [diagnostic => 'Should Turn on Skip Test', 
-          name => 'Failed test that skips the rest']); 
-
-     ok( #  ok:  6 
-         $x + $y + $x, # actual results
-         9, # expected results
-         '', 'A test to skip');
-
-     finish() # pick up stats
-
-     __END__
-
-     =head1 COPYRIGHT
-
-     This test script is public domain.
-
-     =cut
-
-     ## end of test script file ##
-
      '
 
      =>     $actual_results = `perl techE0.t`;
@@ -629,29 +546,37 @@ DEMONSTRATION
      ok 6 - A test to skip  # skip
      # Test 6 got:
      # Expected: (Skip test on)
+     not ok 7 Not Performed # missing
+     # Test 7 got:
+     # Expected: (Missing. Skip test on)
+     not ok 8 Not Performed # missing
+     # Test 8 got:
+     # Expected: (Missing. Skip test on)
      # Missing: 7 8
      # Skipped: 3 6
-     # Failed : 4 5
+     # Failed : 4 5 7 8
      # Passed : 2/6 33%
      '
 
      => my $tech = new Test::Tech
-     => $tech->tech_config('Test.TestLevel')
+     => $tech->tech_config('Test.ONFAIL')
      undef
 
-     => $tech->tech_config('Test.TestLevel', 2)
+     => $tech->tech_config('Test.ONFAIL',0)
      undef
 
-     => $tech->tech_config('Test.TestLevel')
-     2
+     => $tech->tech_config('Test.ONFAIL')
+     0
 
-     => $Test::TestLevel
-     2
+     => $Test::ONFAIL
+     0
 
-     => $tech->finish( )
-     => $Test::TestLevel
-     undef
+     =>      $tech->finish( );
+     =>      $Test::planned = 1;  # keep going
+     => $tech->tech_config('Test.ONFAIL')
+     0
 
+     => unlink 'tech1.txt'
      => unlink 'tech1.txt'
 
 QUALITY ASSURANCE
@@ -705,6 +630,7 @@ QUALITY ASSURANCE
 
 NOTES
   FILES
+
     The installation of the "Test-Tech-$VERSION.tar.gz" distribution file
     installs the 'Docs::Site_SVD::Test_Tech' SVD program module.
 
@@ -736,16 +662,19 @@ NOTES
          vmake readme_html all -pm=Docs::Site_SVD::Test_Tech
 
   AUTHOR
+
     The holder of the copyright and maintainer is
 
     <support@SoftwareDiamonds.com>
 
   COPYRIGHT NOTICE
+
     Copyrighted (c) 2002 Software Diamonds
 
     All Rights Reserved
 
   BINDING REQUIREMENTS NOTICE
+
     Binding requirements are indexed with the pharse 'shall[dd]' where dd is
     an unique number for each header section. This conforms to standard
     federal government practices, US DOD 490A 3.2.3.6. In accordance with
@@ -753,6 +682,7 @@ NOTES
     binding or otherwise.
 
   LICENSE
+
     Software Diamonds permits the redistribution and use in source and
     binary forms, with or without modification, provided that the following
     conditions are met:
@@ -783,11 +713,11 @@ Title Page
 
      Test::Tech - Extends the Test program module
 
-     Revision: T
+     Revision: U
 
-     Version: 0.20
+     Version: 0.21
 
-     Date: 2004/04/10
+     Date: 2004/04/13
 
      Prepared for: General Public 
 
@@ -802,10 +732,12 @@ Title Page
     files.
 
   1.1 Identification
+
     This release, identified in 3.2, is a collection of Perl modules that
     extend the capabilities of the Perl language.
 
   1.2 System overview
+
     The system is the Perl programming language software. As established by
     the Perl referenced documents, program modules, such the "Test::Tech"
     module, extend the Perl language.
@@ -835,7 +767,8 @@ Title Page
         session using the methods under test
 
   1.3 Document overview.
-    This document releases Test::Tech version 0.20 providing description of
+
+    This document releases Test::Tech version 0.21 providing description of
     the inventory, installation instructions and other information necessary
     to utilize and track this release.
 
@@ -844,9 +777,10 @@ Title Page
     specification.
 
   3.1 Inventory of materials released.
+
     This document releases the file
 
-     Test-Tech-0.20.tar.gz
+     Test-Tech-0.21.tar.gz
 
     found at the following repository(s):
 
@@ -890,37 +824,40 @@ Title Page
         OF SUCH DAMAGE.
 
   3.2 Inventory of software contents
+
     The content of the released, compressed, archieve file, consists of the
     following files:
 
      file                                                         version date       comment
      ------------------------------------------------------------ ------- ---------- ------------------------
-     lib/Docs/Site_SVD/Test_Tech.pm                               0.20    2004/04/10 revised 0.19
-     MANIFEST                                                     0.20    2004/04/10 generated, replaces 0.19
-     Makefile.PL                                                  0.20    2004/04/10 generated, replaces 0.19
-     README                                                       0.20    2004/04/10 generated, replaces 0.19
-     lib/Test/Tech.pm                                             1.17    2004/04/08 unchanged
-     t/Test/Tech/Tech.d                                           0.04    2004/04/09 unchanged
-     t/Test/Tech/Tech.pm                                          0.01    2004/04/08 unchanged
-     t/Test/Tech/Tech.t                                           0.17    2004/04/09 unchanged
-     t/Test/Tech/techA0.t                                         0.11    2004/04/08 unchanged
+     lib/Docs/Site_SVD/Test_Tech.pm                               0.21    2004/04/13 revised 0.20
+     MANIFEST                                                     0.21    2004/04/13 generated, replaces 0.20
+     Makefile.PL                                                  0.21    2004/04/13 generated, replaces 0.20
+     README                                                       0.21    2004/04/13 generated, replaces 0.20
+     lib/Test/Tech.pm                                             1.18    2004/04/13 revised 1.17
+     t/Test/Tech/Tech.d                                           0.05    2004/04/13 revised 0.04
+     t/Test/Tech/Tech.pm                                          0.04    2004/04/13 revised 0.03
+     t/Test/Tech/Tech.t                                           0.18    2004/04/13 revised 0.17
+     t/Test/Tech/techA0.t                                         0.12    2004/04/13 revised 0.11
      t/Test/Tech/techA2.txt                                       0.08    2004/04/07 unchanged
-     t/Test/Tech/techB0.t                                         0.08    2004/04/08 unchanged
-     t/Test/Tech/techC0.t                                         0.12    2004/04/08 unchanged
-     t/Test/Tech/techC2.txt                                       0.09    2004/04/07 unchanged
-     t/Test/Tech/techD0.d                                         0.05    2004/04/08 unchanged
+     t/Test/Tech/techB0.t                                         0.09    2004/04/13 revised 0.08
+     t/Test/Tech/techC0.t                                         0.13    2004/04/13 revised 0.12
+     t/Test/Tech/techC2.txt                                       0.1     2004/04/13 revised 0.09
+     t/Test/Tech/techD0.d                                         0.06    2004/04/13 revised 0.05
      t/Test/Tech/techD2.txt                                       0.07    2003/09/15 unchanged
      t/Test/Tech/techD3.txt                                       0.07    2003/09/15 unchanged
-     t/Test/Tech/techE0.t                                         0.07    2004/04/08 unchanged
-     t/Test/Tech/techE2.txt                                       0.17    2004/04/07 unchanged
-     t/Test/Tech/File/Package.pm                                  1.15    2004/04/10 revised 1.14
-     t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/10 unchanged
-     t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/10 unchanged
-     t/Test/Tech/Data/Secs2.pm                                    1.15    2004/04/10 new
+     t/Test/Tech/techE0.t                                         0.08    2004/04/13 revised 0.07
+     t/Test/Tech/techE2.txt                                       0.18    2004/04/13 revised 0.17
+     t/Test/Tech/File/Package.pm                                  1.16    2004/04/13 revised 1.15
+     t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/13 unchanged
+     t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/13 unchanged
+     t/Test/Tech/Data/Secs2.pm                                    1.16    2004/04/13 revised 1.15
+     t/Test/Tech/Data/SecsPack.pm                                 0.02    2004/04/13 new
      t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
      t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
 
   3.3 Changes
+
     Changes are as follows:
 
     Test-Tester-0.01
@@ -1003,7 +940,6 @@ Title Page
          }
 
     Test::Tech 0.04
-
         *   Added functions with the same name as the "Test" functions. This
             make it easier to upgrade from "Test" to "Test::Tech"
 
@@ -1023,7 +959,6 @@ Title Page
         objects. In other words, all new objects are mostly same.
 
     Test-Tech-0.07
-
         t/Test/Tech/Tech.t t/Test/Tech/techCO.t
             Corrected typos in comments. More info in comments
 
@@ -1209,7 +1144,24 @@ Title Page
 
         Added "Data::Secs2" to the test library so the test will run.
 
+    Test-Tech-0.21
+        For "Test" module, version 1.20 or greater, changed so it sents
+        failure messages when skip flag turned on for "&Test::Tech::ok" and
+        "&Test::Tech::ok" out "$Test::TESTERR" instead of "$Test::TESTOUT".
+
+        For "&Test::Tech::finish" automatically generate failure messages
+        for all missing (not performed) test when the skip rest of tests
+        flag is on.
+
+        The "FindBIN" that runs fine on Win because Win file spec is case
+        insensitive and Unix whats case sensitive "FindBin" was fixed with
+        on test "Test::Test". However, overlooked all the test scripts that
+        the top test script runs, grabs the output and compares to expected
+        ouput stored in files. Corrected the "FindBin" for following test
+        software: "TechA0.t TechB0.t TechC0.t TechD0.d TechE0.t"
+
   3.4 Adaptation data.
+
     This installation requires that the installation site has the Perl
     programming language installed. There are no other additional
     requirements or tailoring needed of configurations files, adaptation
@@ -1217,10 +1169,12 @@ Title Page
     installation site.
 
   3.5 Related documents.
+
     There are no related documents needed for the installation and test of
     this release.
 
   3.6 Installation instructions.
+
     Instructions for installation, installation tests and installation
     support are as follows:
 
@@ -1238,12 +1192,12 @@ Title Page
           http://www.softwarediamonds/packages/
           http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
 
-        Right click on 'Test-Tech-0.20.tar.gz' and download to a temporary
+        Right click on 'Test-Tech-0.21.tar.gz' and download to a temporary
         installation directory. Enter the following where $make is 'nmake'
         for microsoft windows; otherwise 'make'.
 
-         gunzip Test-Tech-0.20.tar.gz
-         tar -xf Test-Tech-0.20.tar
+         gunzip Test-Tech-0.21.tar.gz
+         tar -xf Test-Tech-0.21.tar
          perl Makefile.PL
          $make test
          $make install
@@ -1255,7 +1209,9 @@ Title Page
          http://packages.softwarediamonds.com
 
     Prerequistes.
-         'Data::Secs2' => '0.01'
+         'Data::Secs2' => '0.03',
+         'Data::SecsPack' => '0.01',
+         'Test' => '1.20',
 
     Security, privacy, or safety precautions.
         None.
@@ -1273,6 +1229,7 @@ Title Page
          603 882-0846 E<lt>support@SoftwareDiamonds.comE<gt>
 
   3.7 Possible problems and known errors
+
     Known issues are as follows:
 
     Merge with the "Test" module
@@ -1282,10 +1239,11 @@ Title Page
     TestLevel and Program_Lines
         The "Test" module does not take the *$TestLevel* value into account
         where it chooses the module to load the *%Program_Line* hash. Since
-        the Test::Tech module adds a module layer in between the Test module
-        that the test script, the *$TestLevel* must be set to 1. Thus, the
-        Test module loads the Test::Tech module into *%Program_Line* hash
-        instead of the Module Under Test.
+        the the Test::Tech manpage module adds a module layer in between the
+        the Test manpage module that the test script, the *$TestLevel* must
+        be set to 1. Thus, the the Test manpage module loads the the
+        Test::Tech manpage module into *%Program_Line* hash instead of the
+        Module Under Test.
 
 4.0 NOTES
     The following are useful acronyms:
@@ -1299,4 +1257,3 @@ Title Page
 2.0 SEE ALSO
     Test::Tech
     Docs::US_DOD::SVD
-

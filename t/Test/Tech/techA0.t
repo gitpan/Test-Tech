@@ -6,11 +6,11 @@ use strict;
 use warnings;
 use warnings::register;
 use vars qw($VERSION $DATE);
-$VERSION = '0.11';
-$DATE = '2004/04/08';
+$VERSION = '0.12';
+$DATE = '2004/04/13';
 
 BEGIN {
-   use FindBIN;
+   use FindBin;
    use File::Spec;
    use Cwd;
    use vars qw( $__restore_dir__ );

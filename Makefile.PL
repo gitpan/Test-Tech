@@ -23,11 +23,13 @@ my $tests = join ' ',unix2os('t/Test/Tech/Tech.t');
 WriteMakefile(
     NAME => 'Test::Tech',
     DISTNAME => 'Test-Tech',
-    VERSION  => '0.20',
+    VERSION  => '0.21',
     dist     => {COMPRESS => 'gzip',
                 'gz' => 'gz'},
     test     => {TESTS => $tests},
-    PREREQ_PM => {'Data::Secs2' => '0.01'},
+    PREREQ_PM => {'Data::Secs2' => '0.03',
+                  'Data::SecsPack' => '0.01',
+                  'Test' => '1.20',},
     
 
     ($] >= 5.005 ?     

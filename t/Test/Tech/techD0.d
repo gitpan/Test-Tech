@@ -7,14 +7,14 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.05';   # automatically generated file
-$DATE = '2004/04/08';
+$VERSION = '0.06';   # automatically generated file
+$DATE = '2004/04/13';
 
 use Cwd;
 use File::Spec;
 
 BEGIN {
-   use FindBIN;
+   use FindBin;
    use File::Spec;
    use Cwd;
    use vars qw( $__restore_dir__ );

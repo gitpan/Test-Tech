@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.04';   # automatically generated file
-$DATE = '2004/04/09';
+$VERSION = '0.05';   # automatically generated file
+$DATE = '2004/04/13';
 
 
 ##### Demonstration Script ####
@@ -148,10 +148,6 @@ demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # type
       $s->scrub_probe($s->scrub_file_line($actual_results))); # execution
 
 
-demo( "\$snl\-\>fin\(\'techE0\.t\'\)", # typed in command           
-      $snl->fin('techE0.t')); # execution
-
-
 demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techE0\.t\`\;\
 \ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
           $actual_results = `perl techE0.t`;
@@ -164,28 +160,33 @@ demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # type
 demo( "my\ \$tech\ \=\ new\ Test\:\:Tech"); # typed in command           
       my $tech = new Test::Tech; # execution
 
-demo( "\$tech\-\>tech_config\(\'Test\.TestLevel\'\)", # typed in command           
-      $tech->tech_config('Test.TestLevel')); # execution
+demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command           
+      $tech->tech_config('Test.ONFAIL')); # execution
 
 
-demo( "\$tech\-\>tech_config\(\'Test\.TestLevel\'\,\ 2\)", # typed in command           
-      $tech->tech_config('Test.TestLevel', 2)); # execution
+demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\,0\)", # typed in command           
+      $tech->tech_config('Test.ONFAIL',0)); # execution
 
 
-demo( "\$tech\-\>tech_config\(\'Test\.TestLevel\'\)", # typed in command           
-      $tech->tech_config('Test.TestLevel')); # execution
+demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command           
+      $tech->tech_config('Test.ONFAIL')); # execution
 
 
-demo( "\$Test\:\:TestLevel", # typed in command           
-      $Test::TestLevel); # execution
+demo( "\$Test\:\:ONFAIL", # typed in command           
+      $Test::ONFAIL); # execution
 
 
-demo( "\$tech\-\>finish\(\ \)"); # typed in command           
-      $tech->finish( ); # execution
+demo( "\ \ \ \ \ \$tech\-\>finish\(\ \)\;\
+\ \ \ \ \ \$Test\:\:planned\ \=\ 1\;\ \ \#\ keep\ going"); # typed in command           
+           $tech->finish( );
+     $Test::planned = 1;  # keep going; # execution
 
-demo( "\$Test\:\:TestLevel", # typed in command           
-      $Test::TestLevel); # execution
+demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command           
+      $tech->tech_config('Test.ONFAIL')); # execution
 
+
+demo( "unlink\ \'tech1\.txt\'"); # typed in command           
+      unlink 'tech1.txt'; # execution
 
 demo( "unlink\ \'tech1\.txt\'"); # typed in command           
       unlink 'tech1.txt'; # execution

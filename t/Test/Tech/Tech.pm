@@ -10,8 +10,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.03';
-$DATE = '2004/04/08';
+$VERSION = '0.04';
+$DATE = '2004/04/13';
 $FILE = __FILE__;
 
 ########
@@ -40,7 +40,7 @@ $FILE = __FILE__;
 
  Version: 
 
- Date: 2004/04/08
+ Date: 2004/04/13
 
  Prepared for: General Public 
 
@@ -80,7 +80,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
 
 =head2 Test Plan
 
- T: 11^
+ T: 10^
 
 =head2 ok: 1
 
@@ -171,12 +171,6 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
          $expected_results = $snl->fin('techD3.txt');
      }
  ^
-  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
-  E: $s->scrub_probe($s->scrub_file_line($expected_results))^
- ok: 5^
-
-=head2 ok: 6
-
  DO: ^
   A: $snl->fin('techE0.t')^
   N:  Run test script techE0.t using Test 1.24^
@@ -187,44 +181,49 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
   E: $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt')))^
+ ok: 5^
+
+=head2 ok: 6
+
+  N: config Test.ONFAIL, read undef^
+  C: my $tech = new Test::Tech^
+  A: $tech->tech_config('Test.ONFAIL')^
+  E: undef^
  ok: 6^
 
 =head2 ok: 7
 
-  N: config Test.TestLevel, read 1^
-  C: my $tech = new Test::Tech^
-  A: $tech->tech_config('Test.TestLevel')^
-  E: 1^
+  N: config Test.ONFAIL, read undef, write 0^
+  A: $tech->tech_config('Test.ONFAIL',0)^
+  E: undef^
  ok: 7^
 
 =head2 ok: 8
 
-  N: config Test.TestLevel, read 1, write 2^
-  A: $tech->tech_config('Test.TestLevel', 2)^
-  E: 1^
+  N: config Test.ONFAIL, read 0^
+  A: $tech->tech_config('Test.ONFAIL')^
+  E: 0^
  ok: 8^
 
 =head2 ok: 9
 
-  N: config Test.TestLevel, read 2^
-  A: $tech->tech_config('Test.TestLevel')^
-  E: 2^
+  N: config Test.ONFAIL, read read 0^
+  A: $Test::ONFAIL^
+  E: 0^
  ok: 9^
 
 =head2 ok: 10
 
-  N: Test::TestLevel read 2^
-  A: $Test::TestLevel^
-  E: 2^
+  N: restore Test.ONFAIL on finish^
+
+  C:
+      $tech->finish( );
+      $Test::planned = 1;  # keep going
+ ^
+  N: Test.ONFAIL restored by finish()^
+  A: $tech->tech_config('Test.ONFAIL')^
+  E: undef^
  ok: 10^
-
-=head2 ok: 11
-
-  N: restore Test::TestLevel on finish^
-  C: $tech->finish( )^
-  A: $Test::TestLevel^
-  E: 1^
- ok: 11^
 
 
 
@@ -344,7 +343,7 @@ Demo: Tech.d^
 Verify: Tech.t^
 
 
- T: 11^
+ T: 10^
 
 
  C:
@@ -436,10 +435,6 @@ VO: ^
     }
 ^
 
- A: $s->scrub_probe($s->scrub_file_line($actual_results))^
- E: $s->scrub_probe($s->scrub_file_line($expected_results))^
-ok: 5^
-
 DO: ^
  A: $snl->fin('techE0.t')^
  N:  Run test script techE0.t using Test 1.24^
@@ -451,35 +446,42 @@ DO: ^
 
  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt')))^
+ok: 5^
+
+ N: config Test.ONFAIL, read undef^
+ C: my $tech = new Test::Tech^
+ A: $tech->tech_config('Test.ONFAIL')^
+ E: undef^
 ok: 6^
 
- N: config Test.TestLevel, read 1^
- C: my $tech = new Test::Tech^
- A: $tech->tech_config('Test.TestLevel')^
- E: 1^
+ N: config Test.ONFAIL, read undef, write 0^
+ A: $tech->tech_config('Test.ONFAIL',0)^
+ E: undef^
 ok: 7^
 
- N: config Test.TestLevel, read 1, write 2^
- A: $tech->tech_config('Test.TestLevel', 2)^
- E: 1^
+ N: config Test.ONFAIL, read 0^
+ A: $tech->tech_config('Test.ONFAIL')^
+ E: 0^
 ok: 8^
 
- N: config Test.TestLevel, read 2^
- A: $tech->tech_config('Test.TestLevel')^
- E: 2^
+ N: config Test.ONFAIL, read read 0^
+ A: $Test::ONFAIL^
+ E: 0^
 ok: 9^
 
- N: Test::TestLevel read 2^
- A: $Test::TestLevel^
- E: 2^
+ N: restore Test.ONFAIL on finish^
+
+ C:
+     $tech->finish( );
+     $Test::planned = 1;  # keep going
+^
+
+ N: Test.ONFAIL restored by finish()^
+ A: $tech->tech_config('Test.ONFAIL')^
+ E: undef^
 ok: 10^
 
- N: restore Test::TestLevel on finish^
- C: $tech->finish( )^
- A: $Test::TestLevel^
- E: 1^
-ok: 11^
-
+ C: unlink 'tech1.txt'^
  C: unlink 'tech1.txt'^
 
 See_Also: L<Test::Tech>^

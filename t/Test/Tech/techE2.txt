@@ -1,25 +1,31 @@
 1..8 todo 4 8;
 # Running under perl version 5.008 for MSWin32
 # Win32::BuildNumber 806
-# Current time local: Tue Apr  6 22:28:18 2004
-# Current time GMT:   Wed Apr  7 02:28:18 2004
+# Current time local: Mon Apr 12 00:35:27 2004
+# Current time GMT:   Mon Apr 12 04:35:27 2004
 # Using Test.pm version 1.24
-# Test::Tech    : 1.15
+# Test::Tech    : 1.17
 # Data::Secs2   : 1.15
 # =cut 
 ok 1 - Test version 
 ok 2 - Pass test 
 ok 3 - Skipped tests  # skip
 not ok 4 - Todo Test that Fails 
-# Test 4 got: '12' (techE0.t at line 152 *TODO*)
+# Test 4 got: '12' (techE0.t at line 64 *TODO*)
 #   Expected: '6' (Should Fail)
 not ok 5 - Failed test that skips the rest 
-# Test 5 got: '5' (techE0.t at line 161)
+# Test 5 got: '5' (techE0.t at line 70)
 #   Expected: '6' (Should Turn on Skip Test)
 ok 6 - A test to skip  # skip
 # Test 6 got:
 # Expected: (Skip test on)
+not ok 7 Not Performed # missing
+# Test 7 got:
+# Expected: (Missing. Skip test on)
+not ok 8 Not Performed # missing
+# Test 8 got:
+# Expected: (Missing. Skip test on)
 # Missing: 7 8
 # Skipped: 3 6
-# Failed : 4 5
+# Failed : 4 5 7 8
 # Passed : 2/6 33%

@@ -11,8 +11,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.15';
-$DATE = '2004/04/10';
+$VERSION = '1.16';
+$DATE = '2004/04/13';
 $FILE = __FILE__;
 
 use File::Spec;
@@ -24,9 +24,9 @@ require Exporter;
 @EXPORT_OK = qw(load_package is_package_loaded eval_str);
 use vars qw(@import);
 
-# 1;
+1;
 
-# __DATA__
+__DATA__
 
 
 ######
@@ -97,10 +97,11 @@ sub load_package
          no warnings;
          $SIG{__WARN__} = sub { $error .= join '', @_; };
          *Carp::croak = sub {
-              $error = (join '', @_);
+             $error = 'import die. ' . (join '', @_);
              $error .= Carp::longmess (join '', @_);
              goto IMPORT; # once croak can not continue
          };
+         use warnings;
          local $Exporter::ExportLevel = 1;
          if(@import == 1 && defined $import[0] && $import[0] eq '') {
              $program_module->import( );
@@ -108,8 +109,10 @@ sub load_package
          else {
              $program_module->import( @import );
          }
+         no warnings;
          IMPORT: *Carp::croak = $restore_croak;
          $SIG{__WARN__} = ref( $restore_warn ) ? $restore_warn : '';
+         use warnings;
      }
      $SIG{__WARN__} = ref( $restore_warn ) ? $restore_warn : '';
      return $error;

@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '0.17';   # automatically generated file
-$DATE = '2004/04/09';
+$VERSION = '0.18';   # automatically generated file
+$DATE = '2004/04/13';
 $FILE = __FILE__;
 
 
@@ -79,7 +79,7 @@ BEGIN {
    #
    require Test::Tech;
    Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
-   plan(tests => 11);
+   plan(tests => 10);
 
 }
 
@@ -92,6 +92,45 @@ END {
    @INC = @lib::ORIG_INC;
    chdir $__restore_dir__;
 }
+
+
+=head1 comment_out
+
+###
+# Have been problems with debugger with trapping CARP
+#
+
+####
+# Poor man's eval where the test script traps off the Carp::croak 
+# Carp::confess functions.
+#
+# The Perl authorities have Core::die locked down tight so
+# it is next to impossible to trap off of Core::die. Lucky 
+# must everyone uses Carp to die instead of just dieing.
+#
+use Carp;
+use vars qw($restore_croak $croak_die_error $restore_confess $confess_die_error);
+$restore_croak = \&Carp::croak;
+$croak_die_error = '';
+$restore_confess = \&Carp::confess;
+$confess_die_error = '';
+no warnings;
+*Carp::croak = sub {
+   $croak_die_error = '# Test Script Croak. ' . (join '', @_);
+   $croak_die_error .= Carp::longmess (join '', @_);
+   $croak_die_error =~ s/\n/\n#/g;
+       goto CARP_DIE; # once croak can not continue
+};
+*Carp::confess = sub {
+   $confess_die_error = '# Test Script Confess. ' . (join '', @_);
+   $confess_die_error .= Carp::longmess (join '', @_);
+   $confess_die_error =~ s/\n/\n#/g;
+       goto CARP_DIE; # once confess can not continue
+
+};
+use warnings;
+=cut
+
 
    # Perl code from C:
     use File::Spec;
@@ -174,13 +213,6 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
         $expected_results = $snl->fin('techD3.txt');
     };
 
-ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
-     $s->scrub_probe($s->scrub_file_line($expected_results)), # expected results
-     "",
-     " Run demo script techD0.d");
-
-#  ok:  5
-
    # Perl code from C:
     $actual_results = `perl techE0.t`;
     $snl->fout('tech1.txt', $actual_results);
@@ -190,52 +222,74 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
      "",
      " Run test script techE0.t using Test 1.24");
 
-#  ok:  6
+#  ok:  5
 
    # Perl code from C:
 my $tech = new Test::Tech;
 
-ok(  $tech->tech_config('Test.TestLevel'), # actual results
-     1, # expected results
+ok(  $tech->tech_config('Test.ONFAIL'), # actual results
+     undef, # expected results
      "",
-     "config Test.TestLevel, read 1");
+     "config Test.ONFAIL, read undef");
+
+#  ok:  6
+
+ok(  $tech->tech_config('Test.ONFAIL',0), # actual results
+     undef, # expected results
+     "",
+     "config Test.ONFAIL, read undef, write 0");
 
 #  ok:  7
 
-ok(  $tech->tech_config('Test.TestLevel', 2), # actual results
-     1, # expected results
+ok(  $tech->tech_config('Test.ONFAIL'), # actual results
+     0, # expected results
      "",
-     "config Test.TestLevel, read 1, write 2");
+     "config Test.ONFAIL, read 0");
 
 #  ok:  8
 
-ok(  $tech->tech_config('Test.TestLevel'), # actual results
-     2, # expected results
+ok(  $Test::ONFAIL, # actual results
+     0, # expected results
      "",
-     "config Test.TestLevel, read 2");
+     "config Test.ONFAIL, read read 0");
 
 #  ok:  9
 
-ok(  $Test::TestLevel, # actual results
-     2, # expected results
+   # Perl code from C:
+     $tech->finish( );
+     $Test::planned = 1;  # keep going;
+
+ok(  $tech->tech_config('Test.ONFAIL'), # actual results
+     undef, # expected results
      "",
-     "Test::TestLevel read 2");
+     "Test.ONFAIL restored by finish()");
 
 #  ok:  10
 
    # Perl code from C:
-$tech->finish( );
-
-ok(  $Test::TestLevel, # actual results
-     1, # expected results
-     "",
-     "restore Test::TestLevel on finish");
-
-#  ok:  11
+unlink 'tech1.txt';
 
    # Perl code from C:
 unlink 'tech1.txt';
 
+
+=head1 comment out
+
+# does not work with debugger
+CARP_DIE:
+    if ($croak_die_error || $confess_die_error) {
+        print $Test::TESTOUT = "not ok $Test::ntest\n";
+        $Test::ntest++;
+        print $Test::TESTERR $croak_die_error . $confess_die_error;
+        $croak_die_error = '';
+        $confess_die_error = '';
+        skip_tests(1, 'Test invalid because of Carp die.');
+    }
+    no warnings;
+    *Carp::croak = $restore_croak;    
+    *Carp::confess = $restore_confess;
+    use warnings;
+=cut
 
     finish();
 
