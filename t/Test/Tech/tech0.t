@@ -7,10 +7,9 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.03';
-$DATE = '2003/06/16';
+$VERSION = '0.04';
+$DATE = '2003/06/17';
 
-use Test::Tech;
 use Getopt::Long;
 use Cwd;
 use File::Spec;
@@ -25,24 +24,6 @@ use Config;
 #
 BEGIN { 
    use vars qw( $T $__restore_dir__ @__restore_inc__);
-
-   ##########
-   # Pick up a output redirection file and tests to skip
-   # from the command line.
-   #
-   my $test_log = '';
-   GetOptions('log=s' => \$test_log);
-
-   ########
-   # Start a test with a new Tech
-   #
-   $T = new Test::Tech( $test_log );
-
-   ########
-   # Create the test plan by supplying the number of tests
-   # and the todo tests
-   #
-   $T->work_breakdown(tests => 8, todo => [2,5]);
 
    ########
    # Working directory is that of the script file
@@ -67,6 +48,29 @@ BEGIN {
    @__restore_inc__ = @INC;
    unshift @INC, $lib_dir;
    chdir $work_dir;
+
+   unshift @INC, cwd(); 
+
+
+   ##########
+   # Pick up a output redirection file and tests to skip
+   # from the command line.
+   #
+   my $test_log = '';
+   GetOptions('log=s' => \$test_log);
+
+   ########
+   # Start a test with a new Tech
+   #
+   require Test::Tech;
+   $T = new Test::Tech( $test_log );
+
+   ########
+   # Create the test plan by supplying the number of tests
+   # and the todo tests
+   #
+   $T->work_breakdown(tests => 8, todo => [2,5]);
+
 
 }
 
@@ -119,21 +123,7 @@ END {
 #   be hunted down killed.
 #
 
-########
-# Probe Perl for internal storage method
-#
-my $probe = 3;
-my $actual = Dumper([0+$probe]);
-my $internal_storage = 'undetermine';
-if( $actual eq Dumper([3]) ) {
-    $internal_storage = 'number';
-}
-elsif ( $actual eq Dumper(['3']) ) {
-    $internal_storage = 'string';
-}
-print "# Probe> OS: $Config{osname}\n";
-print "# Probe> Perl: $Config{PERL_REVISION}.$Config{PERL_VERSION}.$Config{PERL_SUBVERSION}\n"; 
-print "# Probe> Internal Storage Method: $internal_storage\n";
+my $internal_storage = $T->{Number_Internal_Storage};
 
 my $x = 2;
 my $y = 3;

@@ -9,15 +9,54 @@ use strict;
 use warnings;
 use warnings::register;
 
-use Test;
+require Test;
 use Data::Dumper;
 use Test::TestUtil;
+use Config;
 $Data::Dumper::Terse = 1; 
 $Test::TestLevel = 1;
 
-use vars qw($VERSION $DATE);
-$VERSION = '1.05';
-$DATE = '2003/06/16';
+use vars qw($VERSION $DATE $FILE);
+$VERSION = '1.06';
+$DATE = '2003/06/17';
+$FILE = __FILE__;
+
+use vars qw(@ISA @EXPORT);
+require Exporter;
+@ISA=('Exporter');
+@EXPORT=qw(&plan &ok &skip &tech &skip_all);
+
+use vars qw( $T );
+$T = new Test::Tech;
+
+sub plan
+{
+   $T->work_breakdown( @_ );
+}
+
+sub ok
+{
+   my ($result, $expected, $diagnostic, $name) = @_;
+   $T->test($result, $expected, $name, $diagnostic);
+}
+
+sub skip
+{
+   my ($result, $expected, $diagnostic, $name) = @_;
+   $T->verify($result, $expected, $name, $diagnostic );
+}
+
+sub tech
+{
+   $T = new Test::Tech( @_) if( @_ );
+   $T
+}
+
+sub skip_all
+{
+   $T->skip_rest();
+}
+
 
 #####
 # Because Test::TestUtil uses SelfLoader, the @ISA
@@ -40,19 +79,14 @@ sub new
     my ($class, $test_log) = @_;
     $class = ref($class) if ref($class);
 
-    ###########
-    # $self->[0]  Keep and restore $Test::TESTOUT
-    # $self->[1]  test log file
-    # $self->[2]  skip rest of the tests
-
     my @self = ('','','','','');
-    my $self = bless \@self, $class;
+    my $self = bless {}, $class;
 
-    $self[1] = $test_log if $test_log;
-    if($self[1]) {
-        $self[0] = $Test::TESTOUT;
-        unless ( open($Test::TESTOUT, ">>$self[1]") ) {
-            warn( "Cannot open $self[1]\n" );
+    $self->{LOG} = $test_log if $test_log;
+    if($self->{LOG}) {
+        $self->{TEST_OUT} = $Test::TESTOUT;
+        unless ( open($Test::TESTOUT, ">>$self->{LOG}") ) {
+            warn( "Cannot open $self->{LOG}\n" );
             $self->skip_rest();
             return undef
         }
@@ -68,12 +102,12 @@ sub new
 sub finish # end a test
 {
    my ($self)=@_;
-   if( $self->[1] ) {
-       $self->[1]= '';
+   if( $self->{LOG} ) {
+       $self->{LOG} = '';
        unless (close( $Test::TESTOUT )) {
-           warn( "Cannot close $self->[1]\n" );
+           warn( "Cannot close $self->{LOG}\n" );
        }
-       $Test::TESTOUT = $self->[0];
+       $Test::TESTOUT = $self->{TEST_OUT};
    }
    1
 }
@@ -85,9 +119,9 @@ sub finish # end a test
 sub skip_rest
 {
    my ($self,$value) =  @_;
-   my $result = $self->[2];
+   my $result = $self->{SKIP_ALL};
    $value = 1 unless $value;
-   $self->[2] = $value;
+   $self->{SKIP_ALL} = $value;
    $result;   
 }
 
@@ -97,9 +131,43 @@ sub skip_rest
 #
 sub work_breakdown  # open a file
 {
-   my $self=shift @_;
-   plan( @_ );
+   my $self = shift @_;
+
+   &Test::plan( @_ );
+
+   my $loctime = localtime();
+   my $gmtime = gmtime();
+
+   #######
+   # Probe for internal storage
+   #
+   my $probe = 3;
+   my $actual = Dumper([0+$probe]);
+   my $internal_storage = 'undetermine';
+   if( $actual eq Dumper([3]) ) {
+       $internal_storage = 'number';
+   }
+   elsif ( $actual eq Dumper(['3']) ) {
+      $internal_storage = 'string';
+   }
+   $self->{Number_Internal_Storage} = $internal_storage;
+
+   my $test_version = $Test::VERSION;
+
+   print $Test::TESTOUT <<"EOF";
+# =report 
+# OS            : $Config{osname}
+# Perl          : $Config{PERL_REVISION}.$Config{PERL_VERSION}.$Config{PERL_SUBVERSION}
+# Local Time    : $loctime
+# GMT Time      : $gmtime GMT
+# Number Storage: $internal_storage
+# Test::Tech    : $VERSION
+# Test          : $test_version
+# =cut 
+EOF
+
    1
+
 }
 
 
@@ -111,9 +179,9 @@ sub work_breakdown  # open a file
 sub test
 {
 
-   my ($self, $actual_p, $expected_p, $name) = @_;
+   my ($self, $actual_p, $expected_p, $name, $diagnostic) = @_;
    print $Test::TESTOUT "# $name\n" if $name;
-   if($self->[2]) {  # skip rest of tests switch
+   if($self->{SKIP_ALL}) {  # skip rest of tests switch
        print $Test::TESTOUT "# Test invalid because of previous failure.\n";
        skip( 1, 0, '');
        return 1; 
@@ -134,7 +202,7 @@ sub test
        $actual  = $actual_p;
    }
 
-   ok($actual, $expected, '');
+   &Test::ok($actual, $expected, $diagnostic);
 
 }
 
@@ -146,11 +214,11 @@ sub test
 #
 sub verify  # store expected array for later use
 {
-   my ($self, $mod, $actual_p, $expected_p, $name) = @_;
+   my ($self, $mod, $actual_p, $expected_p, $name, $diagnostic) = @_;
 
    print $Test::TESTOUT "# $name\n" if $name;
 
-   if($self->[2]) {  # skip rest of tests switch
+   if($self->{SKIP_ALL}) {  # skip rest of tests switch
        print $Test::TESTOUT "# Test invalid because of previous failure.\n";
        skip( 1, 0, '');
        return 1; 
@@ -164,14 +232,14 @@ sub verify  # store expected array for later use
        $expected = $expected_p;
    }
 
-   if( ref($actual) ) {
+   if( ref($actual_p) ) {
        $actual = Dumper(@$actual_p);
    }
    else {
        $actual = $actual_p;
    }
 
-   my $test_ok = skip($mod, $actual, $expected, '');
+   my $test_ok = &Test::skip($mod, $actual, $expected, $diagnostic);
    $test_ok = 1 if $mod;  # make sure do not stop 
    $test_ok
 
@@ -242,7 +310,6 @@ sub AUTOLOAD
 
 __END__
 
-
 =head1 NAME
   
 Test::Tester - extends the capabilites of the I<Test> module
@@ -251,14 +318,33 @@ Test::Tester - extends the capabilites of the I<Test> module
 
   use Test::Tester
 
-  $T = new Test::Tester;
+  $T = new Test::Tester(@args);
+
   $success = $T->work_breakdown(@args);
-  $test_ok = $T->test(\@actual_results, \@expected_results, $test_name);
-  $test_ok = $T->verify(test, \@actual_results,  \@expected_results, $test_name);
+
+  $test_ok = $T->test(\@actual_results, \@expected_results, $test_name, $diagnostic);
+  $test_ok = $T->verify($skip_test, \@actual_results,  \@expected_results, $test_name, $diagnostic);
+
+  $test_ok = $T->test($actual_results, $expected_results, $test_name, $diagnostic);
+  $test_ok = $T->verify($skip_test, $actual_results,  $expected_results, $test_name, $diagnostic);
+
   $success = $T->skip_rest();
   $success = $T->finish( );
 
   $success = $T->demo( $quoted_expression, @expression_results );
+
+
+  $success = plan(@args);
+
+  $test_ok = ok(\@actual_results, \@expected_results, $diagnostic, $test_name);
+  $test_ok = skip($skip_test, \@actual_results,  \@expected_results, $diagnostic, $test_name);
+
+  $test_ok = ok($actual_results, $expected_results, $diagnostic, $test_name);
+  $test_ok = skip($skip_test, $actual_results,  $expected_results, $diagnostic, $test_name);
+
+  $success = skip_all();
+
+  $tech_obj = tech(@args);
 
 =head1 DESCRIPTION
 

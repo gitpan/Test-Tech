@@ -7,13 +7,12 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.04';
-$DATE = '2003/06/16';
+$VERSION = '0.05';
+$DATE = '2003/06/17';
 
 use Test::TestUtil;
 use Cwd;
 use File::Spec;
-use Test;
 use Data::Dumper;
 use Config;
 
@@ -25,14 +24,6 @@ use Config;
 #
 BEGIN { 
    use vars qw( $T $__restore_dir__ @__restore_inc__ $__tests__);
-
-   ########
-   # Create the test plan by supplying the number of tests
-   # and the todo tests
-   #
-   $__tests__ = 5;
-   plan(tests => $__tests__);
-
    ########
    # Working directory is that of the script file
    #
@@ -45,6 +36,17 @@ BEGIN {
    # Add the library of the unit under test (UUT) to @INC
    #
    @__restore_inc__ = Test::TestUtil->test_lib2inc;
+   unshift @INC, cwd();
+
+   ########
+   # Create the test plan by supplying the number of tests
+   # and the todo tests
+   #
+   require Test;
+   $__tests__ = 5;
+   &Test::plan(tests => $__tests__);
+
+
 
 }
 
@@ -86,9 +88,6 @@ if( $actual eq Dumper([3]) ) {
 elsif ( $actual eq Dumper(['3']) ) {
     $internal_storage = 'string';
 }
-print "# Probe> OS: $Config{osname}\n";
-print "# Probe> Perl: $Config{PERL_REVISION}.$Config{PERL_VERSION}.$Config{PERL_SUBVERSION}\n"; 
-print "# Probe> Internal Storage Method: $internal_storage\n";
 
 #######
 #
@@ -216,7 +215,7 @@ sub test {
        $actual = Dumper($actual_p);
    }
 
-   ok($actual, $expected, '');
+   &Test::ok($actual, $expected, '');
 };
 
 sub verify { 
@@ -237,7 +236,7 @@ sub verify {
        $actual = Dumper($actual_p);
    }
 
-   my $test_ok = skip($mod, $actual, $expected, '');
+   my $test_ok = &Test::skip($mod, $actual, $expected, '');
    $test_ok = 1 if $mod;  # make sure do not stop 
    $test_ok
 
@@ -261,11 +260,11 @@ sub hex_dump
     my $result = ''; 
     while( $text ) { 
         if( 40 < length( $text) ) {
-            $result = substr( $text, 0, 40 ) . "\n";
+            $result .= substr( $text, 0, 40 ) . "\n";
             $text = substr( $text,40);
         }
         else {
-            $result = substr( $text, 0) . "\n";
+            $result .= substr( $text, 0) . "\n";
             $text = '';
         }
     }
@@ -276,7 +275,7 @@ sub hex_dump
 sub scrub_probe
 {
    my ($text) = @_;
-   $text =~ s/# Probe>.*?\n//ig;
+   $text =~ s/^(.*?\n)(.*?)\#\s+=cut\s*\n/$1/s;
    $text
 }
 

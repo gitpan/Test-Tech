@@ -10,24 +10,25 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.03';
-$DATE = '2003/06/16';
+$VERSION = '0.04';
+$DATE = '2003/06/17';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.03 2003/06/16), 'revised 0.02'],
-    'MANIFEST' => [qw(0.03 2003/06/16), 'generated, replaces 0.02'],
-    'Makefile.PL' => [qw(0.03 2003/06/16), 'generated, replaces 0.02'],
-    'README' => [qw(0.03 2003/06/16), 'generated, replaces 0.02'],
-    'lib/Test/Tech.pm' => [qw(1.05 2003/06/16), 'revised 1.04'],
-    't/Test/Tech/tech.t' => [qw(0.04 2003/06/16), 'revised 0.03'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.04 2003/06/17), 'revised 0.03'],
+    'MANIFEST' => [qw(0.04 2003/06/17), 'generated, replaces 0.03'],
+    'Makefile.PL' => [qw(0.04 2003/06/17), 'generated, replaces 0.03'],
+    'README' => [qw(0.04 2003/06/17), 'generated, replaces 0.03'],
+    'lib/Test/Tech.pm' => [qw(1.06 2003/06/17), 'revised 1.05'],
+    't/Test/Tech/tech.t' => [qw(0.05 2003/06/17), 'revised 0.04'],
     't/Test/Tech/tech0.d' => [qw(0.02 2003/06/13), 'unchanged'],
-    't/Test/Tech/tech0.t' => [qw(0.03 2003/06/16), 'revised 0.02'],
+    't/Test/Tech/tech0.t' => [qw(0.04 2003/06/17), 'revised 0.03'],
     't/Test/Tech/tech2.txt' => [qw(0.01 2003/06/12), 'unchanged'],
-    't/Test/Tech/tech3.txt' => [qw(0.02 2003/06/16), 'revised 0.01'],
-    't/Test/Tech/tech4.txt' => [qw(0.03 2003/06/16), 'new'],
-    't/Test/Tech/tech5.txt' => [qw(0.03 2003/06/16), 'new'],
+    't/Test/Tech/tech3.txt' => [qw(0.03 2003/06/17), 'revised 0.02'],
+    't/Test/Tech/tech4.txt' => [qw(0.03 2003/06/16), 'unchanged'],
+    't/Test/Tech/tech5.txt' => [qw(0.04 2003/06/17), 'revised 0.03'],
+    't/Test/Tech/Test.pm' => [qw(1.15 2003/06/17), 'new'],
 
 );
 
@@ -56,9 +57,9 @@ use vars qw(%INVENTORY);
 
  Revision: C
 
- Version: 0.03
+ Version: 0.04
 
- Date: 2003/06/16
+ Date: 2003/06/17
 
  Prepared for: General Public 
 
@@ -133,9 +134,13 @@ The dependency of the program modules in the US DOD STD2167A bundle is as follow
         DataPort::FileType::FormDB DataPort::DataFile
             Test::STDmaker ExtUtils::SVDmaker
 
+Note:
+Test::TestUtil will be split into File::FileUtil and Test::STD::STDutil
+in the near future.
+
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.03
+This document releases Test::Tech version 0.04
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -153,8 +158,8 @@ system file specification.
 This document releases the file found
 at the following repository:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.03
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.03
+   http://www.softwarediamonds/packages/Test-Tech-0.04
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.04
 
 
 =head2 3.1.2 Copyright.
@@ -215,86 +220,28 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.03    2003/06/16 revised 0.02
- MANIFEST                                                     0.03    2003/06/16 generated, replaces 0.02
- Makefile.PL                                                  0.03    2003/06/16 generated, replaces 0.02
- README                                                       0.03    2003/06/16 generated, replaces 0.02
- lib/Test/Tech.pm                                             1.05    2003/06/16 revised 1.04
- t/Test/Tech/tech.t                                           0.04    2003/06/16 revised 0.03
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.04    2003/06/17 revised 0.03
+ MANIFEST                                                     0.04    2003/06/17 generated, replaces 0.03
+ Makefile.PL                                                  0.04    2003/06/17 generated, replaces 0.03
+ README                                                       0.04    2003/06/17 generated, replaces 0.03
+ lib/Test/Tech.pm                                             1.06    2003/06/17 revised 1.05
+ t/Test/Tech/tech.t                                           0.05    2003/06/17 revised 0.04
  t/Test/Tech/tech0.d                                          0.02    2003/06/13 unchanged
- t/Test/Tech/tech0.t                                          0.03    2003/06/16 revised 0.02
+ t/Test/Tech/tech0.t                                          0.04    2003/06/17 revised 0.03
  t/Test/Tech/tech2.txt                                        0.01    2003/06/12 unchanged
- t/Test/Tech/tech3.txt                                        0.02    2003/06/16 revised 0.01
- t/Test/Tech/tech4.txt                                        0.03    2003/06/16 new
- t/Test/Tech/tech5.txt                                        0.03    2003/06/16 new
+ t/Test/Tech/tech3.txt                                        0.03    2003/06/17 revised 0.02
+ t/Test/Tech/tech4.txt                                        0.03    2003/06/16 unchanged
+ t/Test/Tech/tech5.txt                                        0.04    2003/06/17 revised 0.03
+ t/Test/Tech/Test.pm                                          1.15    2003/06/17 new
 
 
 =head2 3.3 Changes
 
-The &Data::Dumper::Dumper subroutine stringifies the iternal Perl
-variable. Different Perls keep the have different internal formats
-for numbers. Some keep them as binary numbers, while others as
-strings. The ones that keep them as strings may be well spec.
-In any case they have been let loose in the wild so the test 
-scripts that use Data::Dumper must deal with them.
-
-Added a probe to determine how a Perl stores its internal
-numbers and added code to the test script to adjust for 
-the difference in Perl
-
-~~~~~
-
-######
-# This is perl, v5.6.1 built for MSWin32-x86-multi-thread
-# (with 1 registered patch, see perl -V for more detail)
-#
-# Copyright 1987-2001, Larry Wall
-#
-# Binary build 631 provided by ActiveState Tool Corp. http://www.ActiveState.com
-# Built 17:16:22 Jan  2 2002
-#
-#
-# Perl may be copied only under the terms of either the Artistic License or the
-# GNU General Public License, which may be found in the Perl 5 source kit.
-#
-# Complete documentation for Perl, including FAQ lists, should be found on
-# this system using `man perl' or `perldoc perl'.  If you have access to the
-# Internet, point your browser at http://www.perl.com/, the Perl Home Page.
-#
-# ~~~~~~~
-#
-# Wall, Christiansen and Orwant on Perl internal storage
-#
-# Page 351 of Programming Perl, Third Addition, Overloadable Operators
-# quote:
-# 
-# Conversion operators: "", 0+, bool
-#   These three keys let you provide behaviors for Perl's automatic conversions
-#   to strings, numbers, and Boolean values, respectively.
-# 
-# ~~~~~~~
-#
-# Internal Storage of Perls that are in the wild
-#
-#   string - Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary
-#   number - Perl version 5.008 for solaris  
-#
-#   Perls in the wild with internal storage of string may be mutants that need to 
-#   be hunted down killed.
-#
-
-########
-# Probe Perl for internal storage method
-#
-my $probe = 3;
-my $actual = Dumper([0+$probe]);
-my $internal_storage = 'undetermine';
-if( $actual eq Dumper([5]) ) {
-    $internal_storage = 'number';
-}
-elsif ( $actual eq Dumper(['3']) ) {
-    $internal_storage = 'string';
-}
+The Test program module for MsWin32 ActivePerl is 1.15. 
+The one used on Unix is 1.24. The 1.24 generates some
+extra comments that cause the Test 5 to fail.
+Added code to scrub any extra comments from Test program
+modules before making the Test 5 comparison.
 
 =head2 3.4 Adaptation data.
 
@@ -329,8 +276,8 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.03
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.03
+   http://www.softwarediamonds/packages/Test-Tech-0.04
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.04
 
 
 =head2 3.6.1 Installation support.
@@ -395,19 +342,25 @@ Software Version Description
 
 =item L<Test::Tech|Test::Tech>
 
+=item L<Test|Test>
+
+=item L<Data::Dumper|Data::Dumper>
+
 =item L<DataPort::FileType::FormDB|DataPort::FileType::FormDB>
 
 =item L<DataPort::DataFile|DataPort::DataFile>
 
 =item L<Test::STDmaker|Test::STDmaker>
 
-=item L<ExtUtils::SVDmake|ExtUtils::SVDmake>
+=item L<ExtUtils::SVDmake|ExtUtils::SVDmaker>
 
 =item L<US DOD Software Version Description (SVD) DID|Docs::US_DOD::SVD>
 
 =item L<US DOD Software Test Description (STD) DID|Docs::US_DOD::STD>
 
 =item L<US DOD Software Development Standard|Docs::US_DOD::STD2167A>
+
+=item L<US DOD Specification Pratices|Docs::US_DOD::STD490>
 
 =back
 
@@ -434,15 +387,13 @@ Software Version Description
 __DATA__
 
 
-
-
 DISTNAME: Test-Tech^
-VERSION : 0.03^
+VERSION : 0.04^
 REPOSITORY_DIR: packages^
 FREEZE: 1^
 
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.02^
+PREVIOUS_RELEASE: 0.03^
 REVISION: C^
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 
@@ -483,70 +434,11 @@ TESTS: t/Test/Tech/tech.t^
 EXE_FILES:  ^
 
 CHANGES:
-The &Data::Dumper::Dumper subroutine stringifies the iternal Perl
-variable. Different Perls keep the have different internal formats
-for numbers. Some keep them as binary numbers, while others as
-strings. The ones that keep them as strings may be well spec.
-In any case they have been let loose in the wild so the test 
-scripts that use Data::Dumper must deal with them.
-
-Added a probe to determine how a Perl stores its internal
-numbers and added code to the test script to adjust for 
-the difference in Perl
-
-~~~~~
-
-######
-# This is perl, v5.6.1 built for MSWin32-x86-multi-thread
-# (with 1 registered patch, see perl -V for more detail)
-#
-# Copyright 1987-2001, Larry Wall
-#
-# Binary build 631 provided by ActiveState Tool Corp. http://www.ActiveState.com
-# Built 17:16:22 Jan  2 2002
-#
-#
-# Perl may be copied only under the terms of either the Artistic License or the
-# GNU General Public License, which may be found in the Perl 5 source kit.
-#
-# Complete documentation for Perl, including FAQ lists, should be found on
-# this system using `man perl' or `perldoc perl'.  If you have access to the
-# Internet, point your browser at http://www.perl.com/, the Perl Home Page.
-#
-# ~~~~~~~
-#
-# Wall, Christiansen and Orwant on Perl internal storage
-#
-# Page 351 of Programming Perl, Third Addition, Overloadable Operators
-# quote:
-# 
-# Conversion operators: "", 0+, bool
-#   These three keys let you provide behaviors for Perl's automatic conversions
-#   to strings, numbers, and Boolean values, respectively.
-# 
-# ~~~~~~~
-#
-# Internal Storage of Perls that are in the wild
-#
-#   string - Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary
-#   number - Perl version 5.008 for solaris  
-#
-#   Perls in the wild with internal storage of string may be mutants that need to 
-#   be hunted down killed.
-#
-
-########
-# Probe Perl for internal storage method
-#
-my $probe = 3;
-my $actual = Dumper([0+$probe]);
-my $internal_storage = 'undetermine';
-if( $actual eq Dumper([5]) ) {
-    $internal_storage = 'number';
-}
-elsif ( $actual eq Dumper(['3']) ) {
-    $internal_storage = 'string';
-}
+The Test program module for MsWin32 ActivePerl is 1.15. 
+The one used on Unix is 1.24. The 1.24 generates some
+extra comments that cause the Test 5 to fail.
+Added code to scrub any extra comments from Test program
+modules before making the Test 5 comparison.
 ^
 
 CAPABILITIES:
@@ -584,6 +476,9 @@ The dependency of the program modules in the US DOD STD2167A bundle is as follow
         DataPort::FileType::FormDB DataPort::DataFile
             Test::STDmaker ExtUtils::SVDmaker
 
+Note:
+Test::TestUtil will be split into File::FileUtil and Test::STD::STDutil
+in the near future.
 ^
 
 PROBLEMS: There are no open issures.^
@@ -698,19 +593,25 @@ SEE_ALSO:
 
 \=item L<Test::Tech|Test::Tech>
 
+\=item L<Test|Test>
+
+\=item L<Data::Dumper|Data::Dumper>
+
 \=item L<DataPort::FileType::FormDB|DataPort::FileType::FormDB>
 
 \=item L<DataPort::DataFile|DataPort::DataFile>
 
 \=item L<Test::STDmaker|Test::STDmaker>
 
-\=item L<ExtUtils::SVDmake|ExtUtils::SVDmake>
+\=item L<ExtUtils::SVDmake|ExtUtils::SVDmaker>
 
 \=item L<US DOD Software Version Description (SVD) DID|Docs::US_DOD::SVD>
 
 \=item L<US DOD Software Test Description (STD) DID|Docs::US_DOD::STD>
 
 \=item L<US DOD Software Development Standard|Docs::US_DOD::STD2167A>
+
+\=item L<US DOD Specification Pratices|Docs::US_DOD::STD490>
 
 \=back
 
