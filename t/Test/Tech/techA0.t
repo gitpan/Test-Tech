@@ -6,8 +6,8 @@ use strict;
 use warnings;
 use warnings::register;
 use vars qw($VERSION $DATE);
-$VERSION = '0.12';
-$DATE = '2004/04/13';
+$VERSION = '0.13';
+$DATE = '2004/04/15';
 
 BEGIN {
    use FindBin;
@@ -57,7 +57,7 @@ skip( 1, # condition to skip test
       6, # expected results
       '','Skipped tests');
 
-#  zyw featureUnder development, i.e todo
+#  zyw feature Under development, i.e todo
 ok( #  ok:  4
     $x*$y*2, # actual results
     6, # expected results

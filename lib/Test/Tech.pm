@@ -13,8 +13,8 @@ use Test ();   # do not import the "Test" subroutines
 use Data::Secs2 qw(stringify);
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.18';
-$DATE = '2004/04/13';
+$VERSION = '1.19';
+$DATE = '2004/04/15';
 $FILE = __FILE__;
 
 use vars qw(@ISA @EXPORT_OK);
@@ -99,12 +99,12 @@ sub finish
         if($self->{Skip_Diag}) {
             print $Test::TESTOUT "not ok $missing Not Performed # missing\n";
             if( 1.20 < $Test::VERSION ) {
-                print $Test::TESTERR "# Test $missing got:\n";
-                print $Test::TESTERR "# Expected: (Missing. $self->{Skip_Diag})\n";
+                print $Test::TESTERR "# Test $missing got: (Missing)\n";
+                print $Test::TESTERR "# Expected: (Missing)\n";
             }
             else {
-                print $Test::TESTOUT "# Test $missing got:\n";
-                print $Test::TESTOUT "# Expected: (Missing. $self->{Skip_Diag})\n";
+                print $Test::TESTOUT "# Test $missing got: (Missing)\n";
+                print $Test::TESTOUT "# Expected: (Missing)\n";
             }
         }
         push @{$self->{missed}}, $missing++;
@@ -201,6 +201,7 @@ EOF
    print $Test::TESTOUT <<"EOF";
 # Test::Tech    : $VERSION
 # Data::Secs2   : $Data::Secs2::VERSION
+# Data::SecsPack: $Data::SecsPack::VERSION
 # =cut 
 EOF
 
@@ -247,18 +248,7 @@ sub ok
    $self->{test_name} = $name;  # used by tied handle Test::Tech::Output
 
    if($self->{Skip_Tests}) { # skip rest of tests switch
-       &Test::skip( 1, 0, '');
-       if($self->{Skip_Diag}) {
-           my $test_number = $Test::ntest - 1;
-           if( 1.20 < $Test::VERSION ) {
-               print $Test::TESTERR "# Test $test_number got:\n";
-               print $Test::TESTERR "# Expected: ($self->{Skip_Diag})\n";
-           }
-           else {
-               print $Test::TESTOUT "# Test $test_number got:\n";
-               print $Test::TESTOUT "# Expected: ($self->{Skip_Diag})\n";
-           }
-       }
+       &Test::skip( 1, '', '', $self->{Skip_Diag});
        return 1; 
    }
 
@@ -301,18 +291,7 @@ sub skip
    $self->{test_name} = $name;  # used by tied handle Test::Tech::Output
 
    if($self->{Skip_Tests}) {  # skip rest of tests switch
-       &Test::skip( 1, 0, '');
-       if($self->{Skip_Diag}) {
-           my $test_number = $Test::ntest - 1;
-           if( 1.20 < $Test::VERSION ) {
-               print $Test::TESTERR "# Test $test_number got:\n";
-               print $Test::TESTERR "# Expected: ($self->{Skip_Diag})\n";
-           }
-           else {
-               print $Test::TESTOUT "# Test $test_number got:\n";
-               print $Test::TESTOUT "# Expected: ($self->{Skip_Diag})\n";
-           }
-       }
+       &Test::skip( 1, '', '', $self->{Skip_Diag});
        return 1; 
    }
   
@@ -495,7 +474,9 @@ sub PRINT
     my $buf = join(defined $, ? $, : '',@_);
     $buf .= $\ if defined $\;
     my $test_name = $self->{tech}->{test_name};
+    my $skip_diag = $self->{tech}->{Skip_Diag};
     $buf =~ s/(ok \d+)/$1 - $test_name /g if($test_name);
+    $buf =~ s/(# skip.*?)(\s*|\n)/$1 - $skip_diag$2/ig if $skip_diag;
     $self->stats($buf);
     my $handle = $self->{test_out};
     print $handle $buf;
@@ -901,6 +882,10 @@ Coming soon.
 
 =head1 DEMONSTRATION
 
+ #########
+ # perl Tech.d
+ ###
+
  ~~~~~~ Demonstration overview ~~~~~
 
 Perl code begins with the prompt
@@ -985,7 +970,7 @@ follow on the next lines. For example,
        6, # expected results
        '','Skipped tests');
 
- #  zyw featureUnder development, i.e todo
+ #  zyw feature Under development, i.e todo
  ok( #  ok:  4
      $x*$y*2, # actual results
      6, # expected results
@@ -1031,8 +1016,27 @@ follow on the next lines. For example,
 
  '
 
+ => ##################
+ => # Run test script techA0.t using Test 1.15
+ => # 
+ => ###
+
  =>     my $actual_results = `perl techA0.t`;
  =>     $snl->fout('tech1.txt', $actual_results);
+
+ => ##################
+ => # Test::Tech Version $Test::Tech::VERSION
+ => # 
+ => ###
+
+ => $Test::Tech::VERSION
+ '1.18'
+
+ => ##################
+ => # Run test script techA0.t using Test 1.15
+ => # 
+ => ###
+
  => $s->scrub_probe($s->scrub_file_line($actual_results))
  '1..8 todo 4 8;
  ok 1 - Test version 
@@ -1044,12 +1048,8 @@ follow on the next lines. For example,
  not ok 5 - Failed test that skips the rest 
  # Test 5 got: '5' (xxxx.t at line 000)
  #   Expected: '6'
- ok 6 - A test to skip  # skip
- # Test 6 got:
- # Expected: (Test not performed because of previous failure.)
- ok 7 - A not skip to skip  # skip
- # Test 7 got:
- # Expected: (Test not performed because of previous failure.)
+ ok 6 - A test to skip  # skip - Test not performed because of previous failure.
+ ok 7 - A not skip to skip  # skip - Test not performed because of previous failure.
  ok 8 - Stop skipping tests. Todo Test that Passes  # (xxxx.t at line 000 TODO?!)
  ok 9 - Unplanned pass test 
  # Extra  : 9
@@ -1133,6 +1133,11 @@ follow on the next lines. For example,
 
  '
 
+ => ##################
+ => # Run test script techC0.t using Test 1.24
+ => # 
+ => ###
+
  =>     $actual_results = `perl techC0.t`;
  =>     $snl->fout('tech1.txt', $actual_results);
  => $s->scrub_probe($s->scrub_file_line($actual_results))
@@ -1149,6 +1154,11 @@ follow on the next lines. For example,
  # Passed : 1/2 50%
  '
 
+ => ##################
+ => # Run test script techE0.t using Test 1.24
+ => # 
+ => ###
+
  =>     $actual_results = `perl techE0.t`;
  =>     $snl->fout('tech1.txt', $actual_results);
  => $s->scrub_probe($s->scrub_file_line($actual_results))
@@ -1162,36 +1172,65 @@ follow on the next lines. For example,
  not ok 5 - Failed test that skips the rest 
  # Test 5 got: '5' (xxxx.t at line 000)
  #   Expected: '6' (Should Turn on Skip Test)
- ok 6 - A test to skip  # skip
- # Test 6 got:
- # Expected: (Skip test on)
+ ok 6 - A test to skip  # skip - Skip test on
  not ok 7 Not Performed # missing
- # Test 7 got:
- # Expected: (Missing. Skip test on)
+ # Test 7 got: (Missing)
+ # Expected: (Missing)
  not ok 8 Not Performed # missing
- # Test 8 got:
- # Expected: (Missing. Skip test on)
+ # Test 8 got: (Missing)
+ # Expected: (Missing)
  # Missing: 7 8
  # Skipped: 3 6
  # Failed : 4 5 7 8
  # Passed : 2/6 33%
  '
 
+ => ##################
+ => # config Test.ONFAIL, read undef
+ => # 
+ => ###
+
  => my $tech = new Test::Tech
  => $tech->tech_config('Test.ONFAIL')
  undef
 
+ => ##################
+ => # config Test.ONFAIL, read undef, write 0
+ => # 
+ => ###
+
  => $tech->tech_config('Test.ONFAIL',0)
  undef
+
+ => ##################
+ => # config Test.ONFAIL, read 0
+ => # 
+ => ###
 
  => $tech->tech_config('Test.ONFAIL')
  0
 
+ => ##################
+ => # $Test::ONFAIL, read 0
+ => # 
+ => ###
+
  => $Test::ONFAIL
  0
 
+ => ##################
+ => # restore Test.ONFAIL on finish
+ => # 
+ => ###
+
  =>      $tech->finish( );
  =>      $Test::planned = 1;  # keep going
+
+ => ##################
+ => # Test.ONFAIL restored by finish()
+ => # 
+ => ###
+
  => $tech->tech_config('Test.ONFAIL')
  0
 
@@ -1199,6 +1238,35 @@ follow on the next lines. For example,
  => unlink 'tech1.txt'
 
 =head1 QUALITY ASSURANCE
+
+=head2 Test Report
+
+ => perl Tech.t
+
+1..11
+# Running under perl version 5.006001 for MSWin32
+# Win32::BuildNumber 635
+# Current time local: Thu Apr 15 13:11:42 2004
+# Current time GMT:   Thu Apr 15 17:11:42 2004
+# Using Test.pm version 1.24
+# Test::Tech    : 1.18
+# Data::Secs2   : 1.16
+# Data::SecsPack: 0.02
+# =cut 
+ok 1 - UUT loaded 
+ok 2 - Test::Tech Version 1.19 
+ok 3 - Run test script techA0.t using Test 1.15 
+ok 4 - Run test script techB0.t using Test 1.24 
+ok 5 - Run test script techC0.t using Test 1.24 
+ok 6 - Run test script techE0.t using Test 1.24 
+ok 7 - config Test.ONFAIL, read undef 
+ok 8 - config Test.ONFAIL, read undef, write 0 
+ok 9 - config Test.ONFAIL, read 0 
+ok 10 - 0, read 0 
+ok 11 - Test.ONFAIL restored by finish() 
+# Passed : 11/11 100%
+
+=head2 Test Script Notes
 
 Running the test script 'Tech.t' found in
 the "Test-Tech-$VERSION.tar.gz" distribution file verifies

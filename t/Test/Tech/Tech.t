@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '0.18';   # automatically generated file
-$DATE = '2004/04/13';
+$VERSION = '0.19';   # automatically generated file
+$DATE = '2004/04/15';
 $FILE = __FILE__;
 
 
@@ -79,7 +79,7 @@ BEGIN {
    #
    require Test::Tech;
    Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
-   plan(tests => 10);
+   plan(tests => 11);
 
 }
 
@@ -158,12 +158,19 @@ skip_tests( 1 ) unless ok(
     my $actual_results = `perl techA0.t`;
     $snl->fout('tech1.txt', $actual_results);
 
+ok(  $Test::Tech::VERSION, # actual results
+     $Test::Tech::VERSION, # expected results
+     "",
+     "Test::Tech Version $Test::Tech::VERSION");
+
+#  ok:  2
+
 ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
      $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt'))), # expected results
      "",
-     " Run test script techA0.t using Test 1.15");
+     "Run test script techA0.t using Test 1.15");
 
-#  ok:  2
+#  ok:  3
 
    # Perl code from C:
     $actual_results = `perl techB0.t`;
@@ -172,9 +179,9 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
 ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
      $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt'))), # expected results
      "",
-     " Run test script techB0.t using Test 1.24");
+     "Run test script techB0.t using Test 1.24");
 
-#  ok:  3
+#  ok:  4
 
    # Perl code from C:
     $actual_results = `perl techC0.t`;
@@ -183,9 +190,9 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
 ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
      $s->scrub_probe($s->scrub_file_line($snl->fin('techC2.txt'))), # expected results
      "",
-     " Run test script techC0.t using Test 1.24");
+     "Run test script techC0.t using Test 1.24");
 
-#  ok:  4
+#  ok:  5
 
    # Perl code from C:
     use Data::Dumper;
@@ -220,9 +227,9 @@ ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
 ok(  $s->scrub_probe($s->scrub_file_line($actual_results)), # actual results
      $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt'))), # expected results
      "",
-     " Run test script techE0.t using Test 1.24");
+     "Run test script techE0.t using Test 1.24");
 
-#  ok:  5
+#  ok:  6
 
    # Perl code from C:
 my $tech = new Test::Tech;
@@ -232,28 +239,28 @@ ok(  $tech->tech_config('Test.ONFAIL'), # actual results
      "",
      "config Test.ONFAIL, read undef");
 
-#  ok:  6
+#  ok:  7
 
 ok(  $tech->tech_config('Test.ONFAIL',0), # actual results
      undef, # expected results
      "",
      "config Test.ONFAIL, read undef, write 0");
 
-#  ok:  7
+#  ok:  8
 
 ok(  $tech->tech_config('Test.ONFAIL'), # actual results
      0, # expected results
      "",
      "config Test.ONFAIL, read 0");
 
-#  ok:  8
+#  ok:  9
 
 ok(  $Test::ONFAIL, # actual results
      0, # expected results
      "",
-     "config Test.ONFAIL, read read 0");
+     "$Test::ONFAIL, read 0");
 
-#  ok:  9
+#  ok:  10
 
    # Perl code from C:
      $tech->finish( );
@@ -264,7 +271,7 @@ ok(  $tech->tech_config('Test.ONFAIL'), # actual results
      "",
      "Test.ONFAIL restored by finish()");
 
-#  ok:  10
+#  ok:  11
 
    # Perl code from C:
 unlink 'tech1.txt';

@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.05';   # automatically generated file
-$DATE = '2004/04/13';
+$VERSION = '0.06';   # automatically generated file
+$DATE = '2004/04/15';
 
 
 ##### Demonstration Script ####
@@ -126,10 +126,41 @@ demo( "\$snl\-\>fin\(\'techA0\.t\'\)", # typed in command
       $snl->fin('techA0.t')); # execution
 
 
+print << 'EOF';
+
+ => ##################
+ => # Run test script techA0.t using Test 1.15
+ => # 
+ => ###
+
+EOF
+
 demo( "\ \ \ \ my\ \$actual_results\ \=\ \`perl\ techA0\.t\`\;\
 \ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
           my $actual_results = `perl techA0.t`;
     $snl->fout('tech1.txt', $actual_results);; # execution
+
+print << 'EOF';
+
+ => ##################
+ => # Test::Tech Version $Test::Tech::VERSION
+ => # 
+ => ###
+
+EOF
+
+demo( "\$Test\:\:Tech\:\:VERSION", # typed in command           
+      $Test::Tech::VERSION); # execution
+
+
+print << 'EOF';
+
+ => ##################
+ => # Run test script techA0.t using Test 1.15
+ => # 
+ => ###
+
+EOF
 
 demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # typed in command           
       $s->scrub_probe($s->scrub_file_line($actual_results))); # execution
@@ -138,6 +169,15 @@ demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # type
 demo( "\$snl\-\>fin\(\'techC0\.t\'\)", # typed in command           
       $snl->fin('techC0.t')); # execution
 
+
+print << 'EOF';
+
+ => ##################
+ => # Run test script techC0.t using Test 1.24
+ => # 
+ => ###
+
+EOF
 
 demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techC0\.t\`\;\
 \ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
@@ -148,6 +188,15 @@ demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # type
       $s->scrub_probe($s->scrub_file_line($actual_results))); # execution
 
 
+print << 'EOF';
+
+ => ##################
+ => # Run test script techE0.t using Test 1.24
+ => # 
+ => ###
+
+EOF
+
 demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techE0\.t\`\;\
 \ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
           $actual_results = `perl techE0.t`;
@@ -157,6 +206,15 @@ demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # type
       $s->scrub_probe($s->scrub_file_line($actual_results))); # execution
 
 
+print << 'EOF';
+
+ => ##################
+ => # config Test.ONFAIL, read undef
+ => # 
+ => ###
+
+EOF
+
 demo( "my\ \$tech\ \=\ new\ Test\:\:Tech"); # typed in command           
       my $tech = new Test::Tech; # execution
 
@@ -164,22 +222,67 @@ demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command
       $tech->tech_config('Test.ONFAIL')); # execution
 
 
+print << 'EOF';
+
+ => ##################
+ => # config Test.ONFAIL, read undef, write 0
+ => # 
+ => ###
+
+EOF
+
 demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\,0\)", # typed in command           
       $tech->tech_config('Test.ONFAIL',0)); # execution
 
+
+print << 'EOF';
+
+ => ##################
+ => # config Test.ONFAIL, read 0
+ => # 
+ => ###
+
+EOF
 
 demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command           
       $tech->tech_config('Test.ONFAIL')); # execution
 
 
+print << 'EOF';
+
+ => ##################
+ => # $Test::ONFAIL, read 0
+ => # 
+ => ###
+
+EOF
+
 demo( "\$Test\:\:ONFAIL", # typed in command           
       $Test::ONFAIL); # execution
 
+
+print << 'EOF';
+
+ => ##################
+ => # restore Test.ONFAIL on finish
+ => # 
+ => ###
+
+EOF
 
 demo( "\ \ \ \ \ \$tech\-\>finish\(\ \)\;\
 \ \ \ \ \ \$Test\:\:planned\ \=\ 1\;\ \ \#\ keep\ going"); # typed in command           
            $tech->finish( );
      $Test::planned = 1;  # keep going; # execution
+
+print << 'EOF';
+
+ => ##################
+ => # Test.ONFAIL restored by finish()
+ => # 
+ => ###
+
+EOF
 
 demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command           
       $tech->tech_config('Test.ONFAIL')); # execution

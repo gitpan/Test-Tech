@@ -10,8 +10,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.04';
-$DATE = '2004/04/13';
+$VERSION = '0.05';
+$DATE = '2004/04/15';
 $FILE = __FILE__;
 
 ########
@@ -40,7 +40,7 @@ $FILE = __FILE__;
 
  Version: 
 
- Date: 2004/04/13
+ Date: 2004/04/15
 
  Prepared for: General Public 
 
@@ -80,7 +80,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
 
 =head2 Test Plan
 
- T: 10^
+ T: 11^
 
 =head2 ok: 1
 
@@ -105,20 +105,28 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
 
  DO: ^
   A: $snl->fin('techA0.t')^
-  N:  Run test script techA0.t using Test 1.15^
+  N: Run test script techA0.t using Test 1.15^
 
   C:
      my $actual_results = `perl techA0.t`;
      $snl->fout('tech1.txt', $actual_results);
  ^
-  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
-  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
+  N: Test::Tech Version $Test::Tech::VERSION^
+  A: $Test::Tech::VERSION^
+  E: $Test::Tech::VERSION^
  ok: 2^
 
 =head2 ok: 3
 
+  N: Run test script techA0.t using Test 1.15^
+  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
+  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
+ ok: 3^
+
+=head2 ok: 4
+
  VO: ^
-  N:  Run test script techB0.t using Test 1.24^
+  N: Run test script techB0.t using Test 1.24^
 
   C:
      $actual_results = `perl techB0.t`;
@@ -126,13 +134,13 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
   E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
- ok: 3^
+ ok: 4^
 
-=head2 ok: 4
+=head2 ok: 5
 
  DO: ^
   A: $snl->fin('techC0.t')^
-  N:  Run test script techC0.t using Test 1.24^
+  N: Run test script techC0.t using Test 1.24^
 
   C:
      $actual_results = `perl techC0.t`;
@@ -140,12 +148,12 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
   E: $s->scrub_probe($s->scrub_file_line($snl->fin('techC2.txt')))^
- ok: 4^
+ ok: 5^
 
-=head2 ok: 5
+=head2 ok: 6
 
  VO: ^
-  N:  Run demo script techD0.d^
+  N: Run demo script techD0.d^
 
   C:
      use Data::Dumper;
@@ -173,7 +181,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
  ^
  DO: ^
   A: $snl->fin('techE0.t')^
-  N:  Run test script techE0.t using Test 1.24^
+  N: Run test script techE0.t using Test 1.24^
 
   C:
      $actual_results = `perl techE0.t`;
@@ -181,38 +189,38 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
   E: $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt')))^
- ok: 5^
+ ok: 6^
 
-=head2 ok: 6
+=head2 ok: 7
 
   N: config Test.ONFAIL, read undef^
   C: my $tech = new Test::Tech^
   A: $tech->tech_config('Test.ONFAIL')^
   E: undef^
- ok: 6^
-
-=head2 ok: 7
-
-  N: config Test.ONFAIL, read undef, write 0^
-  A: $tech->tech_config('Test.ONFAIL',0)^
-  E: undef^
  ok: 7^
 
 =head2 ok: 8
 
-  N: config Test.ONFAIL, read 0^
-  A: $tech->tech_config('Test.ONFAIL')^
-  E: 0^
+  N: config Test.ONFAIL, read undef, write 0^
+  A: $tech->tech_config('Test.ONFAIL',0)^
+  E: undef^
  ok: 8^
 
 =head2 ok: 9
 
-  N: config Test.ONFAIL, read read 0^
-  A: $Test::ONFAIL^
+  N: config Test.ONFAIL, read 0^
+  A: $tech->tech_config('Test.ONFAIL')^
   E: 0^
  ok: 9^
 
 =head2 ok: 10
+
+  N: $Test::ONFAIL, read 0^
+  A: $Test::ONFAIL^
+  E: 0^
+ ok: 10^
+
+=head2 ok: 11
 
   N: restore Test.ONFAIL on finish^
 
@@ -223,7 +231,7 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
   N: Test.ONFAIL restored by finish()^
   A: $tech->tech_config('Test.ONFAIL')^
   E: undef^
- ok: 10^
+ ok: 11^
 
 
 
@@ -343,7 +351,7 @@ Demo: Tech.d^
 Verify: Tech.t^
 
 
- T: 10^
+ T: 11^
 
 
  C:
@@ -369,19 +377,25 @@ ok: 1^
 
 DO: ^
  A: $snl->fin('techA0.t')^
- N:  Run test script techA0.t using Test 1.15^
+ N: Run test script techA0.t using Test 1.15^
 
  C:
     my $actual_results = `perl techA0.t`;
     $snl->fout('tech1.txt', $actual_results);
 ^
 
- A: $s->scrub_probe($s->scrub_file_line($actual_results))^
- E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
+ N: Test::Tech Version $Test::Tech::VERSION^
+ A: $Test::Tech::VERSION^
+ E: $Test::Tech::VERSION^
 ok: 2^
 
+ N: Run test script techA0.t using Test 1.15^
+ A: $s->scrub_probe($s->scrub_file_line($actual_results))^
+ E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
+ok: 3^
+
 VO: ^
- N:  Run test script techB0.t using Test 1.24^
+ N: Run test script techB0.t using Test 1.24^
 
  C:
     $actual_results = `perl techB0.t`;
@@ -390,11 +404,11 @@ VO: ^
 
  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
-ok: 3^
+ok: 4^
 
 DO: ^
  A: $snl->fin('techC0.t')^
- N:  Run test script techC0.t using Test 1.24^
+ N: Run test script techC0.t using Test 1.24^
 
  C:
     $actual_results = `perl techC0.t`;
@@ -403,10 +417,10 @@ DO: ^
 
  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techC2.txt')))^
-ok: 4^
+ok: 5^
 
 VO: ^
- N:  Run demo script techD0.d^
+ N: Run demo script techD0.d^
 
  C:
     use Data::Dumper;
@@ -437,7 +451,7 @@ VO: ^
 
 DO: ^
  A: $snl->fin('techE0.t')^
- N:  Run test script techE0.t using Test 1.24^
+ N: Run test script techE0.t using Test 1.24^
 
  C:
     $actual_results = `perl techE0.t`;
@@ -446,28 +460,28 @@ DO: ^
 
  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt')))^
-ok: 5^
+ok: 6^
 
  N: config Test.ONFAIL, read undef^
  C: my $tech = new Test::Tech^
  A: $tech->tech_config('Test.ONFAIL')^
  E: undef^
-ok: 6^
+ok: 7^
 
  N: config Test.ONFAIL, read undef, write 0^
  A: $tech->tech_config('Test.ONFAIL',0)^
  E: undef^
-ok: 7^
+ok: 8^
 
  N: config Test.ONFAIL, read 0^
  A: $tech->tech_config('Test.ONFAIL')^
  E: 0^
-ok: 8^
+ok: 9^
 
- N: config Test.ONFAIL, read read 0^
+ N: $Test::ONFAIL, read 0^
  A: $Test::ONFAIL^
  E: 0^
-ok: 9^
+ok: 10^
 
  N: restore Test.ONFAIL on finish^
 
@@ -479,7 +493,7 @@ ok: 9^
  N: Test.ONFAIL restored by finish()^
  A: $tech->tech_config('Test.ONFAIL')^
  E: undef^
-ok: 10^
+ok: 11^
 
  C: unlink 'tech1.txt'^
  C: unlink 'tech1.txt'^

@@ -282,6 +282,10 @@ REQUIREMENTS
     Coming soon.
 
 DEMONSTRATION
+     #########
+     # perl Tech.d
+     ###
+
      ~~~~~~ Demonstration overview ~~~~~
 
     Perl code begins with the prompt
@@ -366,7 +370,7 @@ DEMONSTRATION
            6, # expected results
            '','Skipped tests');
 
-     #  zyw featureUnder development, i.e todo
+     #  zyw feature Under development, i.e todo
      ok( #  ok:  4
          $x*$y*2, # actual results
          6, # expected results
@@ -412,8 +416,27 @@ DEMONSTRATION
 
      '
 
+     => ##################
+     => # Run test script techA0.t using Test 1.15
+     => # 
+     => ###
+
      =>     my $actual_results = `perl techA0.t`;
      =>     $snl->fout('tech1.txt', $actual_results);
+
+     => ##################
+     => # Test::Tech Version $Test::Tech::VERSION
+     => # 
+     => ###
+
+     => $Test::Tech::VERSION
+     '1.18'
+
+     => ##################
+     => # Run test script techA0.t using Test 1.15
+     => # 
+     => ###
+
      => $s->scrub_probe($s->scrub_file_line($actual_results))
      '1..8 todo 4 8;
      ok 1 - Test version 
@@ -425,12 +448,8 @@ DEMONSTRATION
      not ok 5 - Failed test that skips the rest 
      # Test 5 got: '5' (xxxx.t at line 000)
      #   Expected: '6'
-     ok 6 - A test to skip  # skip
-     # Test 6 got:
-     # Expected: (Test not performed because of previous failure.)
-     ok 7 - A not skip to skip  # skip
-     # Test 7 got:
-     # Expected: (Test not performed because of previous failure.)
+     ok 6 - A test to skip  # skip - Test not performed because of previous failure.
+     ok 7 - A not skip to skip  # skip - Test not performed because of previous failure.
      ok 8 - Stop skipping tests. Todo Test that Passes  # (xxxx.t at line 000 TODO?!)
      ok 9 - Unplanned pass test 
      # Extra  : 9
@@ -514,6 +533,11 @@ DEMONSTRATION
 
      '
 
+     => ##################
+     => # Run test script techC0.t using Test 1.24
+     => # 
+     => ###
+
      =>     $actual_results = `perl techC0.t`;
      =>     $snl->fout('tech1.txt', $actual_results);
      => $s->scrub_probe($s->scrub_file_line($actual_results))
@@ -530,6 +554,11 @@ DEMONSTRATION
      # Passed : 1/2 50%
      '
 
+     => ##################
+     => # Run test script techE0.t using Test 1.24
+     => # 
+     => ###
+
      =>     $actual_results = `perl techE0.t`;
      =>     $snl->fout('tech1.txt', $actual_results);
      => $s->scrub_probe($s->scrub_file_line($actual_results))
@@ -543,36 +572,65 @@ DEMONSTRATION
      not ok 5 - Failed test that skips the rest 
      # Test 5 got: '5' (xxxx.t at line 000)
      #   Expected: '6' (Should Turn on Skip Test)
-     ok 6 - A test to skip  # skip
-     # Test 6 got:
-     # Expected: (Skip test on)
+     ok 6 - A test to skip  # skip - Skip test on
      not ok 7 Not Performed # missing
-     # Test 7 got:
-     # Expected: (Missing. Skip test on)
+     # Test 7 got: (Missing)
+     # Expected: (Missing)
      not ok 8 Not Performed # missing
-     # Test 8 got:
-     # Expected: (Missing. Skip test on)
+     # Test 8 got: (Missing)
+     # Expected: (Missing)
      # Missing: 7 8
      # Skipped: 3 6
      # Failed : 4 5 7 8
      # Passed : 2/6 33%
      '
 
+     => ##################
+     => # config Test.ONFAIL, read undef
+     => # 
+     => ###
+
      => my $tech = new Test::Tech
      => $tech->tech_config('Test.ONFAIL')
      undef
 
+     => ##################
+     => # config Test.ONFAIL, read undef, write 0
+     => # 
+     => ###
+
      => $tech->tech_config('Test.ONFAIL',0)
      undef
+
+     => ##################
+     => # config Test.ONFAIL, read 0
+     => # 
+     => ###
 
      => $tech->tech_config('Test.ONFAIL')
      0
 
+     => ##################
+     => # $Test::ONFAIL, read 0
+     => # 
+     => ###
+
      => $Test::ONFAIL
      0
 
+     => ##################
+     => # restore Test.ONFAIL on finish
+     => # 
+     => ###
+
      =>      $tech->finish( );
      =>      $Test::planned = 1;  # keep going
+
+     => ##################
+     => # Test.ONFAIL restored by finish()
+     => # 
+     => ###
+
      => $tech->tech_config('Test.ONFAIL')
      0
 
@@ -580,6 +638,24 @@ DEMONSTRATION
      => unlink 'tech1.txt'
 
 QUALITY ASSURANCE
+  Test Report
+
+     => perl Tech.t
+
+    1..11 # Running under perl version 5.006001 for MSWin32 #
+    Win32::BuildNumber 635 # Current time local: Thu Apr 15 13:11:42 2004 #
+    Current time GMT: Thu Apr 15 17:11:42 2004 # Using Test.pm version 1.24
+    # Test::Tech : 1.18 # Data::Secs2 : 1.16 # Data::SecsPack: 0.02 # =cut
+    ok 1 - UUT loaded ok 2 - Test::Tech Version 1.19 ok 3 - Run test script
+    techA0.t using Test 1.15 ok 4 - Run test script techB0.t using Test 1.24
+    ok 5 - Run test script techC0.t using Test 1.24 ok 6 - Run test script
+    techE0.t using Test 1.24 ok 7 - config Test.ONFAIL, read undef ok 8 -
+    config Test.ONFAIL, read undef, write 0 ok 9 - config Test.ONFAIL, read
+    0 ok 10 - 0, read 0 ok 11 - Test.ONFAIL restored by finish() # Passed :
+    11/11 100%
+
+  Test Script Notes
+
     Running the test script 'Tech.t' found in the
     "Test-Tech-$VERSION.tar.gz" distribution file verifies the requirements
     for this module.
@@ -713,11 +789,11 @@ Title Page
 
      Test::Tech - Extends the Test program module
 
-     Revision: U
+     Revision: V
 
-     Version: 0.21
+     Version: 0.22
 
-     Date: 2004/04/13
+     Date: 2004/04/15
 
      Prepared for: General Public 
 
@@ -768,7 +844,7 @@ Title Page
 
   1.3 Document overview.
 
-    This document releases Test::Tech version 0.21 providing description of
+    This document releases Test::Tech version 0.22 providing description of
     the inventory, installation instructions and other information necessary
     to utilize and track this release.
 
@@ -780,7 +856,7 @@ Title Page
 
     This document releases the file
 
-     Test-Tech-0.21.tar.gz
+     Test-Tech-0.22.tar.gz
 
     found at the following repository(s):
 
@@ -830,29 +906,29 @@ Title Page
 
      file                                                         version date       comment
      ------------------------------------------------------------ ------- ---------- ------------------------
-     lib/Docs/Site_SVD/Test_Tech.pm                               0.21    2004/04/13 revised 0.20
-     MANIFEST                                                     0.21    2004/04/13 generated, replaces 0.20
-     Makefile.PL                                                  0.21    2004/04/13 generated, replaces 0.20
-     README                                                       0.21    2004/04/13 generated, replaces 0.20
-     lib/Test/Tech.pm                                             1.18    2004/04/13 revised 1.17
-     t/Test/Tech/Tech.d                                           0.05    2004/04/13 revised 0.04
-     t/Test/Tech/Tech.pm                                          0.04    2004/04/13 revised 0.03
-     t/Test/Tech/Tech.t                                           0.18    2004/04/13 revised 0.17
-     t/Test/Tech/techA0.t                                         0.12    2004/04/13 revised 0.11
-     t/Test/Tech/techA2.txt                                       0.08    2004/04/07 unchanged
-     t/Test/Tech/techB0.t                                         0.09    2004/04/13 revised 0.08
-     t/Test/Tech/techC0.t                                         0.13    2004/04/13 revised 0.12
-     t/Test/Tech/techC2.txt                                       0.1     2004/04/13 revised 0.09
-     t/Test/Tech/techD0.d                                         0.06    2004/04/13 revised 0.05
+     lib/Docs/Site_SVD/Test_Tech.pm                               0.22    2004/04/15 revised 0.21
+     MANIFEST                                                     0.22    2004/04/15 generated, replaces 0.21
+     Makefile.PL                                                  0.22    2004/04/15 generated, replaces 0.21
+     README                                                       0.22    2004/04/15 generated, replaces 0.21
+     lib/Test/Tech.pm                                             1.19    2004/04/15 revised 1.18
+     t/Test/Tech/Tech.d                                           0.06    2004/04/15 revised 0.05
+     t/Test/Tech/Tech.pm                                          0.05    2004/04/15 revised 0.04
+     t/Test/Tech/Tech.t                                           0.19    2004/04/15 revised 0.18
+     t/Test/Tech/techA0.t                                         0.13    2004/04/15 revised 0.12
+     t/Test/Tech/techA2.txt                                       0.09    2004/04/15 revised 0.08
+     t/Test/Tech/techB0.t                                         0.09    2004/04/13 unchanged
+     t/Test/Tech/techC0.t                                         0.13    2004/04/13 unchanged
+     t/Test/Tech/techC2.txt                                       0.11    2004/04/15 revised 0.1
+     t/Test/Tech/techD0.d                                         0.06    2004/04/13 unchanged
      t/Test/Tech/techD2.txt                                       0.07    2003/09/15 unchanged
      t/Test/Tech/techD3.txt                                       0.07    2003/09/15 unchanged
-     t/Test/Tech/techE0.t                                         0.08    2004/04/13 revised 0.07
-     t/Test/Tech/techE2.txt                                       0.18    2004/04/13 revised 0.17
-     t/Test/Tech/File/Package.pm                                  1.16    2004/04/13 revised 1.15
-     t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/13 unchanged
-     t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/13 unchanged
-     t/Test/Tech/Data/Secs2.pm                                    1.16    2004/04/13 revised 1.15
-     t/Test/Tech/Data/SecsPack.pm                                 0.02    2004/04/13 new
+     t/Test/Tech/techE0.t                                         0.08    2004/04/13 unchanged
+     t/Test/Tech/techE2.txt                                       0.19    2004/04/15 revised 0.18
+     t/Test/Tech/File/Package.pm                                  1.16    2004/04/15 unchanged
+     t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/15 unchanged
+     t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/15 unchanged
+     t/Test/Tech/Data/Secs2.pm                                    1.17    2004/04/15 revised 1.16
+     t/Test/Tech/Data/SecsPack.pm                                 0.02    2004/04/15 unchanged
      t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
      t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
 
@@ -1160,6 +1236,13 @@ Title Page
         ouput stored in files. Corrected the "FindBin" for following test
         software: "TechA0.t TechB0.t TechC0.t TechD0.d TechE0.t"
 
+    Test-Tech-0.22
+        The "Data::SecsPack" program module is now required to run the
+        "Test::Tech" program module. Added a print out of the
+        "Data::SecsPack" version to the "plan" subroutine as follows:
+
+         # Data::Secs2   : $Data::SecsPack::VERSION
+
   3.4 Adaptation data.
 
     This installation requires that the installation site has the Perl
@@ -1192,12 +1275,12 @@ Title Page
           http://www.softwarediamonds/packages/
           http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
 
-        Right click on 'Test-Tech-0.21.tar.gz' and download to a temporary
+        Right click on 'Test-Tech-0.22.tar.gz' and download to a temporary
         installation directory. Enter the following where $make is 'nmake'
         for microsoft windows; otherwise 'make'.
 
-         gunzip Test-Tech-0.21.tar.gz
-         tar -xf Test-Tech-0.21.tar
+         gunzip Test-Tech-0.22.tar.gz
+         tar -xf Test-Tech-0.22.tar
          perl Makefile.PL
          $make test
          $make install
