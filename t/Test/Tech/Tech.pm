@@ -10,8 +10,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.05';
-$DATE = '2004/04/15';
+$VERSION = '0.06';
+$DATE = '2004/05/11';
 $FILE = __FILE__;
 
 ########
@@ -40,7 +40,7 @@ $FILE = __FILE__;
 
  Version: 
 
- Date: 2004/04/15
+ Date: 2004/05/11
 
  Prepared for: General Public 
 
@@ -111,19 +111,12 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
      my $actual_results = `perl techA0.t`;
      $snl->fout('tech1.txt', $actual_results);
  ^
-  N: Test::Tech Version $Test::Tech::VERSION^
-  A: $Test::Tech::VERSION^
-  E: $Test::Tech::VERSION^
- ok: 2^
-
-=head2 ok: 3
-
   N: Run test script techA0.t using Test 1.15^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
   E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
- ok: 3^
+ ok: 2^
 
-=head2 ok: 4
+=head2 ok: 3
 
  VO: ^
   N: Run test script techB0.t using Test 1.24^
@@ -134,9 +127,9 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
   E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
- ok: 4^
+ ok: 3^
 
-=head2 ok: 5
+=head2 ok: 4
 
  DO: ^
   A: $snl->fin('techC0.t')^
@@ -148,9 +141,9 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
   E: $s->scrub_probe($s->scrub_file_line($snl->fin('techC2.txt')))^
- ok: 5^
+ ok: 4^
 
-=head2 ok: 6
+=head2 ok: 5
 
  VO: ^
   N: Run demo script techD0.d^
@@ -189,6 +182,20 @@ L<STD FormDB Test Description Fields|Test::STDmaker/STD FormDB Test Description 
  ^
   A: $s->scrub_probe($s->scrub_file_line($actual_results))^
   E: $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt')))^
+ ok: 5^
+
+=head2 ok: 6
+
+ DO: ^
+  A: $snl->fin('techF0.t')^
+  N: Run test script techF0.t using Test 1.24^
+
+  C:
+     $actual_results = `perl techF0.t`;
+     $snl->fout('tech1.txt', $actual_results);
+ ^
+  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
+  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techF2.txt')))^
  ok: 6^
 
 =head2 ok: 7
@@ -384,15 +391,10 @@ DO: ^
     $snl->fout('tech1.txt', $actual_results);
 ^
 
- N: Test::Tech Version $Test::Tech::VERSION^
- A: $Test::Tech::VERSION^
- E: $Test::Tech::VERSION^
-ok: 2^
-
  N: Run test script techA0.t using Test 1.15^
  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
-ok: 3^
+ok: 2^
 
 VO: ^
  N: Run test script techB0.t using Test 1.24^
@@ -404,7 +406,7 @@ VO: ^
 
  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techA2.txt')))^
-ok: 4^
+ok: 3^
 
 DO: ^
  A: $snl->fin('techC0.t')^
@@ -417,7 +419,7 @@ DO: ^
 
  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techC2.txt')))^
-ok: 5^
+ok: 4^
 
 VO: ^
  N: Run demo script techD0.d^
@@ -460,6 +462,19 @@ DO: ^
 
  A: $s->scrub_probe($s->scrub_file_line($actual_results))^
  E: $s->scrub_probe($s->scrub_file_line($snl->fin('techE2.txt')))^
+ok: 5^
+
+DO: ^
+ A: $snl->fin('techF0.t')^
+ N: Run test script techF0.t using Test 1.24^
+
+ C:
+    $actual_results = `perl techF0.t`;
+    $snl->fout('tech1.txt', $actual_results);
+^
+
+ A: $s->scrub_probe($s->scrub_file_line($actual_results))^
+ E: $s->scrub_probe($s->scrub_file_line($snl->fin('techF2.txt')))^
 ok: 6^
 
  N: config Test.ONFAIL, read undef^

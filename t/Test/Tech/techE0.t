@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.08';
-$DATE = '2004/04/13';
+$VERSION = '0.09';
+$DATE = '2004/05/11';
 
 BEGIN {
    use FindBin;
@@ -26,8 +26,8 @@ BEGIN {
    unshift @INC, File::Spec->catdir ( cwd(), 'V001024'); 
 
    require Test::Tech;
-   Test::Tech->import( qw(plan ok skip skip_tests tech_config finish) );
-   plan(tests => 8, todo => [4, 8]);
+   Test::Tech->import( qw(finish is_skip plan ok skip skip_tests tech_config ) );
+   plan(tests => 10, todo => [4, 8]);
 }
 
 
@@ -73,10 +73,22 @@ skip_tests(1,'Skip test on') unless ok(  #  ok:  5
     [diagnostic => 'Should Turn on Skip Test', 
      name => 'Failed test that skips the rest']); 
 
+my ($skip_on, $skip_diag) = is_skip();
+
 ok( #  ok:  6 
     $x + $y + $x, # actual results
     9, # expected results
     '', 'A test to skip');
+
+ok( #  ok:  7 
+    skip_tests(0), # actual results
+    1, # expected results
+    '', 'Turn off skip');
+
+ok( #  ok:  8 
+    [$skip_on, $skip_diag], # actual results
+    [1,'Skip test on'], # expected results
+    '', 'Skip flag');
 
 finish() # pick up stats
 

@@ -10,37 +10,37 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.22';
-$DATE = '2004/04/15';
+$VERSION = '0.23';
+$DATE = '2004/05/11';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.22 2004/04/15), 'revised 0.21'],
-    'MANIFEST' => [qw(0.22 2004/04/15), 'generated, replaces 0.21'],
-    'Makefile.PL' => [qw(0.22 2004/04/15), 'generated, replaces 0.21'],
-    'README' => [qw(0.22 2004/04/15), 'generated, replaces 0.21'],
-    'lib/Test/Tech.pm' => [qw(1.19 2004/04/15), 'revised 1.18'],
-    't/Test/Tech/Tech.d' => [qw(0.06 2004/04/15), 'revised 0.05'],
-    't/Test/Tech/Tech.pm' => [qw(0.05 2004/04/15), 'revised 0.04'],
-    't/Test/Tech/Tech.t' => [qw(0.19 2004/04/15), 'revised 0.18'],
-    't/Test/Tech/techA0.t' => [qw(0.13 2004/04/15), 'revised 0.12'],
-    't/Test/Tech/techA2.txt' => [qw(0.09 2004/04/15), 'revised 0.08'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.23 2004/05/11), 'revised 0.22'],
+    'MANIFEST' => [qw(0.23 2004/05/11), 'generated, replaces 0.22'],
+    'Makefile.PL' => [qw(0.23 2004/05/11), 'generated, replaces 0.22'],
+    'README' => [qw(0.23 2004/05/11), 'generated, replaces 0.22'],
+    'lib/Test/Tech.pm' => [qw(1.24 2004/05/11), 'revised 1.19'],
+    't/Test/Tech/Tech.d' => [qw(0.07 2004/05/11), 'revised 0.06'],
+    't/Test/Tech/Tech.pm' => [qw(0.06 2004/05/11), 'revised 0.05'],
+    't/Test/Tech/Tech.t' => [qw(0.2 2004/05/11), 'revised 0.19'],
+    't/Test/Tech/techA0.t' => [qw(0.13 2004/04/15), 'unchanged'],
+    't/Test/Tech/techA2.txt' => [qw(0.09 2004/04/15), 'unchanged'],
     't/Test/Tech/techB0.t' => [qw(0.09 2004/04/13), 'unchanged'],
     't/Test/Tech/techC0.t' => [qw(0.13 2004/04/13), 'unchanged'],
-    't/Test/Tech/techC2.txt' => [qw(0.11 2004/04/15), 'revised 0.1'],
+    't/Test/Tech/techC2.txt' => [qw(0.12 2004/05/11), 'revised 0.11'],
     't/Test/Tech/techD0.d' => [qw(0.06 2004/04/13), 'unchanged'],
     't/Test/Tech/techD2.txt' => [qw(0.07 2003/09/15), 'unchanged'],
     't/Test/Tech/techD3.txt' => [qw(0.07 2003/09/15), 'unchanged'],
-    't/Test/Tech/techE0.t' => [qw(0.08 2004/04/13), 'unchanged'],
-    't/Test/Tech/techE2.txt' => [qw(0.19 2004/04/15), 'revised 0.18'],
-    't/Test/Tech/File/Package.pm' => [qw(1.16 2004/04/15), 'unchanged'],
-    't/Test/Tech/File/SmartNL.pm' => [qw(1.13 2004/04/15), 'unchanged'],
-    't/Test/Tech/Text/Scrub.pm' => [qw(1.11 2004/04/15), 'unchanged'],
-    't/Test/Tech/Data/Secs2.pm' => [qw(1.17 2004/04/15), 'revised 1.16'],
-    't/Test/Tech/Data/SecsPack.pm' => [qw(0.02 2004/04/15), 'unchanged'],
+    't/Test/Tech/techE0.t' => [qw(0.09 2004/05/11), 'revised 0.08'],
+    't/Test/Tech/techE2.txt' => [qw(0.2 2004/05/11), 'revised 0.19'],
+    't/Test/Tech/techF0.t' => [qw(0.08 2004/05/11), 'new'],
+    't/Test/Tech/techF2.txt' => [qw(0.23 2004/05/11), 'new'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.25 2003/09/15), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.16 2003/09/15), 'unchanged'],
+    't/Test/Tech/File/Package.pm' => [qw(0.24 2004/05/11), 'revised 0.23'],
+    't/Test/Tech/File/SmartNL.pm' => [qw(0.24 2004/05/11), 'revised 0.23'],
+    't/Test/Tech/Text/Scrub.pm' => [qw(0.24 2004/05/11), 'revised 0.23'],
 
 );
 
@@ -59,19 +59,23 @@ use vars qw(%INVENTORY);
 
 
 
+=head1 NAME
+
+Docs::Site_SVD::Test_Tech - Extends the Test program module
+
 =head1 Title Page
 
  Software Version Description
 
  for
 
- Test::Tech - Extends the Test program module
+ Docs::Site_SVD::Test_Tech - Extends the Test program module
 
- Revision: V
+ Revision: W
 
- Version: 0.22
+ Version: 0.23
 
- Date: 2004/04/15
+ Date: 2004/05/11
 
  Prepared for: General Public 
 
@@ -138,7 +142,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.22
+This document releases Test::Tech version 0.23
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -153,12 +157,12 @@ system file specification.
 
 This document releases the file 
 
- Test-Tech-0.22.tar.gz
+ Test-Tech-0.23.tar.gz
 
 found at the following repository(s):
 
   http://www.softwarediamonds/packages/
-  http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
+  http://www.perl.com/CPAN/authors/id/S/SO/SOFTDIA/
 
 Restrictions regarding duplication and license provisions
 are as follows:
@@ -197,6 +201,21 @@ disclaimer in the documentation and/or
 other materials provided with the
 distribution.
 
+=item 3
+
+Commercial installation of the binary or source
+must visually present to the installer 
+the above copyright notice,
+this list of conditions intact,
+that the original source is available
+at http://softwarediamonds.com
+and provide means
+for the installer to actively accept
+the list of conditions; 
+otherwise, a license fee must be paid to
+Softwareware Diamonds.
+
+
 =back
 
 SOFTWARE DIAMONDS, http://www.SoftwareDiamonds.com,
@@ -225,34 +244,39 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.22    2004/04/15 revised 0.21
- MANIFEST                                                     0.22    2004/04/15 generated, replaces 0.21
- Makefile.PL                                                  0.22    2004/04/15 generated, replaces 0.21
- README                                                       0.22    2004/04/15 generated, replaces 0.21
- lib/Test/Tech.pm                                             1.19    2004/04/15 revised 1.18
- t/Test/Tech/Tech.d                                           0.06    2004/04/15 revised 0.05
- t/Test/Tech/Tech.pm                                          0.05    2004/04/15 revised 0.04
- t/Test/Tech/Tech.t                                           0.19    2004/04/15 revised 0.18
- t/Test/Tech/techA0.t                                         0.13    2004/04/15 revised 0.12
- t/Test/Tech/techA2.txt                                       0.09    2004/04/15 revised 0.08
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.23    2004/05/11 revised 0.22
+ MANIFEST                                                     0.23    2004/05/11 generated, replaces 0.22
+ Makefile.PL                                                  0.23    2004/05/11 generated, replaces 0.22
+ README                                                       0.23    2004/05/11 generated, replaces 0.22
+ lib/Test/Tech.pm                                             1.24    2004/05/11 revised 1.19
+ t/Test/Tech/Tech.d                                           0.07    2004/05/11 revised 0.06
+ t/Test/Tech/Tech.pm                                          0.06    2004/05/11 revised 0.05
+ t/Test/Tech/Tech.t                                           0.2     2004/05/11 revised 0.19
+ t/Test/Tech/techA0.t                                         0.13    2004/04/15 unchanged
+ t/Test/Tech/techA2.txt                                       0.09    2004/04/15 unchanged
  t/Test/Tech/techB0.t                                         0.09    2004/04/13 unchanged
  t/Test/Tech/techC0.t                                         0.13    2004/04/13 unchanged
- t/Test/Tech/techC2.txt                                       0.11    2004/04/15 revised 0.1
+ t/Test/Tech/techC2.txt                                       0.12    2004/05/11 revised 0.11
  t/Test/Tech/techD0.d                                         0.06    2004/04/13 unchanged
  t/Test/Tech/techD2.txt                                       0.07    2003/09/15 unchanged
  t/Test/Tech/techD3.txt                                       0.07    2003/09/15 unchanged
- t/Test/Tech/techE0.t                                         0.08    2004/04/13 unchanged
- t/Test/Tech/techE2.txt                                       0.19    2004/04/15 revised 0.18
- t/Test/Tech/File/Package.pm                                  1.16    2004/04/15 unchanged
- t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/15 unchanged
- t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/15 unchanged
- t/Test/Tech/Data/Secs2.pm                                    1.17    2004/04/15 revised 1.16
- t/Test/Tech/Data/SecsPack.pm                                 0.02    2004/04/15 unchanged
+ t/Test/Tech/techE0.t                                         0.09    2004/05/11 revised 0.08
+ t/Test/Tech/techE2.txt                                       0.2     2004/05/11 revised 0.19
+ t/Test/Tech/techF0.t                                         0.08    2004/05/11 new
+ t/Test/Tech/techF2.txt                                       0.23    2004/05/11 new
  t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
+ t/Test/Tech/File/Package.pm                                  0.24    2004/05/11 revised 0.23
+ t/Test/Tech/File/SmartNL.pm                                  0.24    2004/05/11 revised 0.23
+ t/Test/Tech/Text/Scrub.pm                                    0.24    2004/05/11 revised 0.23
 
 
 =head2 3.3 Changes
+
+The file structure from release 0.22 was restructured as follows:
+
+  unlink 't/Test/Tech/Data/Secs2.pm';
+  unlink 't/Test/Tech/Data/SecsPack.pm';
 
 Changes  are as follows:
 
@@ -606,6 +630,25 @@ C<plan> subroutine as follows:
 
  # Data::Secs2   : $Data::SecsPack::VERSION
 
+=item Test-Tech-0.23
+
+Added C<is_skip> ok_sub and skip_sub subroutines.
+
+Added reporting of C<Data::Secs2::stringify()> errors. Correctly stringify
+Perl data structures is not straight forward. Unlike C<Test> and C<Test::Tech>,
+C<Data::Secs2> is very large including walks of Perl data structures, processing
+of underlying data types such as C<CODE> and many other areas where there may
+be unanticipated Perl data structure issues not properly addressed. 
+Thus, best to have error detection in place, and stop testing if 
+there is a broken C<Data::Secs2::stringify()>.
+
+Changed the look of the C<demo> subroutine output to better resemble Perl code. 
+Print the code straight forward without leading '=>'. Put a Perl comment '# ' in front of
+each result line instead of printing it straing forward.
+
+Added a print out of the C<Data::Start> version and number of tests to the
+C<plan> subroutine.
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -642,15 +685,15 @@ If all else fails, the file may be manually installed.
 Enter one of the following repositories in a web browser:
 
   http://www.softwarediamonds/packages/
-  http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
+  http://www.perl.com/CPAN/authors/id/S/SO/SOFTDIA/
 
-Right click on 'Test-Tech-0.22.tar.gz' and download to a temporary
+Right click on 'Test-Tech-0.23.tar.gz' and download to a temporary
 installation directory.
 Enter the following where $make is 'nmake' for microsoft
 windows; otherwise 'make'.
 
- gunzip Test-Tech-0.22.tar.gz
- tar -xf Test-Tech-0.22.tar
+ gunzip Test-Tech-0.23.tar.gz
+ tar -xf Test-Tech-0.23.tar
  perl Makefile.PL
  $make test
  $make install
@@ -663,8 +706,9 @@ not install, download and install unxutils from
 
 =item Prerequistes.
 
- 'Data::Secs2' => '0.03',
- 'Data::SecsPack' => '0.01',
+ 'Data::Secs2' => '1.22',
+ 'Data::SecsPack' => '0.06',
+ 'Data::Startup' => '0.03',
  'Test' => '1.20',
 
 
@@ -767,11 +811,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.22^
+VERSION : 0.23^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.21^
-REVISION: V^
+PREVIOUS_RELEASE: 0.22^
+REVISION: W^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -780,7 +824,7 @@ It adds the skip_test method to the Test module, and
 adds the ability to compare complex data structures to the Test module.
 ^
 
-TITLE   : Test::Tech - Extends the Test program module^
+TITLE   : Docs::Site_SVD::Test_Tech - Extends the Test program module^
 END_USER: General Public^
 COPYRIGHT: copyright © 2003 Software Diamonds^
 CLASSIFICATION: NONE^
@@ -790,33 +834,35 @@ SVD_FSPEC: Unix^
 
 REPOSITORY: 
   http://www.softwarediamonds/packages/
-  http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
+  http://www.perl.com/CPAN/authors/id/S/SO/SOFTDIA/
 ^
 
 COMPRESS: gzip^
 COMPRESS_SUFFIX: gz^
 
 CHANGE2CURRENT:  ^
-RESTRUCTURE:  ^
+RESTRUCTURE: 
+ unlink 't/Test/Tech/Data/Secs2.pm';
+ unlink 't/Test/Tech/Data/SecsPack.pm';
+^
 
 AUTO_REVISE: 
 lib/Test/Tech.pm
 t/Test/Tech/*
-lib/File/Package.pm => t/Test/Tech/File/Package.pm
-lib/File/SmartNL.pm => t/Test/Tech/File/SmartNL.pm
-lib/Text/Scrub.pm => t/Test/Tech/Text/Scrub.pm
-lib/Data/Secs2.pm => t/Test/Tech/Data/Secs2.pm
-lib/Data/SecsPack.pm => t/Test/Tech/Data/SecsPack.pm
 ^
 
 REPLACE:
 t/Test/Tech/V001024/*
 t/Test/Tech/V001015/*
+lib/File/Package.pm => t/Test/Tech/File/Package.pm
+lib/File/SmartNL.pm => t/Test/Tech/File/SmartNL.pm
+lib/Text/Scrub.pm => t/Test/Tech/Text/Scrub.pm
 ^
 
 PREREQ_PM: 
-'Data::Secs2' => '0.03',
-'Data::SecsPack' => '0.01',
+'Data::Secs2' => '1.22',
+'Data::SecsPack' => '0.06',
+'Data::Startup' => '0.03',
 'Test' => '1.20',
 ^
 README_PODS: lib/Test/Tech.pm^
@@ -1178,6 +1224,25 @@ C<plan> subroutine as follows:
 
  # Data::Secs2   : $Data::SecsPack::VERSION
 
+\=item Test-Tech-0.23
+
+Added C<is_skip> ok_sub and skip_sub subroutines.
+
+Added reporting of C<Data::Secs2::stringify()> errors. Correctly stringify
+Perl data structures is not straight forward. Unlike C<Test> and C<Test::Tech>,
+C<Data::Secs2> is very large including walks of Perl data structures, processing
+of underlying data types such as C<CODE> and many other areas where there may
+be unanticipated Perl data structure issues not properly addressed. 
+Thus, best to have error detection in place, and stop testing if 
+there is a broken C<Data::Secs2::stringify()>.
+
+Changed the look of the C<demo> subroutine output to better resemble Perl code. 
+Print the code straight forward without leading '=>'. Put a Perl comment '# ' in front of
+each result line instead of printing it straing forward.
+
+Added a print out of the C<Data::Start> version and number of tests to the
+C<plan> subroutine.
+
 \=back
 
 ^
@@ -1279,6 +1344,21 @@ this list of conditions and the following
 disclaimer in the documentation and/or
 other materials provided with the
 distribution.
+
+\=item 3
+
+Commercial installation of the binary or source
+must visually present to the installer 
+the above copyright notice,
+this list of conditions intact,
+that the original source is available
+at http://softwarediamonds.com
+and provide means
+for the installer to actively accept
+the list of conditions; 
+otherwise, a license fee must be paid to
+Softwareware Diamonds.
+
 
 \=back
 
@@ -1382,5 +1462,19 @@ HTML:
 <p><br>
 ^
 ~-~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

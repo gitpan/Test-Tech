@@ -1,11 +1,11 @@
-1..8 todo 4 8;
+1..10 todo 4 8;
 # Running under perl version 5.006001 for MSWin32
 # Win32::BuildNumber 635
-# Current time local: Thu Apr 15 12:58:36 2004
-# Current time GMT:   Thu Apr 15 16:58:36 2004
+# Current time local: Fri Apr 16 11:56:45 2004
+# Current time GMT:   Fri Apr 16 15:56:45 2004
 # Using Test.pm version 1.24
-# Test::Tech    : 1.18
-# Data::Secs2   : 1.16
+# Test::Tech    : 1.19
+# Data::Secs2   : 1.17
 # Data::SecsPack: 0.02
 # =cut 
 ok 1 - Test version 
@@ -18,13 +18,15 @@ not ok 5 - Failed test that skips the rest
 # Test 5 got: '5' (techE0.t at line 70)
 #   Expected: '6' (Should Turn on Skip Test)
 ok 6 - A test to skip  # skip - Skip test on
-not ok 7 Not Performed # missing
-# Test 7 got: (Missing)
+ok 7 - Turn off skip 
+ok 8 - Skip flag  # (techE0.t at line 88 TODO?!)
+not ok 9 Not Performed # missing 
+# Test 9 got: (Missing)
 # Expected: (Missing)
-not ok 8 Not Performed # missing
-# Test 8 got: (Missing)
+not ok 10 Not Performed # missing 
+# Test 10 got: (Missing)
 # Expected: (Missing)
-# Missing: 7 8
+# Missing: 9 10
 # Skipped: 3 6
-# Failed : 4 5 7 8
-# Passed : 2/6 33%
+# Failed : 4 5 9 10
+# Passed : 4/8 50%

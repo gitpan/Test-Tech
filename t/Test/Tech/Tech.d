@@ -7,8 +7,8 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.06';   # automatically generated file
-$DATE = '2004/04/15';
+$VERSION = '0.07';   # automatically generated file
+$DATE = '2004/05/11';
 
 
 ##### Demonstration Script ####
@@ -41,7 +41,7 @@ BEGIN {
     use Cwd;
     use File::Spec;
     use FindBin;
-    use Test::Tech qw(tech_config plan demo skip_tests);
+    use Test::Tech qw(demo is_skip plan skip_tests tech_config );
 
     ########
     # The working directory for this script file is the directory where
@@ -81,19 +81,15 @@ END {
 
 print << 'MSG';
 
- ~~~~~~ Demonstration overview ~~~~~
+~~~~~~ Demonstration overview ~~~~~
  
-Perl code begins with the prompt
+The results from executing the Perl Code 
+follow on the next lines as comments. For example,
 
- =>
+ 2 + 2
+ # 4
 
-The selected results from executing the Perl Code 
-follow on the next lines. For example,
-
- => 2 + 2
- 4
-
- ~~~~~~ The demonstration follows ~~~~~
+~~~~~~ The demonstration follows ~~~~~
 
 MSG
 
@@ -126,13 +122,12 @@ demo( "\$snl\-\>fin\(\'techA0\.t\'\)", # typed in command
       $snl->fin('techA0.t')); # execution
 
 
-print << 'EOF';
+print << "EOF";
 
- => ##################
- => # Run test script techA0.t using Test 1.15
- => # 
- => ###
-
+ ##################
+ # Run test script techA0.t using Test 1.15
+ # 
+ 
 EOF
 
 demo( "\ \ \ \ my\ \$actual_results\ \=\ \`perl\ techA0\.t\`\;\
@@ -140,26 +135,12 @@ demo( "\ \ \ \ my\ \$actual_results\ \=\ \`perl\ techA0\.t\`\;\
           my $actual_results = `perl techA0.t`;
     $snl->fout('tech1.txt', $actual_results);; # execution
 
-print << 'EOF';
+print << "EOF";
 
- => ##################
- => # Test::Tech Version $Test::Tech::VERSION
- => # 
- => ###
-
-EOF
-
-demo( "\$Test\:\:Tech\:\:VERSION", # typed in command           
-      $Test::Tech::VERSION); # execution
-
-
-print << 'EOF';
-
- => ##################
- => # Run test script techA0.t using Test 1.15
- => # 
- => ###
-
+ ##################
+ # Run test script techA0.t using Test 1.15
+ # 
+ 
 EOF
 
 demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # typed in command           
@@ -170,13 +151,12 @@ demo( "\$snl\-\>fin\(\'techC0\.t\'\)", # typed in command
       $snl->fin('techC0.t')); # execution
 
 
-print << 'EOF';
+print << "EOF";
 
- => ##################
- => # Run test script techC0.t using Test 1.24
- => # 
- => ###
-
+ ##################
+ # Run test script techC0.t using Test 1.24
+ # 
+ 
 EOF
 
 demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techC0\.t\`\;\
@@ -188,13 +168,16 @@ demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # type
       $s->scrub_probe($s->scrub_file_line($actual_results))); # execution
 
 
-print << 'EOF';
+demo( "\$snl\-\>fin\(\'techE0\.t\'\)", # typed in command           
+      $snl->fin('techE0.t')); # execution
 
- => ##################
- => # Run test script techE0.t using Test 1.24
- => # 
- => ###
 
+print << "EOF";
+
+ ##################
+ # Run test script techE0.t using Test 1.24
+ # 
+ 
 EOF
 
 demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techE0\.t\`\;\
@@ -206,13 +189,33 @@ demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # type
       $s->scrub_probe($s->scrub_file_line($actual_results))); # execution
 
 
-print << 'EOF';
+demo( "\$snl\-\>fin\(\'techF0\.t\'\)", # typed in command           
+      $snl->fin('techF0.t')); # execution
 
- => ##################
- => # config Test.ONFAIL, read undef
- => # 
- => ###
 
+print << "EOF";
+
+ ##################
+ # Run test script techF0.t using Test 1.24
+ # 
+ 
+EOF
+
+demo( "\ \ \ \ \$actual_results\ \=\ \`perl\ techF0\.t\`\;\
+\ \ \ \ \$snl\-\>fout\(\'tech1\.txt\'\,\ \$actual_results\)\;"); # typed in command           
+          $actual_results = `perl techF0.t`;
+    $snl->fout('tech1.txt', $actual_results);; # execution
+
+demo( "\$s\-\>scrub_probe\(\$s\-\>scrub_file_line\(\$actual_results\)\)", # typed in command           
+      $s->scrub_probe($s->scrub_file_line($actual_results))); # execution
+
+
+print << "EOF";
+
+ ##################
+ # config Test.ONFAIL, read undef
+ # 
+ 
 EOF
 
 demo( "my\ \$tech\ \=\ new\ Test\:\:Tech"); # typed in command           
@@ -222,52 +225,48 @@ demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command
       $tech->tech_config('Test.ONFAIL')); # execution
 
 
-print << 'EOF';
+print << "EOF";
 
- => ##################
- => # config Test.ONFAIL, read undef, write 0
- => # 
- => ###
-
+ ##################
+ # config Test.ONFAIL, read undef, write 0
+ # 
+ 
 EOF
 
 demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\,0\)", # typed in command           
       $tech->tech_config('Test.ONFAIL',0)); # execution
 
 
-print << 'EOF';
+print << "EOF";
 
- => ##################
- => # config Test.ONFAIL, read 0
- => # 
- => ###
-
+ ##################
+ # config Test.ONFAIL, read 0
+ # 
+ 
 EOF
 
 demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command           
       $tech->tech_config('Test.ONFAIL')); # execution
 
 
-print << 'EOF';
+print << "EOF";
 
- => ##################
- => # $Test::ONFAIL, read 0
- => # 
- => ###
-
+ ##################
+ # $Test::ONFAIL, read 0
+ # 
+ 
 EOF
 
 demo( "\$Test\:\:ONFAIL", # typed in command           
       $Test::ONFAIL); # execution
 
 
-print << 'EOF';
+print << "EOF";
 
- => ##################
- => # restore Test.ONFAIL on finish
- => # 
- => ###
-
+ ##################
+ # restore Test.ONFAIL on finish
+ # 
+ 
 EOF
 
 demo( "\ \ \ \ \ \$tech\-\>finish\(\ \)\;\
@@ -275,13 +274,12 @@ demo( "\ \ \ \ \ \$tech\-\>finish\(\ \)\;\
            $tech->finish( );
      $Test::planned = 1;  # keep going; # execution
 
-print << 'EOF';
+print << "EOF";
 
- => ##################
- => # Test.ONFAIL restored by finish()
- => # 
- => ###
-
+ ##################
+ # Test.ONFAIL restored by finish()
+ # 
+ 
 EOF
 
 demo( "\$tech\-\>tech_config\(\'Test\.ONFAIL\'\)", # typed in command           

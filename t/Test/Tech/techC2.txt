@@ -11,10 +11,10 @@
 ok 1 - Todo test that passes  # (techC0.t at line 51 TODO?!)
 not ok 2 - Test that fails 
 # Test 2 got: 'U1[1] 80
-U1[2] 5 6
+N[2] 5 6
 ' (techC0.t at line 56)
 #   Expected: 'U1[1] 80
-U1[2] 6 5
+N[2] 6 5
 '
 # Failed : 2
 # Passed : 1/2 50%
