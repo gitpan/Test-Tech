@@ -10,37 +10,40 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.23';
-$DATE = '2004/05/11';
+$VERSION = '0.24';
+$DATE = '2004/05/12';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.23 2004/05/11), 'revised 0.22'],
-    'MANIFEST' => [qw(0.23 2004/05/11), 'generated, replaces 0.22'],
-    'Makefile.PL' => [qw(0.23 2004/05/11), 'generated, replaces 0.22'],
-    'README' => [qw(0.23 2004/05/11), 'generated, replaces 0.22'],
-    'lib/Test/Tech.pm' => [qw(1.24 2004/05/11), 'revised 1.19'],
-    't/Test/Tech/Tech.d' => [qw(0.07 2004/05/11), 'revised 0.06'],
-    't/Test/Tech/Tech.pm' => [qw(0.06 2004/05/11), 'revised 0.05'],
-    't/Test/Tech/Tech.t' => [qw(0.2 2004/05/11), 'revised 0.19'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.24 2004/05/12), 'revised 0.23'],
+    'MANIFEST' => [qw(0.24 2004/05/12), 'generated, replaces 0.23'],
+    'Makefile.PL' => [qw(0.24 2004/05/12), 'generated, replaces 0.23'],
+    'README' => [qw(0.24 2004/05/12), 'generated, replaces 0.23'],
+    'lib/Test/Tech.pm' => [qw(1.25 2004/05/11), 'unchanged'],
+    't/Test/Tech/Tech.d' => [qw(0.07 2004/05/11), 'unchanged'],
+    't/Test/Tech/Tech.pm' => [qw(0.06 2004/05/11), 'unchanged'],
+    't/Test/Tech/Tech.t' => [qw(0.2 2004/05/11), 'unchanged'],
     't/Test/Tech/techA0.t' => [qw(0.13 2004/04/15), 'unchanged'],
     't/Test/Tech/techA2.txt' => [qw(0.09 2004/04/15), 'unchanged'],
     't/Test/Tech/techB0.t' => [qw(0.09 2004/04/13), 'unchanged'],
     't/Test/Tech/techC0.t' => [qw(0.13 2004/04/13), 'unchanged'],
-    't/Test/Tech/techC2.txt' => [qw(0.12 2004/05/11), 'revised 0.11'],
+    't/Test/Tech/techC2.txt' => [qw(0.12 2004/05/11), 'unchanged'],
     't/Test/Tech/techD0.d' => [qw(0.06 2004/04/13), 'unchanged'],
     't/Test/Tech/techD2.txt' => [qw(0.07 2003/09/15), 'unchanged'],
     't/Test/Tech/techD3.txt' => [qw(0.07 2003/09/15), 'unchanged'],
-    't/Test/Tech/techE0.t' => [qw(0.09 2004/05/11), 'revised 0.08'],
-    't/Test/Tech/techE2.txt' => [qw(0.2 2004/05/11), 'revised 0.19'],
-    't/Test/Tech/techF0.t' => [qw(0.08 2004/05/11), 'new'],
-    't/Test/Tech/techF2.txt' => [qw(0.23 2004/05/11), 'new'],
+    't/Test/Tech/techE0.t' => [qw(0.09 2004/05/11), 'unchanged'],
+    't/Test/Tech/techE2.txt' => [qw(0.2 2004/05/11), 'unchanged'],
+    't/Test/Tech/techF0.t' => [qw(0.08 2004/05/11), 'unchanged'],
+    't/Test/Tech/techF2.txt' => [qw(0.23 2004/05/11), 'unchanged'],
+    't/Test/Tech/File/Package.pm' => [qw(1.17 2004/05/12), 'unchanged'],
+    't/Test/Tech/File/SmartNL.pm' => [qw(1.15 2004/05/12), 'unchanged'],
+    't/Test/Tech/Text/Scrub.pm' => [qw(1.13 2004/05/12), 'unchanged'],
+    't/Test/Tech/Data/Secs2.pm' => [qw(1.23 2004/05/12), 'new'],
+    't/Test/Tech/Data/SecsPack.pm' => [qw(0.07 2004/05/12), 'new'],
+    't/Test/Tech/Data/Startup.pm' => [qw(0.06 2004/05/12), 'new'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.25 2003/09/15), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.16 2003/09/15), 'unchanged'],
-    't/Test/Tech/File/Package.pm' => [qw(0.24 2004/05/11), 'revised 0.23'],
-    't/Test/Tech/File/SmartNL.pm' => [qw(0.24 2004/05/11), 'revised 0.23'],
-    't/Test/Tech/Text/Scrub.pm' => [qw(0.24 2004/05/11), 'revised 0.23'],
 
 );
 
@@ -71,11 +74,11 @@ Docs::Site_SVD::Test_Tech - Extends the Test program module
 
  Docs::Site_SVD::Test_Tech - Extends the Test program module
 
- Revision: W
+ Revision: Y
 
- Version: 0.23
+ Version: 0.24
 
- Date: 2004/05/11
+ Date: 2004/05/12
 
  Prepared for: General Public 
 
@@ -142,7 +145,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.23
+This document releases Test::Tech version 0.24
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -157,7 +160,7 @@ system file specification.
 
 This document releases the file 
 
- Test-Tech-0.23.tar.gz
+ Test-Tech-0.24.tar.gz
 
 found at the following repository(s):
 
@@ -244,39 +247,37 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.23    2004/05/11 revised 0.22
- MANIFEST                                                     0.23    2004/05/11 generated, replaces 0.22
- Makefile.PL                                                  0.23    2004/05/11 generated, replaces 0.22
- README                                                       0.23    2004/05/11 generated, replaces 0.22
- lib/Test/Tech.pm                                             1.24    2004/05/11 revised 1.19
- t/Test/Tech/Tech.d                                           0.07    2004/05/11 revised 0.06
- t/Test/Tech/Tech.pm                                          0.06    2004/05/11 revised 0.05
- t/Test/Tech/Tech.t                                           0.2     2004/05/11 revised 0.19
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.24    2004/05/12 revised 0.23
+ MANIFEST                                                     0.24    2004/05/12 generated, replaces 0.23
+ Makefile.PL                                                  0.24    2004/05/12 generated, replaces 0.23
+ README                                                       0.24    2004/05/12 generated, replaces 0.23
+ lib/Test/Tech.pm                                             1.25    2004/05/11 unchanged
+ t/Test/Tech/Tech.d                                           0.07    2004/05/11 unchanged
+ t/Test/Tech/Tech.pm                                          0.06    2004/05/11 unchanged
+ t/Test/Tech/Tech.t                                           0.2     2004/05/11 unchanged
  t/Test/Tech/techA0.t                                         0.13    2004/04/15 unchanged
  t/Test/Tech/techA2.txt                                       0.09    2004/04/15 unchanged
  t/Test/Tech/techB0.t                                         0.09    2004/04/13 unchanged
  t/Test/Tech/techC0.t                                         0.13    2004/04/13 unchanged
- t/Test/Tech/techC2.txt                                       0.12    2004/05/11 revised 0.11
+ t/Test/Tech/techC2.txt                                       0.12    2004/05/11 unchanged
  t/Test/Tech/techD0.d                                         0.06    2004/04/13 unchanged
  t/Test/Tech/techD2.txt                                       0.07    2003/09/15 unchanged
  t/Test/Tech/techD3.txt                                       0.07    2003/09/15 unchanged
- t/Test/Tech/techE0.t                                         0.09    2004/05/11 revised 0.08
- t/Test/Tech/techE2.txt                                       0.2     2004/05/11 revised 0.19
- t/Test/Tech/techF0.t                                         0.08    2004/05/11 new
- t/Test/Tech/techF2.txt                                       0.23    2004/05/11 new
+ t/Test/Tech/techE0.t                                         0.09    2004/05/11 unchanged
+ t/Test/Tech/techE2.txt                                       0.2     2004/05/11 unchanged
+ t/Test/Tech/techF0.t                                         0.08    2004/05/11 unchanged
+ t/Test/Tech/techF2.txt                                       0.23    2004/05/11 unchanged
+ t/Test/Tech/File/Package.pm                                  1.17    2004/05/12 unchanged
+ t/Test/Tech/File/SmartNL.pm                                  1.15    2004/05/12 unchanged
+ t/Test/Tech/Text/Scrub.pm                                    1.13    2004/05/12 unchanged
+ t/Test/Tech/Data/Secs2.pm                                    1.23    2004/05/12 new
+ t/Test/Tech/Data/SecsPack.pm                                 0.07    2004/05/12 new
+ t/Test/Tech/Data/Startup.pm                                  0.06    2004/05/12 new
  t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
- t/Test/Tech/File/Package.pm                                  0.24    2004/05/11 revised 0.23
- t/Test/Tech/File/SmartNL.pm                                  0.24    2004/05/11 revised 0.23
- t/Test/Tech/Text/Scrub.pm                                    0.24    2004/05/11 revised 0.23
 
 
 =head2 3.3 Changes
-
-The file structure from release 0.22 was restructured as follows:
-
-  unlink 't/Test/Tech/Data/Secs2.pm';
-  unlink 't/Test/Tech/Data/SecsPack.pm';
 
 Changes  are as follows:
 
@@ -649,6 +650,24 @@ each result line instead of printing it straing forward.
 Added a print out of the C<Data::Start> version and number of tests to the
 C<plan> subroutine.
 
+=item Test-Tech-0.24
+
+None of the test script for 0.23 ran. It appears that the Data::Secs2 does not
+load properly and, thus, none of the test scripts execute
+
+ t/Test/Tech/Tech....Data::Secs2 version 1.22 required--this is only version 1.19 
+
+Seen this before were CPAN has troubles with C<WriteMakefile> subroutine in
+the C<MakeFile.PL>
+
+    PREREQ_PM => {'Data::Secs2' => '1.22',
+                  'Data::SecsPack' => '0.06',
+                  'Data::Startup' => '0.03',
+                  'Test' => '1.20',},
+
+Put the correct version in the test library, upload and see if this is the
+problem. 
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -687,13 +706,13 @@ Enter one of the following repositories in a web browser:
   http://www.softwarediamonds/packages/
   http://www.perl.com/CPAN/authors/id/S/SO/SOFTDIA/
 
-Right click on 'Test-Tech-0.23.tar.gz' and download to a temporary
+Right click on 'Test-Tech-0.24.tar.gz' and download to a temporary
 installation directory.
 Enter the following where $make is 'nmake' for microsoft
 windows; otherwise 'make'.
 
- gunzip Test-Tech-0.23.tar.gz
- tar -xf Test-Tech-0.23.tar
+ gunzip Test-Tech-0.24.tar.gz
+ tar -xf Test-Tech-0.24.tar
  perl Makefile.PL
  $make test
  $make install
@@ -787,20 +806,7 @@ extension for a Perl test script file
 =back
 
 =for html
-<hr>
-<p><br>
-<!-- BLK ID="PROJECT_MANAGEMENT" -->
-<!-- /BLK -->
-<p><br>
-<!-- BLK ID="NOTICE" -->
-<!-- /BLK -->
-<p><br>
-<!-- BLK ID="OPT-IN" -->
-<!-- /BLK -->
-<p><br>
-<!-- BLK ID="LOG_CGI" -->
-<!-- /BLK -->
-<p><br>
+
 
 =cut
 
@@ -811,11 +817,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.23^
-FREEZE: 1^
+VERSION : 0.24^
+FREEZE: 0^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.22^
-REVISION: W^
+PREVIOUS_RELEASE: 0.23^
+REVISION: Y^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -842,21 +848,22 @@ COMPRESS_SUFFIX: gz^
 
 CHANGE2CURRENT:  ^
 RESTRUCTURE: 
- unlink 't/Test/Tech/Data/Secs2.pm';
- unlink 't/Test/Tech/Data/SecsPack.pm';
 ^
 
 AUTO_REVISE: 
 lib/Test/Tech.pm
 t/Test/Tech/*
+lib/File/Package.pm => t/Test/Tech/File/Package.pm
+lib/File/SmartNL.pm => t/Test/Tech/File/SmartNL.pm
+lib/Text/Scrub.pm => t/Test/Tech/Text/Scrub.pm
+lib/Data/Secs2.pm => t/Test/Tech/Data/Secs2.pm
+lib/Data/SecsPack.pm => t/Test/Tech/Data/SecsPack.pm
+lib/Data/Startup.pm => t/Test/Tech/Data/Startup.pm
 ^
 
 REPLACE:
 t/Test/Tech/V001024/*
 t/Test/Tech/V001015/*
-lib/File/Package.pm => t/Test/Tech/File/Package.pm
-lib/File/SmartNL.pm => t/Test/Tech/File/SmartNL.pm
-lib/Text/Scrub.pm => t/Test/Tech/Text/Scrub.pm
 ^
 
 PREREQ_PM: 
@@ -1243,6 +1250,24 @@ each result line instead of printing it straing forward.
 Added a print out of the C<Data::Start> version and number of tests to the
 C<plan> subroutine.
 
+\=item Test-Tech-0.24
+
+None of the test script for 0.23 ran. It appears that the Data::Secs2 does not
+load properly and, thus, none of the test scripts execute
+
+ t/Test/Tech/Tech....Data::Secs2 version 1.22 required--this is only version 1.19 
+
+Seen this before were CPAN has troubles with C<WriteMakefile> subroutine in
+the C<MakeFile.PL>
+
+    PREREQ_PM => {'Data::Secs2' => '1.22',
+                  'Data::SecsPack' => '0.06',
+                  'Data::Startup' => '0.03',
+                  'Test' => '1.20',},
+
+Put the correct version in the test library, upload and see if this is the
+problem. 
+
 \=back
 
 ^
@@ -1446,22 +1471,12 @@ SEE_ALSO:
 
 
 HTML:
-<hr>
-<p><br>
-<!-- BLK ID="PROJECT_MANAGEMENT" -->
-<!-- /BLK -->
-<p><br>
-<!-- BLK ID="NOTICE" -->
-<!-- /BLK -->
-<p><br>
-<!-- BLK ID="OPT-IN" -->
-<!-- /BLK -->
-<p><br>
-<!-- BLK ID="LOG_CGI" -->
-<!-- /BLK -->
-<p><br>
 ^
 ~-~
+
+
+
+
 
 
 
