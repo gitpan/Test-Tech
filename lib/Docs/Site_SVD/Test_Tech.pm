@@ -10,20 +10,20 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.19';
-$DATE = '2004/04/09';
+$VERSION = '0.20';
+$DATE = '2004/04/10';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.19 2004/04/09), 'revised 0.18'],
-    'MANIFEST' => [qw(0.19 2004/04/09), 'generated, replaces 0.18'],
-    'Makefile.PL' => [qw(0.19 2004/04/09), 'generated, replaces 0.18'],
-    'README' => [qw(0.19 2004/04/09), 'generated, replaces 0.18'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.20 2004/04/10), 'revised 0.19'],
+    'MANIFEST' => [qw(0.20 2004/04/10), 'generated, replaces 0.19'],
+    'Makefile.PL' => [qw(0.20 2004/04/10), 'generated, replaces 0.19'],
+    'README' => [qw(0.20 2004/04/10), 'generated, replaces 0.19'],
     'lib/Test/Tech.pm' => [qw(1.17 2004/04/08), 'unchanged'],
-    't/Test/Tech/Tech.d' => [qw(0.04 2004/04/09), 'revised 0.03'],
+    't/Test/Tech/Tech.d' => [qw(0.04 2004/04/09), 'unchanged'],
     't/Test/Tech/Tech.pm' => [qw(0.01 2004/04/08), 'unchanged'],
-    't/Test/Tech/Tech.t' => [qw(0.17 2004/04/09), 'revised 0.16'],
+    't/Test/Tech/Tech.t' => [qw(0.17 2004/04/09), 'unchanged'],
     't/Test/Tech/techA0.t' => [qw(0.11 2004/04/08), 'unchanged'],
     't/Test/Tech/techA2.txt' => [qw(0.08 2004/04/07), 'unchanged'],
     't/Test/Tech/techB0.t' => [qw(0.08 2004/04/08), 'unchanged'],
@@ -34,9 +34,10 @@ use vars qw(%INVENTORY);
     't/Test/Tech/techD3.txt' => [qw(0.07 2003/09/15), 'unchanged'],
     't/Test/Tech/techE0.t' => [qw(0.07 2004/04/08), 'unchanged'],
     't/Test/Tech/techE2.txt' => [qw(0.17 2004/04/07), 'unchanged'],
-    't/Test/Tech/File/Package.pm' => [qw(1.14 2004/04/09), 'revised 1.13'],
-    't/Test/Tech/File/SmartNL.pm' => [qw(1.13 2004/04/09), 'unchanged'],
-    't/Test/Tech/Text/Scrub.pm' => [qw(1.11 2004/04/09), 'unchanged'],
+    't/Test/Tech/File/Package.pm' => [qw(1.15 2004/04/10), 'revised 1.14'],
+    't/Test/Tech/File/SmartNL.pm' => [qw(1.13 2004/04/10), 'unchanged'],
+    't/Test/Tech/Text/Scrub.pm' => [qw(1.11 2004/04/10), 'unchanged'],
+    't/Test/Tech/Data/Secs2.pm' => [qw(1.15 2004/04/10), 'new'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.25 2003/09/15), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.16 2003/09/15), 'unchanged'],
 
@@ -65,11 +66,11 @@ use vars qw(%INVENTORY);
 
  Test::Tech - Extends the Test program module
 
- Revision: S
+ Revision: T
 
- Version: 0.19
+ Version: 0.20
 
- Date: 2004/04/09
+ Date: 2004/04/10
 
  Prepared for: General Public 
 
@@ -136,7 +137,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.19
+This document releases Test::Tech version 0.20
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -151,7 +152,7 @@ system file specification.
 
 This document releases the file 
 
- Test-Tech-0.19.tar.gz
+ Test-Tech-0.20.tar.gz
 
 found at the following repository(s):
 
@@ -223,14 +224,14 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.19    2004/04/09 revised 0.18
- MANIFEST                                                     0.19    2004/04/09 generated, replaces 0.18
- Makefile.PL                                                  0.19    2004/04/09 generated, replaces 0.18
- README                                                       0.19    2004/04/09 generated, replaces 0.18
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.20    2004/04/10 revised 0.19
+ MANIFEST                                                     0.20    2004/04/10 generated, replaces 0.19
+ Makefile.PL                                                  0.20    2004/04/10 generated, replaces 0.19
+ README                                                       0.20    2004/04/10 generated, replaces 0.19
  lib/Test/Tech.pm                                             1.17    2004/04/08 unchanged
- t/Test/Tech/Tech.d                                           0.04    2004/04/09 revised 0.03
+ t/Test/Tech/Tech.d                                           0.04    2004/04/09 unchanged
  t/Test/Tech/Tech.pm                                          0.01    2004/04/08 unchanged
- t/Test/Tech/Tech.t                                           0.17    2004/04/09 revised 0.16
+ t/Test/Tech/Tech.t                                           0.17    2004/04/09 unchanged
  t/Test/Tech/techA0.t                                         0.11    2004/04/08 unchanged
  t/Test/Tech/techA2.txt                                       0.08    2004/04/07 unchanged
  t/Test/Tech/techB0.t                                         0.08    2004/04/08 unchanged
@@ -241,9 +242,10 @@ consists of the following files:
  t/Test/Tech/techD3.txt                                       0.07    2003/09/15 unchanged
  t/Test/Tech/techE0.t                                         0.07    2004/04/08 unchanged
  t/Test/Tech/techE2.txt                                       0.17    2004/04/07 unchanged
- t/Test/Tech/File/Package.pm                                  1.14    2004/04/09 revised 1.13
- t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/09 unchanged
- t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/09 unchanged
+ t/Test/Tech/File/Package.pm                                  1.15    2004/04/10 revised 1.14
+ t/Test/Tech/File/SmartNL.pm                                  1.13    2004/04/10 unchanged
+ t/Test/Tech/Text/Scrub.pm                                    1.11    2004/04/10 unchanged
+ t/Test/Tech/Data/Secs2.pm                                    1.15    2004/04/10 new
  t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
 
@@ -510,6 +512,73 @@ Coordiated with the lastest Test::STDmaker by moving the
 test library from tlib to t/Tie, the same directory as the test script
 and deleting the test library File::TestPath program module.
 
+=item Test-Tech-0.19
+
+ Subject: FAIL Test-Tech-0.18 i586-linux 2.4.22-4tr 
+ From: cpansmoke@alternation.net 
+ Date: Thu,  8 Apr 2004 15:09:35 -0300 (ADT) 
+
+ PERL_DL_NONLAZY=1 /usr/bin/perl5.8.0 "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/Test/Tech/Tech.t
+ t/Test/Tech/Tech....Can't locate FindBIN.pm
+
+ Summary of my perl5 (revision 5.0 version 8 subversion 0) configuration:
+   Platform:
+     osname=linux, osvers=2.4.22-4tr, archname=i586-linux
+
+This is capitalization problem. The program module name is 'FindBin' not 'FindBIN' which
+is part of Perl. Microsoft does not care about capitalization differences while linux
+does. This error is in the test script automatically generated by C<Test::STDmaker>
+and was just introduced when moved test script libraries from C<tlib> to the directory
+of the test script. Repaired C<Test::STDmaker> and regenerated the distribution.
+
+=item Test-Tech-0.20
+
+B<FAILURE REPORT:>
+
+ Subject: FAIL Test-Tech-0.19 i586-linux 2.4.22-4tr 
+ To: cpan-testers@perl.org 
+ From: cpansmoke@alternation.net 
+ Date: Sat, 10 Apr 2004 05:07:51 -0300 (ADT) 
+
+[snip]
+
+Can't locate Data/Secs2.pm in @INC
+
+[snip]
+
+As such, adding the prerequisite module(s) to 'PREREQ_PM' in your
+Makefile.PL should solve this problem.  For example:
+
+ WriteMakefile(
+     AUTHOR      => 'Samson Monaco Tutankhamen (support@SoftwareDiamonds.com)',
+     ... # other information
+     PREREQ_PM   => {
+        'Data::Secs2'   => '0', # or a minimum workable version
+     }
+ );
+
+[snip]
+
+B<CORRECTIVE ACTION:>
+
+An exam of MakeFile.PL revealed the following:
+
+ WriteMakefile(
+    # [snip]
+    PREREQ_PM => {'Data::Secs2' => '0.01'},
+    # [snip]
+ );
+
+Cannot see anything wrong with the PREREQ_PM statement.
+The only possibilities that come to mind are
+either CPAN not processing the prereq_pm properly,
+same syntax problem with C<PREREQ_PM > 
+or because the test script uses C<Test::Tech> 
+to test C<Test::Tech>, the prereq is processed too late.
+
+Added C<Data::Secs2> to the test library so the test
+will run. 
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -548,13 +617,13 @@ Enter one of the following repositories in a web browser:
   http://www.softwarediamonds/packages/
   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/
 
-Right click on 'Test-Tech-0.19.tar.gz' and download to a temporary
+Right click on 'Test-Tech-0.20.tar.gz' and download to a temporary
 installation directory.
 Enter the following where $make is 'nmake' for microsoft
 windows; otherwise 'make'.
 
- gunzip Test-Tech-0.19.tar.gz
- tar -xf Test-Tech-0.19.tar
+ gunzip Test-Tech-0.20.tar.gz
+ tar -xf Test-Tech-0.20.tar
  perl Makefile.PL
  $make test
  $make install
@@ -669,11 +738,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.19^
+VERSION : 0.20^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.18^
-REVISION: S^
+PREVIOUS_RELEASE: 0.19^
+REVISION: T^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -707,6 +776,7 @@ t/Test/Tech/*
 lib/File/Package.pm => t/Test/Tech/File/Package.pm
 lib/File/SmartNL.pm => t/Test/Tech/File/SmartNL.pm
 lib/Text/Scrub.pm => t/Test/Tech/Text/Scrub.pm
+lib/Data/Secs2.pm => t/Test/Tech/Data/Secs2.pm
 ^
 
 REPLACE:
@@ -981,6 +1051,73 @@ directory as the test script.
 Coordiated with the lastest Test::STDmaker by moving the
 test library from tlib to t/Tie, the same directory as the test script
 and deleting the test library File::TestPath program module.
+
+\=item Test-Tech-0.19
+
+ Subject: FAIL Test-Tech-0.18 i586-linux 2.4.22-4tr 
+ From: cpansmoke@alternation.net 
+ Date: Thu,  8 Apr 2004 15:09:35 -0300 (ADT) 
+
+ PERL_DL_NONLAZY=1 /usr/bin/perl5.8.0 "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/Test/Tech/Tech.t
+ t/Test/Tech/Tech....Can't locate FindBIN.pm
+
+ Summary of my perl5 (revision 5.0 version 8 subversion 0) configuration:
+   Platform:
+     osname=linux, osvers=2.4.22-4tr, archname=i586-linux
+
+This is capitalization problem. The program module name is 'FindBin' not 'FindBIN' which
+is part of Perl. Microsoft does not care about capitalization differences while linux
+does. This error is in the test script automatically generated by C<Test::STDmaker>
+and was just introduced when moved test script libraries from C<tlib> to the directory
+of the test script. Repaired C<Test::STDmaker> and regenerated the distribution.
+
+\=item Test-Tech-0.20
+
+B<FAILURE REPORT:>
+
+ Subject: FAIL Test-Tech-0.19 i586-linux 2.4.22-4tr 
+ To: cpan-testers@perl.org 
+ From: cpansmoke@alternation.net 
+ Date: Sat, 10 Apr 2004 05:07:51 -0300 (ADT) 
+
+[snip]
+
+Can't locate Data/Secs2.pm in @INC
+
+[snip]
+
+As such, adding the prerequisite module(s) to 'PREREQ_PM' in your
+Makefile.PL should solve this problem.  For example:
+
+ WriteMakefile(
+     AUTHOR      => 'Samson Monaco Tutankhamen (support@SoftwareDiamonds.com)',
+     ... # other information
+     PREREQ_PM   => {
+        'Data::Secs2'   => '0', # or a minimum workable version
+     }
+ );
+
+[snip]
+
+B<CORRECTIVE ACTION:>
+
+An exam of MakeFile.PL revealed the following:
+
+ WriteMakefile(
+    # [snip]
+    PREREQ_PM => {'Data::Secs2' => '0.01'},
+    # [snip]
+ );
+
+Cannot see anything wrong with the PREREQ_PM statement.
+The only possibilities that come to mind are
+either CPAN not processing the prereq_pm properly,
+same syntax problem with C<PREREQ_PM > 
+or because the test script uses C<Test::Tech> 
+to test C<Test::Tech>, the prereq is processed too late.
+
+Added C<Data::Secs2> to the test library so the test
+will run. 
 
 \=back
 
