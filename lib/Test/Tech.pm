@@ -12,10 +12,12 @@ use warnings::register;
 use Test;
 use Data::Dumper;
 use Test::TestUtil;
+$Data::Dumper::Terse = 1; 
+$Test::TestLevel = 1;
 
 use vars qw($VERSION $DATE);
-$VERSION = '1.04';
-$DATE = '2003/06/15';
+$VERSION = '1.05';
+$DATE = '2003/06/16';
 
 #####
 # Because Test::TestUtil uses SelfLoader, the @ISA
@@ -26,7 +28,6 @@ $DATE = '2003/06/15';
 # use vars qw(@ISA);
 # @ISA = qw(Test::TestUtil);
 
-$Test::TestLevel = 1;
 
 ####
 # Using an object to pass localized object data
@@ -81,7 +82,7 @@ sub finish # end a test
 #######
 # Sets flag to skip rest of tests
 #
-sub skip_rest( $value )
+sub skip_rest
 {
    my ($self,$value) =  @_;
    my $result = $self->[2];
@@ -109,6 +110,7 @@ sub work_breakdown  # open a file
 #
 sub test
 {
+
    my ($self, $actual_p, $expected_p, $name) = @_;
    print $Test::TESTOUT "# $name\n" if $name;
    if($self->[2]) {  # skip rest of tests switch
@@ -118,23 +120,22 @@ sub test
    }
 
    my ($expected, $actual);
-   if( ref($expected_p) eq 'ARRAY') {
+   if( ref($expected_p)) {
        $expected = Dumper(@$expected_p);
    }
    else {
-       $expected = Dumper($expected_p);
+       $expected = $expected_p;
    }
 
-   if( ref($actual_p) eq 'ARRAY') {
+   if(ref($actual_p)) {
        $actual = Dumper(@$actual_p);
    }
    else {
-       $actual  = Dumper($actual_p);
+       $actual  = $actual_p;
    }
 
-
-
    ok($actual, $expected, '');
+
 }
 
 
@@ -156,18 +157,18 @@ sub verify  # store expected array for later use
    }
   
    my ($expected, $actual);
-   if( ref($expected_p) eq 'ARRAY') {
+   if( ref($expected_p)) {
        $expected = Dumper(@$expected_p);
    }
    else {
-       $expected = Dumper($expected_p);
+       $expected = $expected_p;
    }
 
-   if( ref($actual) eq 'ARRAY') {
+   if( ref($actual) ) {
        $actual = Dumper(@$actual_p);
    }
    else {
-       $actual = Dumper($actual_p);
+       $actual = $actual_p;
    }
 
    my $test_ok = skip($mod, $actual, $expected, '');
@@ -178,7 +179,7 @@ sub verify  # store expected array for later use
 
 
 ######
-# Actual data
+# Demo
 #
 sub demo
 {
@@ -331,6 +332,7 @@ execute on a failure. For example,
 =head2 test method
 
   $test_ok = $T->test(\@actual_results, \@expected_results, $test_name);
+  $test_ok = $T->test($actual_results, $expected_results, $test_name);
 
 The I<test> method is a cover function for the &Test::ok subroutine
 that extends the &Test::ok routine as follows:
@@ -344,10 +346,15 @@ of the test.
 
 =item *
 
-The I<test> method passes the arrays
+The I<test> method passes the arrays from an array reference
 I<@actual_results> and I<@expectet_results> through &Data::Dumper::Dumper.
 The I<test> method then uses &Test::ok to compare the text results
 from &Data::Dumper::Dumper.
+
+=item *
+
+The I<test> method passes variables that are not a reference
+directly to &Test::ok unchanged.
 
 =item *
 

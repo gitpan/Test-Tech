@@ -7,13 +7,15 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.02';
-$DATE = '2003/06/13';
+$VERSION = '0.03';
+$DATE = '2003/06/16';
 
 use Test::Tech;
 use Getopt::Long;
 use Cwd;
 use File::Spec;
+use Data::Dumper;
+use Config;
 
 ######
 #
@@ -77,6 +79,62 @@ END {
    chdir $__restore_dir__;
 }
 
+
+######
+# This is perl, v5.6.1 built for MSWin32-x86-multi-thread
+# (with 1 registered patch, see perl -V for more detail)
+#
+# Copyright 1987-2001, Larry Wall
+#
+# Binary build 631 provided by ActiveState Tool Corp. http://www.ActiveState.com
+# Built 17:16:22 Jan  2 2002
+#
+#
+# Perl may be copied only under the terms of either the Artistic License or the
+# GNU General Public License, which may be found in the Perl 5 source kit.
+#
+# Complete documentation for Perl, including FAQ lists, should be found on
+# this system using `man perl' or `perldoc perl'.  If you have access to the
+# Internet, point your browser at http://www.perl.com/, the Perl Home Page.
+#
+# ~~~~~~~
+#
+# Wall, Christiansen and Orwant on Perl internal storage
+#
+# Page 351 of Programming Perl, Third Addition, Overloadable Operators
+# quote:
+# 
+# Conversion operators: "", 0+, bool
+#   These three keys let you provide behaviors for Perl's automatic conversions
+#   to strings, numbers, and Boolean values, respectively.
+# 
+# ~~~~~~~
+#
+# Internal Storage of Perls that are in the wild
+#
+#   string - Perl v5.6.1 MSWin32-x86-multi-thread, ActiveState build 631, binary
+#   number - Perl version 5.008 for solaris  
+#
+#   Perls in the wild with internal storage of string may be mutants that need to 
+#   be hunted down killed.
+#
+
+########
+# Probe Perl for internal storage method
+#
+my $probe = 3;
+my $actual = Dumper([0+$probe]);
+my $internal_storage = 'undetermine';
+if( $actual eq Dumper([3]) ) {
+    $internal_storage = 'number';
+}
+elsif ( $actual eq Dumper(['3']) ) {
+    $internal_storage = 'string';
+}
+print "# Probe> OS: $Config{osname}\n";
+print "# Probe> Perl: $Config{PERL_REVISION}.$Config{PERL_VERSION}.$Config{PERL_SUBVERSION}\n"; 
+print "# Probe> Internal Storage Method: $internal_storage\n";
+
 my $x = 2;
 my $y = 3;
 
@@ -84,8 +142,8 @@ my $y = 3;
 #  ok:  1 - Do not skip rest
 #
 $T->skip_rest() unless $T->test(
-    [$x + $y], # actual results
-    ['5'], # expected results
+    $x + $y, # actual results
+    5, # expected results
     'Pass test'); 
 
 ########
@@ -94,25 +152,40 @@ $T->skip_rest() unless $T->test(
 #
 #  ok:  2
 #
-$T->test( [($x+$y,$y-$x)], # actual results
-          ['5','1'], # expected results
-          'Todo test that passes');
+if( $internal_storage eq 'string') {
+    $T->test( [$x+$y,$y-$x], # actual results
+              ['5','1'], # expected results
+             'Todo test that passes');
+}
+else {
+    $T->test( [$x+$y,$y-$x], # actual results
+              [5,1], # expected results
+             'Todo test that passes');
+}
+
 
 ########
 #
 #  ok:  3
 #
-$T->test( [($x+4,$x*$y)], # actual results
+if( $internal_storage eq 'string') {
+    $T->test( [$x+$y,$x*$y], # actual results
           ['6','5'], # expected results
           'Test that fails');
+}
+else{
+    $T->test( [$x+$y,$x*$y], # actual results
+          [6,5], # expected results
+          'Test that fails');
+}
 
 #########
 #
 #  ok:  4
 #
 $T->verify( 1, # condition to skip test   
-            [$x*$y*2], # actual results
-            ['6'], # expected results
+            ($x*$y*2), # actual results
+            6, # expected results
             'Skipped tests');
 
 #######
@@ -121,8 +194,8 @@ $T->verify( 1, # condition to skip test
 #
 #  ok:  5
 #
-$T->test( [$x*$y*2], # actual results
-          ['6'], # expected results
+$T->test( $x*$y*2, # actual results
+          6, # expected results
           'Todo Test that Fails');
 
 
@@ -131,24 +204,24 @@ $T->test( [$x*$y*2], # actual results
 #  ok:  6
 #
 $T->skip_rest() unless $T->test(
-    [$x + $y], # actual results
-    ['6'], # expected results
+    $x + $y, # actual results
+    6, # expected results
     'Failed test that skips the rest'); 
 
 ####
 #
 #  ok:  7
 #
-$T->test( [$x + $y + $x], # actual results
-          ['9'], # expected results
+$T->test( $x + $y + $x, # actual results
+          9, # expected results
           'A test to skip');
 
 ####
 # 
 #  ok:  8
 # 
-$T->test( [$x + $y + $x + $y], # actual results
-          ['10'], # expected results
+$T->test( $x + $y + $x + $y, # actual results
+          10, # expected results
           'A not skip to skip');
 
 $T->finish();

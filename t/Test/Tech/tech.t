@@ -7,15 +7,15 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE);
-$VERSION = '0.03';
-$DATE = '2003/06/15';
+$VERSION = '0.04';
+$DATE = '2003/06/16';
 
 use Test::TestUtil;
 use Cwd;
 use File::Spec;
-use File::Glob ':glob';
 use Test;
 use Data::Dumper;
+use Config;
 
 ######
 #
@@ -57,12 +57,6 @@ END {
     chdir $__restore_dir__;
 }
 
-    #######
-    # Delete actual results files
-    #
-    my @outputs = bsd_glob( 'tech1.*' );
-    unlink @outputs;
-
     #### 
     # File Legend
     # 
@@ -74,6 +68,27 @@ END {
     #  2 and above - these series are the expected test results
     # 
     #
+
+#####
+# Clean up directory
+#
+unlink 'tech1.txt';
+
+########
+# Probe Perl for internal storage method
+#
+my $probe = 3;
+my $actual = Dumper([0+$probe]);
+my $internal_storage = 'undetermine';
+if( $actual eq Dumper([3]) ) {
+    $internal_storage = 'number';
+}
+elsif ( $actual eq Dumper(['3']) ) {
+    $internal_storage = 'string';
+}
+print "# Probe> OS: $Config{osname}\n";
+print "# Probe> Perl: $Config{PERL_REVISION}.$Config{PERL_VERSION}.$Config{PERL_SUBVERSION}\n"; 
+print "# Probe> Internal Storage Method: $internal_storage\n";
 
 #######
 #
@@ -102,52 +117,77 @@ skip_rest() unless verify(
 #
 #  Pod check 
 # 
-
 print  "No pod errors\n";
 test( [Test::TestUtil->pod_errors( 'Test::Tech')], 
         [0]); # expected results);
 
+
+if( $internal_storage eq 'string' ) {
+
+    #####
+    #  ok:  4
+    # 
+    # RUn demonstration script test case 
+    #
+    my $test_results = `perl tech0.d`;
+    Test::TestUtil->fout('tech1.txt', $test_results);
+
+    my $expected_results = Test::TestUtil->fin('tech2.txt');
+    print "# Demonstration script\n";
+    test( [$test_results, hex_dump($test_results)], 
+        [$expected_results, hex_dump($expected_results)] ); # expected results
+
+    #####
+    #  ok:  5
+    # 
+    # Run test script test case 
+    #
+    $test_results = `perl tech0.t`;
+    Test::TestUtil->fout('tech1.txt', $test_results);
+    $test_results = scrub_probe(Test::TestUtil->scrub_file_line($test_results));
+
+    $expected_results = scrub_probe(Test::TestUtil->scrub_file_line(Test::TestUtil->fin('tech3.txt')));
+    print "# Run test script\n";
+    test( [$test_results, hex_dump($test_results)], 
+        [$expected_results, hex_dump($expected_results)] ); # expected results
+}
+else {
+
+    #####
+    #  ok:  4
+    # 
+    # RUn demonstration script test case 
+    #
+    my $test_results = `perl tech0.d`;
+    Test::TestUtil->fout('tech1.txt', $test_results);
+
+    my $expected_results = Test::TestUtil->fin('tech4.txt');
+    print "# Demonstration script\n";
+    test( [$test_results, hex_dump($test_results)], 
+        [$expected_results, hex_dump($expected_results)] ); # expected results
+
+
+    #####
+    #  ok:  5
+    # 
+    # Run test script test case 
+    #
+    $test_results = `perl tech0.t`;
+    Test::TestUtil->fout('tech1.txt', $test_results);
+    $test_results = scrub_probe(Test::TestUtil->scrub_file_line($test_results));
+
+    $expected_results = scrub_probe(Test::TestUtil->scrub_file_line(Test::TestUtil->fin('tech5.txt')));
+    print "# Run test script\n";
+    test( [$test_results, hex_dump($test_results)], 
+        [$expected_results, hex_dump($expected_results)] ); # expected results
+
+
+}
+
 #####
-#  ok:  4
-# 
-# RUn demonstration script test case 
+# Clean up directory
 #
-my $test_results = `perl tech0.d`;
-Test::TestUtil->fout('tech1.txt', $test_results);
-my $test_results_hex = unpack('H*',$test_results );
-
-my $expected_results = Test::TestUtil->fin('tech2.txt');
-my $expected_results_hex = unpack('H*', $expected_results );
-
-print "# Demonstration script\n";
-test( [$test_results, $test_results_hex], 
-        [$expected_results, $expected_results_hex] ); # expected results
-
-
-#####
-#  ok:  5
-# 
-# Run test script test case 
-#
-$test_results = `perl tech0.t`;
-Test::TestUtil->fout('tech1.txt', $test_results);
-$test_results = Test::TestUtil->scrub_file_line($test_results);
-$test_results_hex = unpack('H*',$test_results );
-
-$expected_results = Test::TestUtil->scrub_file_line(Test::TestUtil->fin('tech3.txt'));
-$expected_results_hex = unpack('H*', $expected_results );
-
-print "# Run test script\n";
-test( [$test_results, $test_results_hex], 
-        [$expected_results, $expected_results_hex] ); # expected results
-
-
-#######
-# Delete actual results files
-#
-@outputs = bsd_glob( 'tech1.*' );
-unlink @outputs;
-
+unlink 'tech1.txt';
 
 ####
 # 
@@ -213,7 +253,36 @@ sub skip_rest
     }
 }
 
+
+sub hex_dump
+{
+    my ($text) = @_;
+    $text = unpack('H*', $text);
+    my $result = ''; 
+    while( $text ) { 
+        if( 40 < length( $text) ) {
+            $result = substr( $text, 0, 40 ) . "\n";
+            $text = substr( $text,40);
+        }
+        else {
+            $result = substr( $text, 0) . "\n";
+            $text = '';
+        }
+    }
+    $result
+}
+
+
+sub scrub_probe
+{
+   my ($text) = @_;
+   $text =~ s/# Probe>.*?\n//ig;
+   $text
+}
+
+
 __END__
+
 
 =head1 NAME
 
