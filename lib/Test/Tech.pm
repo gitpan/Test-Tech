@@ -13,8 +13,8 @@ use Test ();   # do not import and "Test" subroutines
 use Data::Dumper;
 
 use vars qw($VERSION $DATE $FILE);
-$VERSION = '1.09';
-$DATE = '2003/06/24';
+$VERSION = '1.1';
+$DATE = '2003/07/11';
 $FILE = __FILE__;
 
 use vars qw(@ISA @EXPORT_OK);
@@ -196,7 +196,7 @@ sub plan
 # OS            : $^O
 # Perl          : $perl
 # Local Time    : $loctime
-# GMT Time      : $gmtime GMT
+# GMT Time      : $gmtime
 # Test          : $Test::VERSION
 EOF
 
