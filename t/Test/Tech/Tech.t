@@ -8,13 +8,14 @@ use warnings::register;
 
 use vars qw($VERSION $DATE);
 $VERSION = '0.1';
-$DATE = '2003/07/05';
+$DATE = '2003/07/18';
 
 use Cwd;
 use File::Spec;
 use File::Package;
 use File::SmartNL;
 use File::TestPath;
+use Data::HexDump;
 use Test;
 
 ######
@@ -129,6 +130,7 @@ skip_rest( $errors, 2 );
 use Text::Scrub;
 my $s = 'Text::Scrub';
 
+
 #####
 #  ok:  3
 # 
@@ -145,8 +147,7 @@ $actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
 my $expected_results = $snl->fin('techA2.txt');
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
 
-ok( $actual_results . "\n\n" . $snl->hex_dump($actual_results), 
-    $expected_results . "\n\n" . $snl->hex_dump($expected_results) ); 
+ok($actual_results, $expected_results); 
 
 #####
 #  ok:  4
@@ -164,8 +165,7 @@ $actual_results = $s->scrub_probe($s->scrub_file_line($actual_results));
 $expected_results = $snl->fin('techA2.txt');
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
 
-ok( $actual_results . "\n\n" . $snl->hex_dump($actual_results), 
-    $expected_results . "\n\n" . $snl->hex_dump($expected_results) ); 
+ok( $actual_results, $expected_results); 
 
 
 
@@ -193,8 +193,7 @@ else {
 }
 
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
-ok( $actual_results . "\n\n" . $snl->hex_dump($actual_results), 
-    $expected_results . "\n\n" . $snl->hex_dump($expected_results) ); 
+ok( $actual_results, $expected_results); 
 
 #####
 #  ok:  6
@@ -220,8 +219,7 @@ else {
 }
 
 $expected_results = $s->scrub_probe($s->scrub_file_line($expected_results));
-ok( $actual_results . "\n\n" . $snl->hex_dump($actual_results), 
-    $expected_results . "\n\n" . $snl->hex_dump($expected_results) ); 
+ok( $actual_results, $expected_results); 
 
 
 #####
@@ -249,43 +247,6 @@ sub skip_rest
 
 __END__
 
-
-if( $internal_storage eq 'string' ) {
-
-####
-#  ok:  4
-# 
-# RUn demonstration script test case 
-
-$test_results = `perl tech0.d`;
-Test::TestUtil->fout('tech1.txt', $test_results);
-
-$expected_results = Test::TestUtil->fin('tech2.txt');
-print "# Demonstration script\n";
-test( [$test_results, hex_dump($test_results)], 
-      [$expected_results, hex_dump($expected_results)] ); # expected results
-
-}
-else {
-
-    #####
-    #  ok:  5
-    # 
-    # Run test script test case 
-    #
-    $test_results = `perl tech0.t`;
-    Test::TestUtil->fout('tech1.txt', $test_results);
-    $test_results = scrub_probe(Test::TestUtil->scrub_file_line($test_results));
-    $test_results .= hex_dump($test_results);
-
-    $expected_results = scrub_probe(Test::TestUtil->scrub_file_line(Test::TestUtil->fin('tech5.txt')));
-    $expected_results .= hex_dump($expected_results);
-
-    print "# Run test script\n";
-    ok( $test_results, $expected_results); # expected results
-
-
-}
 
 =head1 NAME
 

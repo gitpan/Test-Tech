@@ -5,11 +5,11 @@ Title Page
 
      Test::Tech - Extends the Test program module
 
-     Revision: H
+     Revision: I
 
-     Version: 0.10
+     Version: 0.11
 
-     Date: 2003/07/11
+     Date: 2003/07/18
 
      Prepared for: General Public 
 
@@ -60,39 +60,9 @@ Title Page
     *   Adds a method to generate demos that appear as an interactive
         session using the methods under test
 
-    The "Test::Tech" module was originally developed for the US DOD STD2167A
-    bundle and is an integral part of the US DOD STD2167A bundle of modules.
-    The "Test::Tech" module was broken out from the design modules because
-    it may have uses outside the US DOD STD2167A bundle.
-
-    Two STD2167A bundle end user (functional interface) modules are as
-    follows:
-
-    Test::STDmaker
-        generates Test script, demo script and STD document POD from a text
-        database in the Data::Port::FileTYpe::FormDB format.
-
-    Test::SVDmaker
-        generates SVD document POD and distribution *.tar.gz file including
-        a generated Makefile.PL README and MANIFEST file from a text
-        database in the Data::Port::FileTYpe::FormDB format.
-
-    The dependency of the program modules in the US DOD STD2167A bundle is
-    as follows:
-
-     File::FileUtil 
-       Test::STD::Scrub
-         Test::Tech
-            DataPort::FileType::FormDB DataPort::DataFile DataPort::Maker Test::STD::Template
-                Test::STDmaker ExtUtils::SVDmaker
-
-    Note the File::FileUtil, Test::STD::STDutil Test::STD::Scrub program
-    modules breaks up the Test::TestUtil program module and Test::TestUtil
-    has disappeared.
-
   1.3 Document overview.
 
-    This document releases Test::Tech version 0.10 providing description of
+    This document releases Test::Tech version 0.11 providing description of
     the inventory, installation instructions and other information necessary
     to utilize and track this release.
 
@@ -104,8 +74,8 @@ Title Page
 
     This document releases the file found at the following repository(s):
 
-       http://www.softwarediamonds/packages/Test-Tech-0.10
-       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.10
+       http://www.softwarediamonds/packages/Test-Tech-0.11
+       http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.11
 
     Restrictions regarding duplication and license provisions are as
     follows:
@@ -150,12 +120,12 @@ Title Page
 
      file                                                         version date       comment
      ------------------------------------------------------------ ------- ---------- ------------------------
-     lib/Docs/Site_SVD/Test_Tech.pm                               0.10    2003/07/11 revised 0.09
-     MANIFEST                                                     0.10    2003/07/11 generated, replaces 0.09
-     Makefile.PL                                                  0.10    2003/07/11 generated, replaces 0.09
-     README                                                       0.10    2003/07/11 generated, replaces 0.09
-     lib/Test/Tech.pm                                             1.1     2003/07/11 revised 1.09
-     t/Test/Tech/Tech.t                                           0.1     2003/07/05 unchanged
+     lib/Docs/Site_SVD/Test_Tech.pm                               0.11    2003/07/18 revised 0.10
+     MANIFEST                                                     0.11    2003/07/18 generated, replaces 0.10
+     Makefile.PL                                                  0.11    2003/07/18 generated, replaces 0.10
+     README                                                       0.11    2003/07/18 generated, replaces 0.10
+     lib/Test/Tech.pm                                             1.1     2003/07/11 unchanged
+     t/Test/Tech/Tech.t                                           0.11    2003/07/18 revised 0.1
      t/Test/Tech/techA0.t                                         0.06    2003/07/05 unchanged
      t/Test/Tech/techA2.txt                                       0.05    2003/06/19 unchanged
      t/Test/Tech/techB0.t                                         0.03    2003/07/05 unchanged
@@ -289,6 +259,10 @@ Title Page
         Left over usage of File::FileUtil in the test script files. Removed
         them. Switch from "Test::STD::Scrub" to "Text::Scrub"
 
+    Test::Tech 0.11
+        In the test script, switch to using "Data::Hexdumper" module. Much
+        better hex dumper.
+
   3.4 Adaptation data.
 
     This installation requires that the installation site has the Perl
@@ -325,8 +299,8 @@ Title Page
 
         The distribution file is at the following respositories:
 
-           http://www.softwarediamonds/packages/Test-Tech-0.10
-           http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.10
+           http://www.softwarediamonds/packages/Test-Tech-0.11
+           http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.11
 
     Prerequistes.
          'File::SmartNL' => '0',
@@ -366,7 +340,7 @@ Title Page
         Test::Tech manpage module into *%Program_Line* hash instead of the
         Module Under Test.
 
-    "Data::Dumper" stringification not portable
+    "Data::Dumper" stringification is not portable
         For numeric arrays, "Data::Dumper" module will not stringify them
         the same for all Perls. The below Perl code will produce different
         results for different Perls
@@ -414,6 +388,11 @@ Title Page
     Left over usage of File::FileUtil in the test script files. Removed
     them. Switch from "Test::STD::Scrub" to "Text::Scrub"
 
+    \=item Test::Tech 0.11
+
+    In the test script, switch to using "Data::Hexdumper" module. Much
+    better hex dumper.
+
     \=back
 
     ^
@@ -458,41 +437,7 @@ Title Page
 
     \=back
 
-    The "Test::Tech" module was originally developed for the US DOD STD2167A
-    bundle and is an integral part of the US DOD STD2167A bundle of modules.
-    The "Test::Tech" module was broken out from the design modules because
-    it may have uses outside the US DOD STD2167A bundle.
-
-    Two STD2167A bundle end user (functional interface) modules are as
-    follows:
-
-    \=over 4
-
-    \=item Test::STDmaker
-
-    generates Test script, demo script and STD document POD from a text
-    database in the Data::Port::FileTYpe::FormDB format.
-
-    \=item Test::SVDmaker
-
-    generates SVD document POD and distribution *.tar.gz file including a
-    generated Makefile.PL README and MANIFEST file from a text database in
-    the Data::Port::FileTYpe::FormDB format.
-
-    \=back
-
-    The dependency of the program modules in the US DOD STD2167A bundle is
-    as follows:
-
-     File::FileUtil 
-       Test::STD::Scrub
-         Test::Tech
-            DataPort::FileType::FormDB DataPort::DataFile DataPort::Maker Test::STD::Template
-                Test::STDmaker ExtUtils::SVDmaker
-
-    Note the File::FileUtil, Test::STD::STDutil Test::STD::Scrub program
-    modules breaks up the Test::TestUtil program module and Test::TestUtil
-    has disappeared. ^
+    ^
 
     PROBLEMS: Known issues are as follows:
 
@@ -512,7 +457,7 @@ Title Page
     to 1. Thus, the the Test manpage module loads the the Test::Tech manpage
     module into *%Program_Line* hash instead of the Module Under Test.
 
-    \=item "Data::Dumper" stringification not portable
+    \=item "Data::Dumper" stringification is not portable
 
     For numeric arrays, "Data::Dumper" module will not stringify them the
     same for all Perls. The below Perl code will produce different results

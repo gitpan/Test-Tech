@@ -10,18 +10,18 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.10';
-$DATE = '2003/07/11';
+$VERSION = '0.11';
+$DATE = '2003/07/18';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.10 2003/07/11), 'revised 0.09'],
-    'MANIFEST' => [qw(0.10 2003/07/11), 'generated, replaces 0.09'],
-    'Makefile.PL' => [qw(0.10 2003/07/11), 'generated, replaces 0.09'],
-    'README' => [qw(0.10 2003/07/11), 'generated, replaces 0.09'],
-    'lib/Test/Tech.pm' => [qw(1.1 2003/07/11), 'revised 1.09'],
-    't/Test/Tech/Tech.t' => [qw(0.1 2003/07/05), 'unchanged'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.11 2003/07/18), 'revised 0.10'],
+    'MANIFEST' => [qw(0.11 2003/07/18), 'generated, replaces 0.10'],
+    'Makefile.PL' => [qw(0.11 2003/07/18), 'generated, replaces 0.10'],
+    'README' => [qw(0.11 2003/07/18), 'generated, replaces 0.10'],
+    'lib/Test/Tech.pm' => [qw(1.1 2003/07/11), 'unchanged'],
+    't/Test/Tech/Tech.t' => [qw(0.11 2003/07/18), 'revised 0.1'],
     't/Test/Tech/techA0.t' => [qw(0.06 2003/07/05), 'unchanged'],
     't/Test/Tech/techA2.txt' => [qw(0.05 2003/06/19), 'unchanged'],
     't/Test/Tech/techB0.t' => [qw(0.03 2003/07/05), 'unchanged'],
@@ -59,11 +59,11 @@ use vars qw(%INVENTORY);
 
  Test::Tech - Extends the Test program module
 
- Revision: H
+ Revision: I
 
- Version: 0.10
+ Version: 0.11
 
- Date: 2003/07/11
+ Date: 2003/07/18
 
  Prepared for: General Public 
 
@@ -131,48 +131,9 @@ session using the methods under test
 
 =back
 
-The "L<Test::Tech|Test::Tech>" module was originally developed for
-the US DOD STD2167A bundle and is an integral part of the US DOD STD2167A bundle
-of modules. 
-The "L<Test::Tech|Test::Tech>" module was broken out from the design modules
-because it may have uses outside the US DOD STD2167A bundle.
-
-Two STD2167A bundle end user (functional interface) modules are as follows:
-
-=over 4
-
-=item L<Test::STDmaker|Test::STDmaker>
-
-generates Test script, demo script and STD document POD from
-a text database in the Data::Port::FileTYpe::FormDB format.
-
-=item L<Test::SVDmaker|Test::SVDmaker>
-
-generates SVD document POD and distribution *.tar.gz file including
-a generated Makefile.PL README and MANIFEST file from 
-a text database in the Data::Port::FileTYpe::FormDB format.
-
-=back
-
-The dependency of the program modules in the US DOD STD2167A bundle is as follows:
- 
- File::FileUtil 
-   Test::STD::Scrub
-     Test::Tech
-        DataPort::FileType::FormDB DataPort::DataFile DataPort::Maker Test::STD::Template
-            Test::STDmaker ExtUtils::SVDmaker
-
-Note the 
-L<File::FileUtil|File::FileUtil>, 
-L<Test::STD::STDutil|Test::STD::STDutil> 
-L<Test::STD::Scrub|Test::STD::Scrub> 
-program modules breaks up 
-the Test::TestUtil program module
-and Test::TestUtil has disappeared.
-
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.10
+This document releases Test::Tech version 0.11
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -188,8 +149,8 @@ system file specification.
 This document releases the file found
 at the following repository(s):
 
-   http://www.softwarediamonds/packages/Test-Tech-0.10
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.10
+   http://www.softwarediamonds/packages/Test-Tech-0.11
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.11
 
 
 Restrictions regarding duplication and license provisions
@@ -257,12 +218,12 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.10    2003/07/11 revised 0.09
- MANIFEST                                                     0.10    2003/07/11 generated, replaces 0.09
- Makefile.PL                                                  0.10    2003/07/11 generated, replaces 0.09
- README                                                       0.10    2003/07/11 generated, replaces 0.09
- lib/Test/Tech.pm                                             1.1     2003/07/11 revised 1.09
- t/Test/Tech/Tech.t                                           0.1     2003/07/05 unchanged
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.11    2003/07/18 revised 0.10
+ MANIFEST                                                     0.11    2003/07/18 generated, replaces 0.10
+ Makefile.PL                                                  0.11    2003/07/18 generated, replaces 0.10
+ README                                                       0.11    2003/07/18 generated, replaces 0.10
+ lib/Test/Tech.pm                                             1.1     2003/07/11 unchanged
+ t/Test/Tech/Tech.t                                           0.11    2003/07/18 revised 0.1
  t/Test/Tech/techA0.t                                         0.06    2003/07/05 unchanged
  t/Test/Tech/techA2.txt                                       0.05    2003/06/19 unchanged
  t/Test/Tech/techB0.t                                         0.03    2003/07/05 unchanged
@@ -431,6 +392,11 @@ instead of "file::FileUtil".
 Left over usage of File::FileUtil in the test script files.
 Removed them. Switch from "Test::STD::Scrub" to "Text::Scrub"
 
+=item Test::Tech 0.11
+
+In the test script, switch to using "Data::Hexdumper" module.
+Much better hex dumper.
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -473,8 +439,8 @@ Follow the instructions for the the chosen installation software.
 
 The distribution file is at the following respositories:
 
-   http://www.softwarediamonds/packages/Test-Tech-0.10
-   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.10
+   http://www.softwarediamonds/packages/Test-Tech-0.11
+   http://www.perl.com/CPAN-local/authors/id/S/SO/SOFTDIA/Test-Tech-0.11
 
 
 =item Prerequistes.
@@ -527,7 +493,7 @@ must be set to 1.
 Thus, the L<Test> module loads the L<Test::Tech> module into
 I<%Program_Line> hash instead of the Module Under Test.
 
-=item "Data::Dumper" stringification not portable
+=item "Data::Dumper" stringification is not portable
 
 For numeric arrays, "L<Data::Dumper|Data::Dumper>" module will not
 stringify them the same for all Perls. The below Perl code will
@@ -594,11 +560,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.10^
+VERSION : 0.11^
 FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.09^
-REVISION: H^
+PREVIOUS_RELEASE: 0.10^
+REVISION: I^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -799,6 +765,11 @@ instead of "file::FileUtil".
 Left over usage of File::FileUtil in the test script files.
 Removed them. Switch from "Test::STD::Scrub" to "Text::Scrub"
 
+\=item Test::Tech 0.11
+
+In the test script, switch to using "Data::Hexdumper" module.
+Much better hex dumper.
+
 \=back
 
 ^
@@ -848,44 +819,6 @@ session using the methods under test
 
 \=back
 
-The "L<Test::Tech|Test::Tech>" module was originally developed for
-the US DOD STD2167A bundle and is an integral part of the US DOD STD2167A bundle
-of modules. 
-The "L<Test::Tech|Test::Tech>" module was broken out from the design modules
-because it may have uses outside the US DOD STD2167A bundle.
-
-Two STD2167A bundle end user (functional interface) modules are as follows:
-
-\=over 4
-
-\=item L<Test::STDmaker|Test::STDmaker>
-
-generates Test script, demo script and STD document POD from
-a text database in the Data::Port::FileTYpe::FormDB format.
-
-\=item L<Test::SVDmaker|Test::SVDmaker>
-
-generates SVD document POD and distribution *.tar.gz file including
-a generated Makefile.PL README and MANIFEST file from 
-a text database in the Data::Port::FileTYpe::FormDB format.
-
-\=back
-
-The dependency of the program modules in the US DOD STD2167A bundle is as follows:
- 
- File::FileUtil 
-   Test::STD::Scrub
-     Test::Tech
-        DataPort::FileType::FormDB DataPort::DataFile DataPort::Maker Test::STD::Template
-            Test::STDmaker ExtUtils::SVDmaker
-
-Note the 
-L<File::FileUtil|File::FileUtil>, 
-L<Test::STD::STDutil|Test::STD::STDutil> 
-L<Test::STD::Scrub|Test::STD::Scrub> 
-program modules breaks up 
-the Test::TestUtil program module
-and Test::TestUtil has disappeared.
 ^
 
 PROBLEMS:
@@ -909,7 +842,7 @@ must be set to 1.
 Thus, the L<Test> module loads the L<Test::Tech> module into
 I<%Program_Line> hash instead of the Module Under Test.
 
-\=item "Data::Dumper" stringification not portable
+\=item "Data::Dumper" stringification is not portable
 
 For numeric arrays, "L<Data::Dumper|Data::Dumper>" module will not
 stringify them the same for all Perls. The below Perl code will
