@@ -10,16 +10,16 @@ use warnings;
 use warnings::register;
 
 use vars qw($VERSION $DATE $FILE );
-$VERSION = '0.24';
-$DATE = '2004/05/12';
+$VERSION = '0.25';
+$DATE = '2004/05/18';
 $FILE = __FILE__;
 
 use vars qw(%INVENTORY);
 %INVENTORY = (
-    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.24 2004/05/12), 'revised 0.23'],
-    'MANIFEST' => [qw(0.24 2004/05/12), 'generated, replaces 0.23'],
-    'Makefile.PL' => [qw(0.24 2004/05/12), 'generated, replaces 0.23'],
-    'README' => [qw(0.24 2004/05/12), 'generated, replaces 0.23'],
+    'lib/Docs/Site_SVD/Test_Tech.pm' => [qw(0.25 2004/05/18), 'revised 0.24'],
+    'MANIFEST' => [qw(0.25 2004/05/18), 'generated, replaces 0.24'],
+    'Makefile.PL' => [qw(0.25 2004/05/18), 'generated, replaces 0.24'],
+    'README' => [qw(0.25 2004/05/18), 'generated, replaces 0.24'],
     'lib/Test/Tech.pm' => [qw(1.25 2004/05/11), 'unchanged'],
     't/Test/Tech/Tech.d' => [qw(0.07 2004/05/11), 'unchanged'],
     't/Test/Tech/Tech.pm' => [qw(0.06 2004/05/11), 'unchanged'],
@@ -36,12 +36,12 @@ use vars qw(%INVENTORY);
     't/Test/Tech/techE2.txt' => [qw(0.2 2004/05/11), 'unchanged'],
     't/Test/Tech/techF0.t' => [qw(0.08 2004/05/11), 'unchanged'],
     't/Test/Tech/techF2.txt' => [qw(0.23 2004/05/11), 'unchanged'],
-    't/Test/Tech/File/Package.pm' => [qw(1.17 2004/05/12), 'unchanged'],
-    't/Test/Tech/File/SmartNL.pm' => [qw(1.15 2004/05/12), 'unchanged'],
-    't/Test/Tech/Text/Scrub.pm' => [qw(1.13 2004/05/12), 'unchanged'],
-    't/Test/Tech/Data/Secs2.pm' => [qw(1.23 2004/05/12), 'new'],
-    't/Test/Tech/Data/SecsPack.pm' => [qw(0.07 2004/05/12), 'new'],
-    't/Test/Tech/Data/Startup.pm' => [qw(0.06 2004/05/12), 'new'],
+    't/Test/Tech/File/Package.pm' => [qw(1.17 2004/05/18), 'unchanged'],
+    't/Test/Tech/File/SmartNL.pm' => [qw(1.16 2004/05/18), 'revised 1.15'],
+    't/Test/Tech/Text/Scrub.pm' => [qw(1.13 2004/05/18), 'unchanged'],
+    't/Test/Tech/Data/Secs2.pm' => [qw(1.23 2004/05/18), 'unchanged'],
+    't/Test/Tech/Data/SecsPack.pm' => [qw(0.08 2004/05/18), 'unchanged'],
+    't/Test/Tech/Data/Startup.pm' => [qw(0.06 2004/05/18), 'unchanged'],
     't/Test/Tech/V001024/Test.pm' => [qw(1.25 2003/09/15), 'unchanged'],
     't/Test/Tech/V001015/Test.pm' => [qw(1.16 2003/09/15), 'unchanged'],
 
@@ -74,11 +74,11 @@ Docs::Site_SVD::Test_Tech - Extends the Test program module
 
  Docs::Site_SVD::Test_Tech - Extends the Test program module
 
- Revision: Y
+ Revision: AA
 
- Version: 0.24
+ Version: 0.25
 
- Date: 2004/05/12
+ Date: 2004/05/18
 
  Prepared for: General Public 
 
@@ -145,7 +145,7 @@ session using the methods under test
 
 =head2 1.3 Document overview.
 
-This document releases Test::Tech version 0.24
+This document releases Test::Tech version 0.25
 providing description of the inventory, installation
 instructions and other information necessary to
 utilize and track this release.
@@ -160,7 +160,7 @@ system file specification.
 
 This document releases the file 
 
- Test-Tech-0.24.tar.gz
+ Test-Tech-0.25.tar.gz
 
 found at the following repository(s):
 
@@ -247,10 +247,10 @@ consists of the following files:
 
  file                                                         version date       comment
  ------------------------------------------------------------ ------- ---------- ------------------------
- lib/Docs/Site_SVD/Test_Tech.pm                               0.24    2004/05/12 revised 0.23
- MANIFEST                                                     0.24    2004/05/12 generated, replaces 0.23
- Makefile.PL                                                  0.24    2004/05/12 generated, replaces 0.23
- README                                                       0.24    2004/05/12 generated, replaces 0.23
+ lib/Docs/Site_SVD/Test_Tech.pm                               0.25    2004/05/18 revised 0.24
+ MANIFEST                                                     0.25    2004/05/18 generated, replaces 0.24
+ Makefile.PL                                                  0.25    2004/05/18 generated, replaces 0.24
+ README                                                       0.25    2004/05/18 generated, replaces 0.24
  lib/Test/Tech.pm                                             1.25    2004/05/11 unchanged
  t/Test/Tech/Tech.d                                           0.07    2004/05/11 unchanged
  t/Test/Tech/Tech.pm                                          0.06    2004/05/11 unchanged
@@ -267,12 +267,12 @@ consists of the following files:
  t/Test/Tech/techE2.txt                                       0.2     2004/05/11 unchanged
  t/Test/Tech/techF0.t                                         0.08    2004/05/11 unchanged
  t/Test/Tech/techF2.txt                                       0.23    2004/05/11 unchanged
- t/Test/Tech/File/Package.pm                                  1.17    2004/05/12 unchanged
- t/Test/Tech/File/SmartNL.pm                                  1.15    2004/05/12 unchanged
- t/Test/Tech/Text/Scrub.pm                                    1.13    2004/05/12 unchanged
- t/Test/Tech/Data/Secs2.pm                                    1.23    2004/05/12 new
- t/Test/Tech/Data/SecsPack.pm                                 0.07    2004/05/12 new
- t/Test/Tech/Data/Startup.pm                                  0.06    2004/05/12 new
+ t/Test/Tech/File/Package.pm                                  1.17    2004/05/18 unchanged
+ t/Test/Tech/File/SmartNL.pm                                  1.16    2004/05/18 revised 1.15
+ t/Test/Tech/Text/Scrub.pm                                    1.13    2004/05/18 unchanged
+ t/Test/Tech/Data/Secs2.pm                                    1.23    2004/05/18 unchanged
+ t/Test/Tech/Data/SecsPack.pm                                 0.08    2004/05/18 unchanged
+ t/Test/Tech/Data/Startup.pm                                  0.06    2004/05/18 unchanged
  t/Test/Tech/V001024/Test.pm                                  1.25    2003/09/15 unchanged
  t/Test/Tech/V001015/Test.pm                                  1.16    2003/09/15 unchanged
 
@@ -668,6 +668,15 @@ the C<MakeFile.PL>
 Put the correct version in the test library, upload and see if this is the
 problem. 
 
+=item Test-Tech-0.25
+
+It is unclear whether the failures to Test-Tech-0.24 is because of CPAN setup.
+
+t/Test/Tech/Tech....Perl lib version (v5.8.4) doesn't match executable version (v5.6.1) at /usr/local/perl-5.8.4/lib/5.8.4/sparc-linux/Config.pm line 32.
+Compilation failed in require at /usr/local/perl-5.8.4/lib/5.8.4/FindBin.pm line 97.
+
+Since cannot get a response from the tester, bump the version to force a retest.
+
 =back
 
 =head2 3.4 Adaptation data.
@@ -706,13 +715,13 @@ Enter one of the following repositories in a web browser:
   http://www.softwarediamonds/packages/
   http://www.perl.com/CPAN/authors/id/S/SO/SOFTDIA/
 
-Right click on 'Test-Tech-0.24.tar.gz' and download to a temporary
+Right click on 'Test-Tech-0.25.tar.gz' and download to a temporary
 installation directory.
 Enter the following where $make is 'nmake' for microsoft
 windows; otherwise 'make'.
 
- gunzip Test-Tech-0.24.tar.gz
- tar -xf Test-Tech-0.24.tar
+ gunzip Test-Tech-0.25.tar.gz
+ tar -xf Test-Tech-0.25.tar
  perl Makefile.PL
  $make test
  $make install
@@ -817,11 +826,11 @@ __DATA__
 DISTNAME: Test-Tech^
 REPOSITORY_DIR: packages^
 
-VERSION : 0.24^
-FREEZE: 0^
+VERSION : 0.25^
+FREEZE: 1^
 PREVIOUS_DISTNAME:  ^
-PREVIOUS_RELEASE: 0.23^
-REVISION: Y^
+PREVIOUS_RELEASE: 0.24^
+REVISION: AA^
 
 AUTHOR  : SoftwareDiamonds.com E<lt>support@SoftwareDiamonds.comE<gt>^
 ABSTRACT: 
@@ -1268,6 +1277,15 @@ the C<MakeFile.PL>
 Put the correct version in the test library, upload and see if this is the
 problem. 
 
+\=item Test-Tech-0.25
+
+It is unclear whether the failures to Test-Tech-0.24 is because of CPAN setup.
+
+t/Test/Tech/Tech....Perl lib version (v5.8.4) doesn't match executable version (v5.6.1) at /usr/local/perl-5.8.4/lib/5.8.4/sparc-linux/Config.pm line 32.
+Compilation failed in require at /usr/local/perl-5.8.4/lib/5.8.4/FindBin.pm line 97.
+
+Since cannot get a response from the tester, bump the version to force a retest.
+
 \=back
 
 ^
@@ -1473,6 +1491,8 @@ SEE_ALSO:
 HTML:
 ^
 ~-~
+
+
 
 
 
